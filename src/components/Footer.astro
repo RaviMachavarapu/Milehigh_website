@@ -1,0 +1,87 @@
+---
+import { site, services } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-navy text-white/70">
+  <div class="container-max grid gap-10 py-16 md:grid-cols-2 lg:grid-cols-4">
+    <!-- Brand -->
+    <div>
+      <a href="/" class="inline-flex items-center" aria-label="Mile High AI Labs — home">
+        <img
+          src="/images/logo-mhal.png"
+          alt="Mile High AI Labs"
+          width="560"
+          height="150"
+          class="h-12 w-auto"
+        />
+      </a>
+      <p class="mt-4 max-w-xs text-sm leading-relaxed">
+        AI systems built, run, and reviewed by humans — for small and medium businesses in
+        Denver and beyond.
+      </p>
+      <address class="mt-5 text-sm not-italic leading-relaxed">
+        {site.address.street}<br />
+        {site.address.city}, {site.address.state} {site.address.zip}
+      </address>
+    </div>
+
+    <!-- Services -->
+    <div>
+      <h3 class="eyebrow font-sans text-white">Services</h3>
+      <ul class="mt-4 space-y-3 text-sm">
+        {
+          services.map((s) => (
+            <li>
+              <a href={s.href} class="transition-colors hover:text-white">
+                {s.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a href={site.propspectrum} target="_blank" rel="noopener" class="transition-colors hover:text-white">
+            PropSpectrum (Real Estate)
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Company -->
+    <div>
+      <h3 class="eyebrow font-sans text-white">Company</h3>
+      <ul class="mt-4 space-y-3 text-sm">
+        <li><a href="/#about" class="transition-colors hover:text-white">About</a></li>
+        <li><a href="/#lifecycle" class="transition-colors hover:text-white">How It Works</a></li>
+        <li>
+          <a href="https://appsconsultants.com" target="_blank" rel="noopener" class="transition-colors hover:text-white">
+            Apps Consultants (Enterprise)
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Connect -->
+    <div>
+      <h3 class="eyebrow font-sans text-white">Connect</h3>
+      <ul class="mt-4 space-y-3 text-sm">
+        <li>
+          <a href={site.booking} target="_blank" rel="noopener" class="font-semibold text-terracotta hover:underline">
+            Book a Free Audit →
+          </a>
+        </li>
+        <li><a href={`mailto:${site.email}`} class="transition-colors hover:text-white">{site.email}</a></li>
+        <li><a href={site.socials.linkedin} target="_blank" rel="noopener" class="transition-colors hover:text-white">LinkedIn</a></li>
+        <li><a href={site.socials.facebook} target="_blank" rel="noopener" class="transition-colors hover:text-white">Facebook</a></li>
+        <li><a href={site.socials.youtube} target="_blank" rel="noopener" class="transition-colors hover:text-white">YouTube</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="container-max flex flex-col items-center justify-between gap-3 py-6 text-xs text-white/50 sm:flex-row">
+      <p>© {year} Mile High AI Labs. All rights reserved.</p>
+      <p>Denver-built · Human-in-the-Loop on every output.</p>
+    </div>
+  </div>
+</footer>

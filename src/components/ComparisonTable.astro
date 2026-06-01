@@ -1,0 +1,67 @@
+---
+// Comparison table. The last column (Mile High AI Labs) is highlighted.
+// `rows` cells: string | true (check) | false (dash).
+type Cell = string | boolean;
+interface Props {
+  columns: string[]; // e.g. ['Capability', 'Traditional', 'In-House Team', 'Mile High AI Labs']
+  rows: { label: string; values: Cell[] }[];
+}
+const { columns, rows } = Astro.props;
+const lastIdx = columns.length - 1;
+---
+
+<div class="overflow-x-auto">
+  <table class="w-full min-w-[640px] border-collapse text-left">
+    <thead>
+      <tr>
+        {
+          columns.map((col, i) => (
+            <th
+              class:list={[
+                'border-b border-navy/10 px-5 py-4 text-sm font-semibold',
+                i === lastIdx ? 'rounded-t-xl bg-navy text-white' : 'text-ink-soft',
+              ]}
+            >
+              {col}
+            </th>
+          ))
+        }
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row, ri) => (
+          <tr class="align-top">
+            <th scope="row" class="border-b border-navy/10 px-5 py-4 text-sm font-medium text-navy">
+              {row.label}
+            </th>
+            {row.values.map((val, ci) => {
+              const highlight = ci + 1 === lastIdx;
+              return (
+                <td
+                  class:list={[
+                    'border-b border-navy/10 px-5 py-4 text-sm',
+                    highlight ? 'bg-navy/95 text-white' : 'text-ink-soft',
+                    highlight && ri === rows.length - 1 ? 'rounded-b-xl' : '',
+                  ]}
+                >
+                  {typeof val === 'boolean' ? (
+                    val ? (
+                      <span class:list={['inline-flex', highlight ? 'text-terracotta' : 'text-forest']} aria-label="Yes">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                      </span>
+                    ) : (
+                      <span class="text-ink-soft/50" aria-label="No">—</span>
+                    )
+                  ) : (
+                    val
+                  )}
+                </td>
+              );
+            })}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

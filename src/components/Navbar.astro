@@ -1,0 +1,131 @@
+---
+import { site, navLinks } from '../data/site';
+
+// When `solid` is true the nav starts opaque (used on pages without a dark hero).
+interface Props {
+  solid?: boolean;
+}
+const { solid = false } = Astro.props;
+---
+
+<header
+  id="site-nav"
+  data-solid={solid ? 'true' : 'false'}
+  class:list={[
+    'fixed inset-x-0 top-0 z-50 transition-colors duration-300',
+    solid ? 'bg-navy/95 backdrop-blur-md shadow-sm' : 'bg-transparent',
+  ]}
+>
+  <nav class="container-max flex h-16 items-center justify-between gap-4 md:h-20" aria-label="Primary">
+    <a href="/" class="flex items-center" aria-label="Mile High AI Labs — home">
+      <img
+        src="/images/logo-mhal.png"
+        alt="Mile High AI Labs"
+        width="560"
+        height="150"
+        class="h-9 w-auto md:h-11"
+      />
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden items-center gap-7 lg:flex">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="text-sm font-medium text-white/80 transition-colors hover:text-white"
+            {...(link.external ? { target: '_blank', rel: 'noopener' } : {})}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a
+        href={`mailto:${site.email}`}
+        class="text-sm font-medium text-white/80 transition-colors hover:text-white"
+      >
+        Contact
+      </a>
+      <a
+        href={site.booking}
+        target="_blank"
+        rel="noopener"
+        class="rounded-lg bg-terracotta px-4 py-2 text-sm font-semibold text-navy transition-colors hover:bg-terracotta-600"
+      >
+        Book a Free Audit
+      </a>
+    </div>
+
+    <!-- Mobile toggle -->
+    <button
+      id="nav-toggle"
+      class="text-white lg:hidden"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden border-t border-white/10 bg-navy lg:hidden">
+    <div class="container-max flex flex-col gap-1 py-4">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="rounded-md px-2 py-2.5 text-base font-medium text-white/85 hover:bg-white/5"
+            {...(link.external ? { target: '_blank', rel: 'noopener' } : {})}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a
+        href={`mailto:${site.email}`}
+        class="rounded-md px-2 py-2.5 text-base font-medium text-white/85 hover:bg-white/5"
+      >
+        Contact
+      </a>
+      <a
+        href={site.booking}
+        target="_blank"
+        rel="noopener"
+        class="mt-2 rounded-lg bg-terracotta px-4 py-2.5 text-center text-base font-semibold text-navy"
+      >
+        Book a Free Audit
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const nav = document.getElementById('site-nav');
+  const startsSolid = nav?.dataset.solid === 'true';
+
+  // Transparent hero nav turns solid once the user scrolls past the fold.
+  if (nav && !startsSolid) {
+    const onScroll = () => {
+      const scrolled = window.scrollY > 24;
+      nav.classList.toggle('bg-navy/95', scrolled);
+      nav.classList.toggle('backdrop-blur-md', scrolled);
+      nav.classList.toggle('shadow-sm', scrolled);
+      nav.classList.toggle('bg-transparent', !scrolled);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  // Mobile menu toggle
+  const toggle = document.getElementById('nav-toggle');
+  const menu = document.getElementById('mobile-menu');
+  toggle?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+</script>

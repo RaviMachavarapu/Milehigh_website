@@ -1,0 +1,190 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import HitlSteps from '../../components/HitlSteps.astro';
+import ComparisonTable from '../../components/ComparisonTable.astro';
+import FAQ from '../../components/FAQ.astro';
+import { site } from '../../data/site';
+import { service, faqPage, breadcrumb } from '../../lib/jsonld';
+
+const capabilities = [
+  { h: 'Automated enquiry response', p: 'Every new enquiry, from any channel, gets a personalised, context-aware reply within seconds — with escalation to a person when the contact is ready to convert.' },
+  { h: 'Internal workflow automation', p: 'Approvals, notifications, status updates, and handoffs mapped and executed without manual data entry or missed steps.' },
+  { h: 'Follow-up sequences', p: 'Behaviour-driven multi-touch sequences across email, SMS, and call prompts that pause and resume when a contact replies.' },
+  { h: 'Appointment & meeting scheduling', p: 'AI handles calendar negotiation, confirmations, reminders, and rescheduling — cutting no-shows and back-and-forth.' },
+  { h: 'Operational pipelines', p: 'Stage-based checklists, document routing, and team dashboards that keep work moving and accountable.' },
+  { h: 'On-premises AI deployment', p: 'For regulated industries, models run inside your own infrastructure — GDPR, CCPA, and HIPAA-aligned, with no privacy trade-off.' },
+];
+
+const metrics = [
+  { value: '21×', label: 'More likely to convert with a 5-minute response' },
+  { value: '<5 min', label: 'Typical first-response time, automated' },
+  { value: '24/7', label: 'Coverage — no gaps on nights or weekends' },
+  { value: '100%', label: 'Outputs human-reviewed before go-live' },
+];
+
+const faqs = [
+  {
+    q: 'What can actually be automated in my business?',
+    a: 'Anything repetitive and rules-based: enquiry responses, follow-up sequences, appointment scheduling, internal approvals, data entry, and operational handoffs. We start by mapping where your hours go, then automate the highest-cost gaps first.',
+  },
+  {
+    q: 'Why does response time matter so much?',
+    a: 'Businesses that respond to an inbound enquiry within five minutes are 21 times more likely to convert it — but the average business takes well over 47 hours. Automation makes you the business that always responds first.',
+  },
+  {
+    q: 'What if an automation makes a mistake?',
+    a: 'That is exactly what our Human-in-the-Loop review prevents. No automation goes live unchecked, and we monitor the first 48 hours closely after deployment. A person is always accountable for what reaches your customers.',
+  },
+  {
+    q: 'Can my data stay on our own servers?',
+    a: 'Yes. For compliance-sensitive environments we offer on-premises deployment — your data never leaves your infrastructure, with the same automation capabilities as the cloud version.',
+  },
+];
+
+const jsonLd = [
+  service({
+    name: 'AI Workflows',
+    description:
+      'Managed AI workflow automation for small and medium businesses — enquiry response, follow-up, scheduling, and operational pipelines, with a human reviewing every output and optional on-premises deployment.',
+    path: '/services/ai-workflows',
+  }),
+  faqPage(faqs),
+  breadcrumb([
+    { name: 'Home', path: '/' },
+    { name: 'AI Workflows', path: '/services/ai-workflows' },
+  ]),
+];
+---
+
+<BaseLayout
+  title="AI Workflows — Managed Automation for SMBs"
+  description="Always-on AI workflows for small and medium businesses: instant enquiry response, follow-up, scheduling, and operational automation — with a human reviewing every output before it goes live."
+  path="/services/ai-workflows"
+  keywords="AI workflow automation, business process automation, enquiry response automation, appointment scheduling AI, on-premises AI, SMB automation"
+  jsonLd={jsonLd}
+>
+  <!-- HERO -->
+  <section class="bg-navy text-white">
+    <div class="container-max grid items-center gap-12 pb-20 pt-32 md:pt-40 lg:grid-cols-2 lg:pb-28">
+      <div>
+        <p class="eyebrow text-terracotta">AI Workflows</p>
+        <h1 class="mt-5 font-serif text-4xl font-extrabold leading-[1.1] md:text-5xl">
+          The operational backbone that <span class="accent-italic text-terracotta">never</span> sleeps
+        </h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/75">
+          We replace slow, manual, error-prone processes with always-on AI that responds to
+          enquiries, follows up, schedules, and coordinates operations automatically — with a
+          human reviewing every output before it touches your business.
+        </p>
+        <div class="mt-9 flex flex-wrap gap-4">
+          <Button href={site.booking} external>Map my workflows →</Button>
+          <Button href={`mailto:${site.email}`} variant="dark">Talk to the team</Button>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-navy-900 p-6 shadow-2xl shadow-black/40">
+        <p class="text-xs uppercase tracking-wide text-white/40">Live activity</p>
+        <div class="mt-4 space-y-2.5">
+          {
+            [
+              { t: 'New enquiry — website form', s: 'Replied in 0:08', ok: true },
+              { t: 'Follow-up #2 sent — SMS', s: 'Auto', ok: true },
+              { t: 'Meeting booked — Tue 2:30pm', s: 'Confirmed', ok: true },
+              { t: 'Quote draft — awaiting approval', s: 'Human review', ok: false },
+            ].map((row) => (
+              <div class="flex items-center justify-between rounded-lg bg-white/5 px-4 py-3 text-sm">
+                <span class="text-white/85">{row.t}</span>
+                <span class:list={['rounded-full px-2.5 py-0.5 text-xs font-medium', row.ok ? 'bg-forest/40 text-white' : 'bg-terracotta/25 text-terracotta']}>
+                  {row.s}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <HitlSteps heading="How we put AI to work — safely" />
+
+  <!-- CAPABILITIES -->
+  <section class="section bg-warm">
+    <div class="container-max">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-3xl md:text-4xl">What we automate</h2>
+        <p class="mt-4 text-lg leading-relaxed text-ink-soft">
+          The value isn't any single tool — it's the right combination, configured around your
+          processes and team.
+        </p>
+      </div>
+      <div class="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          capabilities.map((c) => (
+            <div class="card-lift p-7">
+              <h3 class="font-serif text-xl text-navy">{c.h}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-ink-soft">{c.p}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="section bg-white">
+    <div class="container-max">
+      <h2 class="mx-auto max-w-2xl text-center text-3xl md:text-4xl">Manual operations vs. managed AI</h2>
+      <div class="mt-12">
+        <ComparisonTable
+          columns={['Capability', 'Manual / DIY tools', 'Mile High AI Labs']}
+          rows={[
+            { label: 'First-response time', values: ['Hours to days', 'Seconds'] },
+            { label: 'After-hours coverage', values: [false, true] },
+            { label: 'Human review on outputs', values: [false, true] },
+            { label: 'Cross-tool integration', values: ['Patchy', true] },
+            { label: 'On-premises / compliance option', values: [false, true] },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY 30 OUTCOMES -->
+  <section class="bg-navy py-20 text-white lg:py-28">
+    <div class="container-max">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="font-serif text-3xl font-bold md:text-4xl">Day 30 outcomes</h2>
+        <p class="mt-4 text-lg leading-relaxed text-white/70">
+          What changes in the first month once your workflows run themselves.
+        </p>
+      </div>
+      <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          metrics.map((m) => (
+            <div class="rounded-2xl bg-navy-700 p-7 text-center">
+              <p class="font-serif text-4xl font-bold text-terracotta">{m.value}</p>
+              <p class="mt-2 text-sm text-white/70">{m.label}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <FAQ items={faqs} />
+
+  <!-- CLOSING TESTIMONIAL + CTA -->
+  <section class="section bg-warm">
+    <div class="container-max max-w-3xl text-center">
+      <p class="accent-italic text-3xl leading-snug text-navy md:text-4xl">
+        “We were drowning in follow-up. Now every enquiry gets answered in under a minute, and
+        I only get pinged when something actually needs me.”
+      </p>
+      <p class="mt-5 text-sm font-medium text-ink-soft">— Operations director, home services company</p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <Button href={site.booking} external>Book a Free Audit</Button>
+        <Button href={`mailto:${site.email}`} variant="secondary">Contact strategy team</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

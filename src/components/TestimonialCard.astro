@@ -1,0 +1,41 @@
+---
+interface Props {
+  quote: string;
+  name: string;
+  role: string;
+  /** dark = ghost-layer card on navy; light = white card on warm white */
+  variant?: 'light' | 'dark';
+}
+const { quote, name, role, variant = 'light' } = Astro.props;
+const initials = name
+  .split(' ')
+  .map((p) => p[0])
+  .slice(0, 2)
+  .join('');
+---
+
+<figure
+  class:list={[
+    'flex h-full flex-col rounded-2xl p-7',
+    variant === 'dark' ? 'bg-navy-700 text-white/90' : 'card-lift',
+  ]}
+>
+  <blockquote class="flex-1 text-lg leading-relaxed">
+    <span class:list={[variant === 'dark' ? 'text-white' : 'text-navy']}>“{quote}”</span>
+  </blockquote>
+  <figcaption class="mt-6 flex items-center gap-3">
+    <span
+      class:list={[
+        'flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold',
+        variant === 'dark' ? 'bg-terracotta text-navy' : 'bg-navy text-white',
+      ]}
+      aria-hidden="true"
+    >
+      {initials}
+    </span>
+    <span class="text-sm leading-tight">
+      <span class:list={['block font-semibold', variant === 'dark' ? 'text-white' : 'text-navy']}>{name}</span>
+      <span class:list={[variant === 'dark' ? 'text-white/60' : 'text-ink-soft']}>{role}</span>
+    </span>
+  </figcaption>
+</figure>

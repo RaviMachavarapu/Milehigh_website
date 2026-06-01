@@ -1,0 +1,8 @@
+# Mile High AI Labs — robots.txt
+# Search engines and reputable AI answer engines are welcome.
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.milehighlabs.ai/sitemap-index.xml

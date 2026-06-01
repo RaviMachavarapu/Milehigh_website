@@ -1,0 +1,29 @@
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# PropSpectrum design-source mockups (128MB) — not deployed.
+# The built pages + images live in public/propspectrum and public/images/propspectrum.
+# Re-running scripts/*propspectrum* requires restoring this folder locally.
+PropSpectrum-main/

@@ -1,0 +1,32 @@
+---
+import '../styles/global.css';
+import BaseHead from '../components/BaseHead.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  keywords?: string;
+  jsonLd?: Record<string, unknown>[];
+  /** Pages without a dark hero should pass solidNav so the nav is readable. */
+  solidNav?: boolean;
+}
+
+const { title, description, path, keywords, jsonLd, solidNav = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} path={path} keywords={keywords} jsonLd={jsonLd} />
+  </head>
+  <body class="min-h-screen overflow-x-hidden">
+    <Navbar solid={solidNav} />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,193 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import HitlSteps from '../../components/HitlSteps.astro';
+import ComparisonTable from '../../components/ComparisonTable.astro';
+import TestimonialCard from '../../components/TestimonialCard.astro';
+import FAQ from '../../components/FAQ.astro';
+import { site } from '../../data/site';
+import { service, faqPage, breadcrumb } from '../../lib/jsonld';
+
+const capabilities = [
+  { h: 'Lead capture', p: 'Every enquiry — web forms, social, calls, SMS — pulled into one pipeline in real time, deduplicated and source-tagged.' },
+  { h: 'Automated nurture', p: 'Personalised drip sequences that keep leads warm based on intent and timeline, with no manual effort from your team.' },
+  { h: 'Lead scoring', p: 'Dynamic scoring on opens, clicks, visits, and reply speed surfaces the most sales-ready contacts every day.' },
+  { h: 'CRM pipeline setup', p: 'A custom pipeline mapped to your real sales stages — not a one-size template — with onboarding and training included.' },
+  { h: 'Contact enrichment', p: 'Profiles auto-enriched with company, role, and behavioural data so you know the lead before the first call.' },
+  { h: 'Deal & opportunity tracking', p: 'Milestone timelines, forecasting dashboards, and automated follow-ups so nothing slips through.' },
+];
+
+const metrics = [
+  { value: '42%', label: 'Increase in sales-qualified leads' },
+  { value: '−18h', label: 'Hours saved per week' },
+  { value: 'Zero', label: 'Leads ghosted in follow-up' },
+  { value: '12.5×', label: 'Faster pipeline velocity' },
+];
+
+const faqs = [
+  {
+    q: 'How fast will leads actually get a response?',
+    a: 'Within seconds. Businesses that respond to an inbound enquiry within five minutes are 21 times more likely to convert it — yet the average business takes over 47 hours. We close that gap entirely with instant, personalised, multi-channel responses, day or night.',
+  },
+  {
+    q: 'Do I have to replace my current CRM?',
+    a: "Not necessarily. We build around your specific sales stages and the tools your team already uses where it makes sense, and we recommend a change only when your current setup is actively costing you pipeline.",
+  },
+  {
+    q: 'Is the outreach automated or written by a person?',
+    a: 'Both. AI drafts and personalises at scale, and a member of our team reviews the logic and messaging before anything reaches a real prospect. That human review is the Audit step in our process.',
+  },
+  {
+    q: 'How long until I see results?',
+    a: 'Most clients see a measurably fuller, faster-moving pipeline within the first 30 days. Setup, configuration, and the first review cycle typically complete inside the first two weeks.',
+  },
+];
+
+const jsonLd = [
+  service({
+    name: 'Lead Gen & CRM',
+    description:
+      'Managed AI lead generation and CRM for small and medium businesses — lead capture, scoring, enrichment, nurture, and pipeline management, with human review on every output.',
+    path: '/services/lead-gen-crm',
+  }),
+  faqPage(faqs),
+  breadcrumb([
+    { name: 'Home', path: '/' },
+    { name: 'Lead Gen & CRM', path: '/services/lead-gen-crm' },
+  ]),
+];
+---
+
+<BaseLayout
+  title="Lead Gen & CRM — Managed AI Pipeline for SMBs"
+  description="High-authority lead generation for serious small and medium businesses. We capture, score, enrich, and nurture every lead — and a human reviews the work before it goes live. No more pipeline drops."
+  path="/services/lead-gen-crm"
+  keywords="AI lead generation, CRM setup, lead scoring, lead nurturing, contact enrichment, sales pipeline automation, SMB lead gen"
+  jsonLd={jsonLd}
+>
+  <!-- HERO -->
+  <section class="bg-navy text-white">
+    <div class="container-max grid items-center gap-12 pb-20 pt-32 md:pt-40 lg:grid-cols-2 lg:pb-28">
+      <div>
+        <p class="eyebrow text-terracotta">Lead Gen & CRM</p>
+        <h1 class="mt-5 font-serif text-4xl font-extrabold leading-[1.1] md:text-5xl">
+          High-authority lead gen for <span class="accent-italic text-terracotta">serious</span> small-medium businesses
+        </h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/75">
+          We use proprietary AI to qualify and nurture every single lead. No more pipeline
+          drops. Our service turns scattered enquiries into consistent, high-quality pipeline —
+          and a human checks the work before it touches a prospect.
+        </p>
+        <div class="mt-9 flex flex-wrap gap-4">
+          <Button href={site.booking} external>Start your pipeline →</Button>
+          <Button href={`mailto:${site.email}`} variant="dark">Talk to the team</Button>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-navy-900 p-6 shadow-2xl shadow-black/40">
+        <p class="text-xs uppercase tracking-wide text-white/40">Pipeline · this week</p>
+        <div class="mt-4 space-y-3">
+          {
+            [
+              { stage: 'New enquiries', n: '312', w: '92%' },
+              { stage: 'Qualified', n: '188', w: '64%' },
+              { stage: 'In nurture', n: '143', w: '48%' },
+              { stage: 'Ready to call', n: '37', w: '22%' },
+            ].map((row) => (
+              <div>
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-white/70">{row.stage}</span>
+                  <span class="font-semibold text-white">{row.n}</span>
+                </div>
+                <div class="mt-1.5 h-2 rounded-full bg-white/10">
+                  <span class="block h-2 rounded-full bg-terracotta" style={`width:${row.w}`} />
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <HitlSteps />
+
+  <!-- CAPABILITIES -->
+  <section class="section bg-warm">
+    <div class="container-max">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-3xl md:text-4xl">Everything working your pipeline</h2>
+        <p class="mt-4 text-lg leading-relaxed text-ink-soft">
+          Built around your industry, customer base, and sales stages — no two
+          implementations are identical.
+        </p>
+      </div>
+      <div class="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          capabilities.map((c) => (
+            <div class="card-lift p-7">
+              <h3 class="font-serif text-xl text-navy">{c.h}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-ink-soft">{c.p}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="section bg-white">
+    <div class="container-max">
+      <h2 class="mx-auto max-w-2xl text-center text-3xl md:text-4xl">Not all outreach is created equal.</h2>
+      <div class="mt-12">
+        <ComparisonTable
+          columns={['Capability', 'Traditional', 'In-House Team', 'Mile High AI Labs']}
+          rows={[
+            { label: 'Enriched data sources', values: [false, true, true] },
+            { label: 'Real-time data discovery', values: [false, false, true] },
+            { label: 'Personalisation at scale', values: [false, true, true] },
+            { label: 'CRM integration', values: [true, true, true] },
+            { label: 'Human review on every send', values: [false, false, true] },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY 30 PROMISE -->
+  <section class="bg-navy py-20 text-white lg:py-28">
+    <div class="container-max">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="font-serif text-3xl font-bold md:text-4xl">The Day 30 Promise</h2>
+        <p class="mt-4 text-lg leading-relaxed text-white/70">
+          What your pipeline looks like after exactly one month with Mile High AI Labs.
+        </p>
+      </div>
+      <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          metrics.map((m) => (
+            <div class="rounded-2xl bg-navy-700 p-7 text-center">
+              <p class="font-serif text-4xl font-bold text-terracotta">{m.value}</p>
+              <p class="mt-2 text-sm text-white/70">{m.label}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <FAQ items={faqs} />
+
+  <!-- CLOSING TESTIMONIAL + CTA -->
+  <section class="section bg-warm">
+    <div class="container-max max-w-3xl text-center">
+      <p class="accent-italic text-3xl leading-snug text-navy md:text-4xl">
+        “Mile High AI Labs transformed our lead flow in 3 weeks.”
+      </p>
+      <p class="mt-5 text-sm font-medium text-ink-soft">— Founder, professional services firm</p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <Button href={site.booking} external>Book a Free Audit</Button>
+        <Button href={`mailto:${site.email}`} variant="secondary">Contact strategy team</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

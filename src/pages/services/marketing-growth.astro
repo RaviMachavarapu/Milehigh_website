@@ -1,0 +1,219 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import HitlSteps from '../../components/HitlSteps.astro';
+import ComparisonTable from '../../components/ComparisonTable.astro';
+import FAQ from '../../components/FAQ.astro';
+import { site } from '../../data/site';
+import { service, faqPage, breadcrumb } from '../../lib/jsonld';
+
+const engine = [
+  { n: '01', title: 'Strategy', desc: 'We set a content calendar around your goals, audience, and seasonal relevance.' },
+  { n: '02', title: 'Implementation', desc: 'AI drafts platform-ready posts, emails, and ad creative in your brand voice.' },
+  { n: '03', title: 'Review', desc: 'A human approves every piece before it publishes — tone, accuracy, and brand intact.', hitl: true },
+  { n: '04', title: 'Analytics', desc: 'We report on reach and engagement, then tune the next cycle.' },
+];
+
+const capabilities = [
+  { h: 'Social content generation', p: 'Brand-consistent posts for Facebook, Instagram, and LinkedIn — published consistently without your team writing a word.' },
+  { h: 'Targeted campaigns', p: 'Every launch or promotion triggers a complete, multi-channel campaign with copy and visuals, executed automatically.' },
+  { h: 'LinkedIn & Instagram', p: 'Thought-leadership on LinkedIn and visual storytelling on Instagram — two of the highest-return channels for growing businesses.' },
+  { h: 'Email newsletters', p: 'Regular, value-packed newsletters with optimised subject lines and send times, plus open and click reporting.' },
+  { h: 'Ad creative generation', p: 'Multiple creative variants per campaign for A/B testing across Meta, Google, and LinkedIn — sized and compliant by default.' },
+  { h: 'Human review, always', p: 'Every piece is reviewed by our team before publishing, protecting brand integrity and compliance at all times.' },
+];
+
+const metrics = [
+  { value: '4.2×', label: 'Average return on content investment' },
+  { value: '100%', label: 'Content human-reviewed before publish' },
+  { value: '3×', label: 'More leads than traditional outbound' },
+  { value: '62%', label: 'Lower cost than outbound marketing' },
+];
+
+const faqs = [
+  {
+    q: 'Will the content actually sound like my business?',
+    a: 'Yes. We start from your voice, audience, and brand guidelines, and a human reviews every piece before it goes out. Nothing publishes that reads generic or off-brand.',
+  },
+  {
+    q: 'How is this different from a marketing agency?',
+    a: 'Content marketing generates roughly three times more leads at 62% of the cost of traditional outbound. We run that engine for you — strategy, creation, review, and publishing — at a fraction of the cost of an agency or a full-time hire.',
+  },
+  {
+    q: 'Do you post it for me, or just write it?',
+    a: 'Both. We generate the content, review it, and publish it automatically across your channels on a consistent cadence — you stay focused on running the business.',
+  },
+  {
+    q: 'Can I take this without the other services?',
+    a: 'Yes. Marketing & Growth works as a standalone engine or alongside Lead Gen & CRM and AI Workflows for a fuller growth system.',
+  },
+];
+
+const jsonLd = [
+  service({
+    name: 'Marketing & Growth',
+    description:
+      'A managed AI content and campaign engine for small and medium businesses — social, email, and ad creative, written and reviewed by humans, then published automatically.',
+    path: '/services/marketing-growth',
+  }),
+  faqPage(faqs),
+  breadcrumb([
+    { name: 'Home', path: '/' },
+    { name: 'Marketing & Growth', path: '/services/marketing-growth' },
+  ]),
+];
+---
+
+<BaseLayout
+  title="Marketing & Growth — Managed AI Content Engine"
+  description="Precision content for the modern small-medium business. A managed AI engine that writes, reviews, and publishes social, email, and ad creative in your brand voice — so you can focus on running the business."
+  path="/services/marketing-growth"
+  keywords="AI content marketing, social media automation, email marketing AI, ad creative generation, managed content engine, SMB marketing"
+  jsonLd={jsonLd}
+>
+  <!-- HERO -->
+  <section class="bg-navy text-white">
+    <div class="container-max grid items-center gap-12 pb-20 pt-32 md:pt-40 lg:grid-cols-2 lg:pb-28">
+      <div>
+        <p class="eyebrow text-terracotta">Marketing & Growth</p>
+        <h1 class="mt-5 font-serif text-4xl font-extrabold leading-[1.1] md:text-5xl">
+          Precision content for the <span class="accent-italic text-terracotta">modern</span> small-medium business
+        </h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/75">
+          A consistent, managed content engine that authentically grows trust — so you can
+          focus on running the business. We write it, a human reviews it, and the system posts
+          it automatically.
+        </p>
+        <div class="mt-9 flex flex-wrap gap-4">
+          <Button href={site.booking} external>Start your engine →</Button>
+          <Button href={`mailto:${site.email}`} variant="dark">Talk to the team</Button>
+        </div>
+      </div>
+      <div class="rounded-2xl border border-white/10 bg-navy-900 p-6 shadow-2xl shadow-black/40">
+        <p class="text-xs uppercase tracking-wide text-white/40">Content calendar · this week</p>
+        <div class="mt-4 space-y-2.5">
+          {
+            [
+              { ch: 'LinkedIn', t: 'Why response time beats price', s: 'Approved' },
+              { ch: 'Instagram', t: 'Behind the build — reel', s: 'Approved' },
+              { ch: 'Email', t: 'Monthly insight newsletter', s: 'In review' },
+              { ch: 'Meta Ads', t: 'Spring promo — 3 variants', s: 'Scheduled' },
+            ].map((row) => (
+              <div class="flex items-center justify-between rounded-lg bg-white/5 px-4 py-3">
+                <div>
+                  <p class="text-xs uppercase tracking-wide text-terracotta">{row.ch}</p>
+                  <p class="text-sm text-white/85">{row.t}</p>
+                </div>
+                <span class="rounded-full bg-white/10 px-2.5 py-0.5 text-xs text-white/70">{row.s}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE MANAGED CONTENT ENGINE (4-step) -->
+  <section class="section bg-white">
+    <div class="container-max">
+      <h2 class="mx-auto max-w-2xl text-center text-3xl md:text-4xl">The managed content engine</h2>
+      <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          engine.map((s) => (
+            <div
+              class:list={[
+                'rounded-2xl border p-7',
+                s.hitl ? 'border-terracotta bg-terracotta/10' : 'border-navy/10 bg-warm',
+              ]}
+            >
+              <div class="flex items-center justify-between">
+                <span class:list={['font-serif text-2xl', s.hitl ? 'text-terracotta-600' : 'text-navy/40']}>{s.n}</span>
+                {s.hitl && <span class="rounded-full bg-terracotta px-2.5 py-0.5 text-xs font-semibold text-navy">HITL</span>}
+              </div>
+              <h3 class="mt-4 font-serif text-xl text-navy">{s.title}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-ink-soft">{s.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section class="section bg-warm">
+    <div class="container-max">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-3xl md:text-4xl">A marketing department, without the headcount</h2>
+      </div>
+      <div class="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          capabilities.map((c) => (
+            <div class="card-lift p-7">
+              <h3 class="font-serif text-xl text-navy">{c.h}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-ink-soft">{c.p}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="section bg-white">
+    <div class="container-max">
+      <h2 class="mx-auto max-w-2xl text-center text-3xl md:text-4xl">Traditional agency vs. Mile High AI Labs</h2>
+      <div class="mt-12">
+        <ComparisonTable
+          columns={['Capability', 'Traditional agency', 'Mile High AI Labs']}
+          rows={[
+            { label: 'Publishing cadence', values: ['Campaign-based', 'Always-on, weekly'] },
+            { label: 'Cost structure', values: ['Retainer + per-asset', 'Managed, fraction of cost'] },
+            { label: 'Human review on every piece', values: [false, true] },
+            { label: 'Multi-channel publishing', values: ['Add-on', true] },
+            { label: 'Turnaround on a launch', values: ['Days to weeks', 'Same week'] },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY 30 OUTCOMES -->
+  <section class="bg-navy py-20 text-white lg:py-28">
+    <div class="container-max">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="font-serif text-3xl font-bold md:text-4xl">Day 30 outcomes</h2>
+        <p class="mt-4 text-lg leading-relaxed text-white/70">
+          What real impact looks like after exactly 30 days with Mile High AI Labs Marketing & Growth.
+        </p>
+      </div>
+      <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          metrics.map((m) => (
+            <div class="rounded-2xl bg-navy-700 p-7 text-center">
+              <p class="font-serif text-4xl font-bold text-terracotta">{m.value}</p>
+              <p class="mt-2 text-sm text-white/70">{m.label}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <FAQ items={faqs} />
+
+  <!-- CLOSING TESTIMONIAL + CTA -->
+  <section class="section bg-warm">
+    <div class="container-max max-w-3xl text-center">
+      <p class="accent-italic text-3xl leading-snug text-navy md:text-4xl">
+        “Mile High AI Labs didn't just save us time — they redefined our market presence.
+        Their managed content engine runs like an elite marketing department at a fraction of
+        the traditional cost.”
+      </p>
+      <p class="mt-5 text-sm font-medium text-ink-soft">— Owner, multi-location services brand</p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <Button href={site.booking} external>Book a Free Audit</Button>
+        <Button href={`mailto:${site.email}`} variant="secondary">Contact strategy team</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

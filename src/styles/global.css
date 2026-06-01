@@ -1,0 +1,118 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   Mile High AI Labs — "Deep Authority" design system
+   Tokens from DESIGN.md + brand white paper §08
+   ============================================================ */
+@theme {
+  /* Colors */
+  --color-navy: #1c2b3a; /* Midnight Navy — headlines, dark sections, nav */
+  --color-navy-700: #233747; /* ghost-layer lighter navy for dark cards */
+  --color-navy-900: #14202b; /* ghost-layer darker navy */
+  --color-warm: #f5f2ed; /* Warm White — primary surface */
+  --color-terracotta: #e8a87c; /* Primary CTA + HITL highlight */
+  --color-terracotta-600: #d8915f; /* hover */
+  --color-forest: #1a3028; /* Deep Forest — secondary accent */
+  --color-amber: #c9a84c; /* Amber Gold — sparing highlights */
+  --color-ink: #091f18; /* on-surface text */
+  --color-ink-soft: #44474c; /* on-surface-variant */
+
+  /* Fonts */
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Radii */
+  --radius-btn: 0.5rem; /* 8px buttons */
+  --radius-card: 1rem; /* 16px cards */
+
+  /* Layout */
+  --spacing-gutter: 1.5rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-warm);
+    color: var(--color-navy);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background-color: var(--color-terracotta);
+    color: var(--color-navy);
+  }
+}
+
+@layer components {
+  /* Container */
+  .container-max {
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 1024px) {
+    .container-max {
+      padding-inline: 4rem;
+    }
+  }
+
+  /* Section vertical rhythm — 120px desktop (brand signal, do not compress) */
+  .section {
+    padding-block: 4.5rem;
+  }
+  @media (min-width: 1024px) {
+    .section {
+      padding-block: 7.5rem;
+    }
+  }
+
+  /* Eyebrow label — label-md */
+  .eyebrow {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Card lift on warm white */
+  .card-lift {
+    border: 1px solid rgba(28, 43, 58, 0.08);
+    border-radius: var(--radius-card);
+    background-color: #ffffff;
+    transition:
+      box-shadow 0.25s ease,
+      transform 0.25s ease,
+      border-color 0.25s ease;
+  }
+  .card-lift:hover {
+    box-shadow: 0 4px 20px rgba(28, 43, 58, 0.08);
+    transform: translateY(-2px);
+    border-color: rgba(28, 43, 58, 0.14);
+  }
+
+  /* Emotional italic serif accent */
+  .accent-italic {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+  }
+}

@@ -1,0 +1,231 @@
+---
+import { site } from '../data/site';
+
+// Slides for the hero carousel. Swap the images in /public/images/hero/ to update.
+const slides = [
+  {
+    img: '/images/hero/lead-gen-crm.jpg',
+    eyebrow: 'Lead Gen & CRM',
+    caption: 'Capture, score, and nurture every lead — automatically.',
+    href: '/services/lead-gen-crm',
+  },
+  {
+    img: '/images/hero/ai-workflows.jpg',
+    eyebrow: 'AI Workflows & Automation',
+    caption: 'Operations that respond, follow up, and run themselves.',
+    href: '/services/ai-workflows',
+  },
+  {
+    img: '/images/hero/propspectrum.jpg',
+    eyebrow: 'PropSpectrum · Real Estate',
+    caption: 'Staging, renovation, lead gen, and marketing for realty.',
+    href: site.propspectrum,
+    external: true,
+  },
+  {
+    img: '/images/hero/marketing.jpg',
+    eyebrow: 'Marketing & Social Media',
+    caption: 'A managed content engine that posts in your voice.',
+    href: '/services/marketing-growth',
+  },
+];
+
+const DELAY = 5000;
+---
+
+<div
+  id="hero-carousel"
+  class="group relative overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-black/40"
+  role="region"
+  aria-roledescription="carousel"
+  aria-label="What Mile High AI Labs builds"
+  style={`--hc-delay:${DELAY}ms`}
+>
+  <!-- Auto-advance progress bar -->
+  <div class="absolute inset-x-0 top-0 z-20 h-1 bg-white/10">
+    <span id="hc-progress" class="block h-full w-0 origin-left bg-terracotta"></span>
+  </div>
+
+  <div class="relative aspect-[4/5] sm:aspect-square">
+    {
+      slides.map((s, i) => (
+        <a
+          href={s.href}
+          class:list={[
+            'hc-slide absolute inset-0 transition-opacity duration-1000 ease-out',
+            i === 0 ? 'opacity-100' : 'pointer-events-none opacity-0',
+          ]}
+          data-index={i}
+          aria-hidden={i === 0 ? 'false' : 'true'}
+          tabindex={i === 0 ? 0 : -1}
+          {...(s.external ? { target: '_blank', rel: 'noopener' } : {})}
+        >
+          <img
+            src={s.img}
+            alt={s.eyebrow}
+            width="1100"
+            height="1100"
+            loading={i === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+            class="hc-img h-full w-full object-cover"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent" />
+          <div class="hc-caption absolute inset-x-0 bottom-0 p-6 sm:p-7">
+            <p class="eyebrow text-terracotta">{s.eyebrow}</p>
+            <p class="mt-2 max-w-xs font-serif text-xl leading-snug text-white sm:text-2xl">{s.caption}</p>
+          </div>
+        </a>
+      ))
+    }
+
+    <!-- Arrows (appear on hover) -->
+    <button
+      class="hc-prev absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-navy/50 p-2 text-white opacity-0 backdrop-blur-sm transition-all hover:bg-navy/80 focus-visible:opacity-100 group-hover:opacity-100"
+      aria-label="Previous slide"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+    <button
+      class="hc-next absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-navy/50 p-2 text-white opacity-0 backdrop-blur-sm transition-all hover:bg-navy/80 focus-visible:opacity-100 group-hover:opacity-100"
+      aria-label="Next slide"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+  </div>
+
+  <!-- Dots -->
+  <div class="hc-dots absolute bottom-4 right-5 z-10 flex gap-2">
+    {
+      slides.map((_, i) => (
+        <button
+          class:list={['hc-dot h-2 rounded-full transition-all duration-300', i === 0 ? 'w-7 bg-terracotta' : 'w-2 bg-white/50 hover:bg-white/80']}
+          data-index={i}
+          aria-label={`Go to slide ${i + 1}`}
+        />
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  /* Subtle Ken Burns zoom on the active slide for a premium, alive feel. */
+  .hc-slide .hc-img {
+    transform: scale(1);
+    transition: transform 0s;
+  }
+  .hc-slide.is-active .hc-img {
+    animation: hc-kenburns calc(var(--hc-delay) + 1000ms) ease-out forwards;
+  }
+  .hc-slide.is-active .hc-caption {
+    animation: hc-rise 700ms ease-out both;
+  }
+  @keyframes hc-kenburns {
+    from {
+      transform: scale(1.001);
+    }
+    to {
+      transform: scale(1.09);
+    }
+  }
+  @keyframes hc-rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hc-slide.is-active .hc-img,
+    .hc-slide.is-active .hc-caption {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.getElementById('hero-carousel');
+  if (root) {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('.hc-slide'));
+    const dots = Array.from(root.querySelectorAll<HTMLButtonElement>('.hc-dot'));
+    const progress = root.querySelector<HTMLElement>('#hc-progress');
+    const delay = parseInt(getComputedStyle(root).getPropertyValue('--hc-delay')) || 5000;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let current = 0;
+    let timer: number | undefined;
+
+    const runProgress = () => {
+      if (!progress) return;
+      progress.style.transition = 'none';
+      progress.style.width = '0%';
+      // force reflow so the next transition restarts cleanly
+      void progress.offsetWidth;
+      progress.style.transition = `width ${delay}ms linear`;
+      progress.style.width = '100%';
+    };
+
+    const show = (next: number) => {
+      const n = (next + slides.length) % slides.length;
+      slides.forEach((s, i) => {
+        const active = i === n;
+        s.classList.toggle('opacity-100', active);
+        s.classList.toggle('opacity-0', !active);
+        s.classList.toggle('pointer-events-none', !active);
+        s.classList.toggle('is-active', active);
+        s.setAttribute('aria-hidden', active ? 'false' : 'true');
+        s.tabIndex = active ? 0 : -1;
+      });
+      dots.forEach((d, i) => {
+        const active = i === n;
+        d.classList.toggle('w-7', active);
+        d.classList.toggle('bg-terracotta', active);
+        d.classList.toggle('w-2', !active);
+        d.classList.toggle('bg-white/50', !active);
+      });
+      current = n;
+    };
+
+    const advance = () => show(current + 1);
+
+    const start = () => {
+      stop();
+      if (reduce) return;
+      runProgress();
+      timer = window.setInterval(() => {
+        advance();
+        runProgress();
+      }, delay);
+    };
+    const stop = () => {
+      if (timer) window.clearInterval(timer);
+      timer = undefined;
+    };
+
+    root.querySelector('.hc-next')?.addEventListener('click', () => {
+      show(current + 1);
+      start();
+    });
+    root.querySelector('.hc-prev')?.addEventListener('click', () => {
+      show(current - 1);
+      start();
+    });
+    dots.forEach((d) =>
+      d.addEventListener('click', () => {
+        show(Number(d.dataset.index));
+        start();
+      })
+    );
+
+    // Pause on hover/focus; resume on leave.
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', start);
+
+    // Initialise the first slide's animation and kick off autoplay.
+    slides[0]?.classList.add('is-active');
+    start();
+  }
+</script>
