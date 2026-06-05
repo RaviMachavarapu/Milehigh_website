@@ -10,16 +10,10 @@ export default defineConfig({
   trailingSlash: 'never',
   integrations: [
     sitemap({
-      // PropSpectrum pages are static files in public/, so they aren't auto-discovered.
-      customPages: [
-        'https://www.milehighlabs.ai/propspectrum',
-        'https://www.milehighlabs.ai/propspectrum/propai',
-        'https://www.milehighlabs.ai/propspectrum/propleads',
-        'https://www.milehighlabs.ai/propspectrum/propoptics',
-        'https://www.milehighlabs.ai/propspectrum/propoptics/portfolio',
-        'https://www.milehighlabs.ai/propspectrum/propoptics/design-studio',
-        'https://www.milehighlabs.ai/propspectrum/propreach',
-      ],
+      // PropSpectrum is currently a placeholder ("Coming Soon") — only the single
+      // /propspectrum page is live. The sub-pages are preserved in
+      // propspectrum-prebuilt/ and re-added here when re-enabled (see CLAUDE.md).
+      customPages: ['https://www.milehighlabs.ai/propspectrum'],
     }),
   ],
   vite: {

@@ -1,87 +1,174 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
-import HITLBadge from '../components/HITLBadge.astro';
 import TestimonialCard from '../components/TestimonialCard.astro';
-import HeroCarousel from '../components/HeroCarousel.astro';
+import HeroMedia from '../components/HeroMedia.astro';
 import { site, services, propProducts, lifecycle } from '../data/site';
 import { organization, breadcrumb } from '../lib/jsonld';
 
+// NOTE: placeholder startup figures; confirm/replace with real numbers before launch.
 const stats = [
-  { value: '42k', label: 'Automation workflows deployed' },
-  { value: '1.2M+', label: 'Leads processed' },
-  { value: '24/7', label: 'Operations running' },
+  { value: '500+', label: 'Everyday tasks handled for clients' },
+  { value: '15+', label: 'Small businesses helped' },
+  { value: '24/7', label: 'Always working for you' },
 ];
+
+// Split a stat into a count-up-animatable number plus prefix/suffix.
+// Values whose suffix still contains a digit (e.g. "24/7") are left static.
+const parseStat = (value: string) => {
+  const m = value.match(/^(\D*)(\d+)(.*)$/);
+  if (!m || /\d/.test(m[3])) return null;
+  return { prefix: m[1], target: Number(m[2]), suffix: m[3] };
+};
 
 const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
 ---
 
 <BaseLayout
-  title="High-Authority AI for High-Performance Operations"
-  description="Mile High AI Labs builds, runs, and manages AI systems for small and medium businesses — lead generation, marketing, and automation, with a human reviewing every output before it goes live."
+  title="Helpful AI for Small Businesses, Looked After by Real People"
+  description="Mile High AI Labs builds, runs, and looks after helpful AI for small and medium businesses, from catching new customers to marketing and everyday tasks, with a real person checking the work before it reaches you."
   path="/"
   keywords="AI for small business, managed AI services, business automation, lead generation AI, human-in-the-loop AI, Denver AI company"
   jsonLd={jsonLd}
 >
   <!-- ============ HERO ============ -->
-  <section class="relative overflow-hidden bg-navy text-white">
-    <div class="container-max grid items-center gap-14 pb-20 pt-32 md:pt-40 lg:grid-cols-2 lg:pb-28">
-      <div>
-        <p class="eyebrow text-terracotta">Tailored intelligence for ambitious SMBs</p>
-        <h1 class="mt-5 font-serif text-5xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">
-          High-Authority AI for<br />
-          <span class="accent-italic text-terracotta">High-Performance</span> Operations
-        </h1>
-        <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/75">
-          We deploy high-stakes automation for small and medium businesses — with human
-          oversight built into the core architecture. You don't build it, configure it, or
-          babysit it. You get the result.
-        </p>
-        <div class="mt-9 flex flex-wrap gap-4">
-          <Button href={site.booking} external>Book a Free Audit →</Button>
-          <Button href="#lifecycle" variant="dark">See how it works</Button>
-        </div>
+  <HeroMedia>
+    <div class="mx-auto max-w-3xl text-center">
+      <p class="eyebrow text-lg text-amber md:text-xl">Made for growing small and medium businesses</p>
+      <h1 class="mt-5 font-serif text-5xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">
+        We build <span class="accent-em text-terracotta">custom AI solutions</span> designed
+        specifically for growing businesses.
+      </h1>
+      <p class="mt-6 mx-auto max-w-2xl text-lg leading-relaxed text-white">
+        We set up helpful AI for small and medium businesses, and a real person keeps an eye
+        on it the whole way through. You don't build it, set it up, or watch over it. You
+        just get the result.
+      </p>
+      <div class="mt-9 flex flex-wrap justify-center gap-4">
+        <Button href={site.booking} external>Book a Free Call →</Button>
+        <Button href="#lifecycle" variant="dark">See how it works</Button>
       </div>
-
-      <!-- Carousel of what we build -->
-      <HeroCarousel />
     </div>
-  </section>
+  </HeroMedia>
 
   <!-- ============ STAT BAR ============ -->
   <section class="border-b border-navy/10 bg-warm" aria-label="Key results">
-    <div class="container-max grid grid-cols-1 gap-8 py-12 text-center sm:grid-cols-3">
+    <div class="container-max grid grid-cols-1 gap-8 py-12 text-center sm:grid-cols-3" data-stats>
       {
-        stats.map((s) => (
-          <div>
-            <p class="font-serif text-4xl font-bold text-navy md:text-5xl">{s.value}</p>
-            <p class="mt-1 text-sm text-ink-soft">{s.label}</p>
-          </div>
-        ))
+        stats.map((s) => {
+          const p = parseStat(s.value);
+          return (
+            <div>
+              <p class="font-serif text-4xl font-bold text-navy md:text-5xl tabular-nums">
+                {p ? (
+                  <span class="stat-count" data-target={p.target} data-prefix={p.prefix} data-suffix={p.suffix}>
+                    {p.prefix}0{p.suffix}
+                  </span>
+                ) : (
+                  s.value
+                )}
+              </p>
+              <p class="mt-1 text-sm text-ink-soft">{s.label}</p>
+            </div>
+          );
+        })
       }
     </div>
   </section>
+
+  <script>
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const root = document.querySelector('[data-stats]');
+    const counters = Array.from(document.querySelectorAll<HTMLElement>('.stat-count'));
+
+    const render = (el: HTMLElement, n: number) => {
+      el.textContent = `${el.dataset.prefix ?? ''}${n}${el.dataset.suffix ?? ''}`;
+    };
+
+    const run = (el: HTMLElement) => {
+      const target = Number(el.dataset.target ?? '0');
+      if (reduce) {
+        render(el, target);
+        return;
+      }
+      const duration = 1600;
+      const start = performance.now();
+      const tick = (now: number) => {
+        const t = Math.min((now - start) / duration, 1);
+        // easeOutExpo for a smooth, decelerating count
+        const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+        render(el, Math.round(target * eased));
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+
+    if (root && counters.length) {
+      const io = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              counters.forEach(run);
+              obs.disconnect();
+            }
+          });
+        },
+        { threshold: 0.4 },
+      );
+      io.observe(root);
+    }
+  </script>
 
   <!-- ============ MANAGED EXCELLENCE ============ -->
   <section class="section bg-warm">
     <div class="container-max">
       <div class="mx-auto max-w-2xl text-center">
-        <h2 class="text-3xl md:text-4xl">Our managed excellence</h2>
+        <h2 class="text-3xl md:text-4xl">What we do for you</h2>
         <p class="mt-4 text-lg leading-relaxed text-ink-soft">
-          We don't just sell tools. We implement them, run them, and manage them — so
-          complexity leaves your operation and results stay.
+          We don't just hand you software and wish you luck. We set it up, run it, and look
+          after it, so the hard parts leave your plate and the results stay.
         </p>
       </div>
       <div class="mt-14 grid gap-6 md:grid-cols-3">
         {
           services.map((s) => (
-            <a href={s.href} class="card-lift group flex flex-col p-8">
-              <HITLBadge class="self-start" />
-              <h3 class="mt-5 font-serif text-2xl text-navy">{s.label}</h3>
-              <p class="mt-3 flex-1 text-base leading-relaxed text-ink-soft">{s.blurb}</p>
-              <span class="mt-6 text-sm font-semibold text-navy transition-colors group-hover:text-terracotta-600">
-                Learn more →
-              </span>
+            <a href={s.href} class="card-lift group flex flex-col overflow-hidden">
+              <div class="overflow-hidden">
+                <img
+                  src={s.image}
+                  alt={`${s.label} — Mile High AI Labs`}
+                  width="800"
+                  height="420"
+                  loading="lazy"
+                  decoding="async"
+                  class="h-44 w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                />
+              </div>
+              <div class="flex flex-1 flex-col p-8">
+                <h3 class="text-2xl text-navy">{s.label}</h3>
+                <ul class="mt-6 flex-1 space-y-3.5">
+                  {s.features.map((f) => (
+                    <li class="flex items-start gap-3 text-base text-navy/85">
+                      <svg
+                        class="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-600"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0L3.3 9.7a1 1 0 0 1 1.4-1.4l3.8 3.79 6.8-6.8a1 1 0 0 1 1.4 0Z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <span class="mt-7 text-sm font-semibold text-navy transition-colors group-hover:text-terracotta-600">
+                  Learn more →
+                </span>
+              </div>
             </a>
           ))
         }
@@ -93,17 +180,17 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
   <section class="section bg-warm pt-0">
     <div class="container-max">
       <div class="mx-auto max-w-2xl text-center">
-        <p class="eyebrow text-terracotta">For real estate</p>
+        <p class="eyebrow text-amber">For real estate</p>
         <h2 class="mt-3 text-3xl md:text-4xl">The PropSpectrum Suite</h2>
         <p class="mt-4 text-lg leading-relaxed text-ink-soft">
-          Our real estate wing — the same delivery method and human review, packaged for
-          agents and teams.
+          Our real estate side. The same hands-on, looked-after help, built for agents and
+          teams.
         </p>
       </div>
       <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {
           propProducts.map((p) => (
-            <a href={p.href} class="card-lift group flex flex-col p-7">
+            <div class="flex flex-col rounded-2xl border border-navy/10 bg-white p-7">
               <span
                 class:list={[
                   'inline-block h-1.5 w-10 rounded-full',
@@ -112,50 +199,55 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
                   p.color === 'terracotta' && 'bg-terracotta',
                 ]}
               />
-              <h3 class="mt-5 font-serif text-xl text-navy">{p.name}</h3>
+              <h3 class="mt-5 text-xl text-navy">{p.name}</h3>
               <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">{p.oneLine}</p>
-              <span class="mt-5 text-xs font-semibold uppercase tracking-wide text-navy/50 group-hover:text-terracotta-600">
-                Explore {p.name} →
+              <span class="mt-5 inline-flex w-fit items-center rounded-full bg-warm px-3 py-1 text-xs font-semibold uppercase tracking-wide text-navy/50">
+                Coming soon
               </span>
-            </a>
+            </div>
           ))
         }
       </div>
       <div class="mt-12 text-center">
-        <Button href="/propspectrum" variant="secondary">Explore the PropSpectrum suite →</Button>
+        <Button href="/propspectrum" variant="secondary">Learn more about PropSpectrum →</Button>
       </div>
     </div>
   </section>
 
   <!-- ============ ABOUT (folded into home) ============ -->
   <section id="about" class="section bg-white">
-    <div class="container-max grid items-center gap-14 lg:grid-cols-2">
-      <div>
-        <p class="eyebrow text-terracotta">Who we are</p>
-        <h2 class="mt-3 text-3xl md:text-4xl">A studio for AI — not a tool you rent</h2>
-        <p class="mt-5 text-lg leading-relaxed text-ink-soft">
-          Mile High AI Labs is a Denver team with genuine technical expertise that builds,
-          runs, and manages AI systems for small and medium businesses. We're not a SaaS
-          product you sign up for and figure out alone, and we're not a one-and-done
-          consulting deck.
-        </p>
-        <p class="mt-4 text-lg leading-relaxed text-ink-soft">
-          Think of a recording studio. You don't care which microphones or software it uses —
-          you care that every time, a professional result comes out. Our delivery process is
-          the studio. Our human review is the engineer who checks the mix before it leaves the
-          building. No two clients get the same stack; every client gets the same quality.
-        </p>
+    <div class="container-max">
+      <div class="grid items-stretch gap-14 lg:grid-cols-2">
+        <div class="flex flex-col justify-center">
+          <p class="eyebrow text-amber">Who are we</p>
+          <h2 class="mt-3 text-3xl md:text-4xl">A team behind your AI, not a tool you rent</h2>
+          <p class="mt-5 text-lg leading-relaxed text-ink-soft">
+            Mile High AI Labs is a Denver team that builds, runs, and looks after AI for small
+            and medium businesses. You're not signing up for software to figure out alone, or a
+            one-time consulting deck. We set it up, keep it running, and a real person makes sure
+            the results stay good.
+          </p>
+        </div>
+        <img
+          src="/images/content/team.jpg"
+          alt="The Mile High AI Labs team collaborating on a project"
+          width="800"
+          height="600"
+          loading="lazy"
+          decoding="async"
+          class="h-full max-h-[420px] w-full rounded-2xl border border-navy/10 object-cover shadow-lg shadow-navy/5"
+        />
       </div>
-      <div class="grid gap-4 sm:grid-cols-2">
+      <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {
           [
-            { h: 'Expert', p: 'Genuine AI engineering — not prompt-and-pray.' },
-            { h: 'Canonical', p: 'A repeatable six-step process behind every build.' },
-            { h: 'Accountable', p: 'A human signs off before anything reaches your customers.' },
-            { h: 'Denver-built', p: 'Grounded in a real place and a real business community.' },
+            { h: 'Expert', p: 'Real know-how, not guesswork.' },
+            { h: 'Consistent', p: 'The same proven six-step process behind every project.' },
+            { h: 'Accountable', p: 'A real person signs off before anything reaches your customers.' },
+            { h: 'Denver-built', p: 'Rooted in a real place and a real business community.' },
           ].map((item) => (
-            <div class="card-lift p-6">
-              <h3 class="font-serif text-xl text-navy">{item.h}</h3>
+            <div class="card-lift h-full border-[#e7e0d2] bg-[#f5f2ed] p-6">
+              <h3 class="text-xl text-navy">{item.h}</h3>
               <p class="mt-2 text-sm leading-relaxed text-ink-soft">{item.p}</p>
             </div>
           ))
@@ -166,27 +258,26 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
 
   <!-- ============ HITL ANCHOR (navy) ============ -->
   <section class="bg-navy py-20 text-white lg:py-28">
-    <div class="container-max grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+    <div class="container-max grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:items-start">
       <div>
         <h2 class="font-serif text-4xl font-bold leading-tight md:text-5xl">
-          AI isn't the final word.<br /><span class="accent-italic text-terracotta">You are.</span>
+          AI isn't the final word.<br /><span class="accent-em text-terracotta">You are.</span>
         </h2>
         <p class="mt-6 max-w-lg text-lg leading-relaxed text-white/75">
-          Every AI tool on the market runs on autopilot. It drafts an email and sends it. It
-          builds an automation and deploys it. No one checks it — until it fails in front of
-          your customer. We put a person between the AI and the output, every single time.
-          That's not a feature. It's the entire point.
+          Most AI tools run on their own, and nobody checks the work until it goes wrong in
+          front of your customer. We put a real person between the AI and your customer, every
+          time. That's the whole point.
         </p>
       </div>
       <div class="grid gap-5 sm:grid-cols-2">
         <TestimonialCard
-          variant="dark"
+          variant="light"
           quote="We'd been burned by an automation that emailed the wrong quote to a client. What sold me was that a person signs off before anything goes out. Six months in, that's still true."
           name="Dana Whitfield"
           role="Owner, HVAC & plumbing company"
         />
         <TestimonialCard
-          variant="dark"
+          variant="light"
           quote="I don't want to learn another dashboard. They set it up, they watch it, and they call me if something looks off. That's the whole reason it stuck for us."
           name="Marcus Reyes"
           role="Managing partner, regional law firm"
@@ -199,10 +290,10 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
   <section id="lifecycle" class="section bg-warm">
     <div class="container-max">
       <div class="mx-auto max-w-2xl text-center">
-        <h2 class="text-3xl md:text-4xl">Our Deployment Lifecycle</h2>
+        <h2 class="text-3xl md:text-4xl">How we work with you</h2>
         <p class="mt-4 text-lg leading-relaxed text-ink-soft">
-          A systematic six-step process for intelligent, managed automation — the same one
-          behind every engagement.
+          The same simple six-step process we follow for every client, from the first hello to
+          looking after things long term.
         </p>
       </div>
       <ol class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -223,10 +314,10 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
                 >
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <h3 class="font-serif text-xl text-navy">{s.step}</h3>
+                <h3 class="text-xl text-navy">{s.step}</h3>
                 {s.hitl && (
                   <span class="ml-auto rounded-full bg-terracotta px-2.5 py-0.5 text-xs font-semibold text-navy">
-                    HITL
+                    Human check
                   </span>
                 )}
               </div>
@@ -242,15 +333,17 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
   <section class="section bg-white">
     <div class="container-max">
       <div class="mx-auto max-w-2xl text-center">
-        <h2 class="text-3xl md:text-4xl">Voice of the partners</h2>
+        <h2 class="text-3xl text-amber md:text-4xl">Voice of the partners</h2>
       </div>
       <div class="mx-auto mt-12 grid max-w-4xl gap-6 md:grid-cols-2">
         <TestimonialCard
-          quote="Our front desk used to lose an hour a day chasing confirmations. That's gone — and we didn't have to rip out a single tool the staff actually likes using."
+          class="border-[#e7e0d2] bg-[#f5f2ed] hover:shadow-[0_4px_20px_rgba(28,43,58,0.10)]"
+          quote="Our front desk used to lose an hour a day chasing confirmations. That's gone now, and we didn't have to rip out a single tool the staff actually likes using."
           name="Priya Nair"
           role="Operations lead, dental group · Denver, CO"
         />
         <TestimonialCard
+          class="border-[#e7e0d2] bg-[#f5f2ed] hover:shadow-[0_4px_20px_rgba(28,43,58,0.10)]"
           quote="What I appreciate is the honesty. They told me one of my ideas wasn't worth automating yet. You don't hear that from agencies trying to bill you for everything."
           name="Tom Caldwell"
           role="Founder, B2B logistics startup"
@@ -261,33 +354,31 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
 
   <!-- ============ APPS CONSULTANTS ============ -->
   <section class="bg-forest py-16 text-white">
-    <div class="container-max flex flex-col items-center gap-10 md:flex-row md:items-center md:justify-between">
-      <div class="flex flex-col items-center gap-7 sm:flex-row sm:items-center md:flex-1">
-        <a
-          href="https://appsconsultants.com"
-          target="_blank"
-          rel="noopener"
-          class="shrink-0 rounded-xl bg-white p-5 shadow-lg shadow-black/20 transition-transform hover:-translate-y-0.5"
-          aria-label="Apps Consultants"
-        >
-          <img
-            src="/images/logo-apps-consultants.png"
-            alt="Apps Consultants"
-            width="318"
-            height="159"
-            class="h-16 w-auto"
-          />
-        </a>
-        <div class="max-w-xl text-center sm:text-left">
-          <p class="eyebrow text-amber">Strategic partner · Apps Consultants</p>
-          <p class="mt-3 text-lg leading-relaxed text-white/85">
-            For enterprise-scale needs, we refer to our sister company Apps Consultants —
-            trusted by Fortune 1000 companies since 2005. Between us, the ecosystem covers
-            everything from a five-person shop to a Fortune 1000 rollout.
-          </p>
-        </div>
+    <div class="container-max flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:gap-10 md:text-left">
+      <a
+        href="https://appsconsultants.com"
+        target="_blank"
+        rel="noopener"
+        class="shrink-0 transition-transform hover:-translate-y-0.5"
+        aria-label="Apps Consultants"
+      >
+        <img
+          src="/images/logo-apps-consultants.png"
+          alt="Apps Consultants"
+          width="318"
+          height="159"
+          class="h-16 w-auto rounded-xl"
+        />
+      </a>
+      <div class="md:flex-1">
+        <p class="eyebrow text-amber">Strategic partner · Apps Consultants</p>
+        <p class="mt-3 text-lg leading-relaxed text-white/85">
+          Got something bigger? We hand you to our sister company, Apps Consultants, trusted
+          by Fortune 1000 companies since 2005. Together we can help anyone, from a
+          five-person shop to a Fortune 1000 company.
+        </p>
       </div>
-      <Button href="https://appsconsultants.com" external variant="dark">Meet Apps Consultants</Button>
+      <Button href="https://appsconsultants.com" external variant="dark" class="shrink-0">Connect with Apps Consultants →</Button>
     </div>
   </section>
 
@@ -295,16 +386,16 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
   <section class="section bg-warm">
     <div class="container-max">
       <div class="rounded-3xl bg-navy px-8 py-16 text-center text-white md:px-16 md:py-20">
-        <h2 class="accent-italic mx-auto max-w-2xl text-4xl text-white md:text-5xl">
-          Ready to scale your intelligence?
+        <h2 class="accent-em mx-auto max-w-2xl text-4xl text-white md:text-5xl">
+          Ready to take the busywork off your plate?
         </h2>
         <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-white/75">
-          Join the business owners who traded operational chaos for intelligent, managed
-          automation — with a human watching the output.
+          Join the business owners who swapped daily chaos for calm, with helpful AI doing the
+          work and a real person keeping watch.
         </p>
         <div class="mt-9 flex flex-wrap justify-center gap-4">
-          <Button href={site.booking} external>Book a Free Audit</Button>
-          <Button href={`mailto:${site.email}`} variant="dark">Contact strategy team</Button>
+          <Button href={site.booking} external>Book a Free Call</Button>
+          <Button href={`mailto:${site.email}`} variant="dark">Talk to our team</Button>
         </div>
       </div>
     </div>

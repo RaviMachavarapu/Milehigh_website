@@ -1,0 +1,375 @@
+---
+// Newsletter subscription popup.
+// Shows 30s after load, once per session (sessionStorage); suppressed forever
+// once subscribed (localStorage). Submission backend is not wired yet; on submit
+// the form validates the email and shows a friendly success state (no network call).
+// Wire it later by POSTing to a real endpoint inside the form's submit handler.
+const interests = [
+  { value: 'lead-gen-crm', label: 'Lead Gen & CRM', desc: 'Catch and follow up with every enquiry, automatically.' },
+  { value: 'marketing-growth', label: 'Marketing & Growth', desc: 'Content written, reviewed, and published across your channels.' },
+  { value: 'ai-workflows', label: 'AI Solutions & Workflows', desc: 'Always-on automation with a human reviewing every output.' },
+  { value: 'propspectrum', label: 'PropSpectrum', desc: 'The AI back-office for real estate agents and teams.' },
+];
+---
+
+<div id="nl-overlay" class="nl-overlay" aria-hidden="true">
+  <div
+    class="nl-card"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="nl-title"
+    aria-describedby="nl-sub"
+  >
+    <button id="nl-close" type="button" class="nl-close" aria-label="Close newsletter signup">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+
+    <!-- FORM STATE -->
+    <div id="nl-form-state">
+      <h2 id="nl-title" class="nl-title">Stay Ahead with AI Insights</h2>
+      <p id="nl-sub" class="nl-subtitle">
+        Get exclusive tips, industry insights, and special offers delivered to your inbox.
+      </p>
+
+      <form id="nl-form" novalidate>
+        <p class="nl-section-label">Choose your interests:</p>
+        <div class="nl-interests">
+          {
+            interests.map((i) => (
+              <label class="nl-interest">
+                <input type="checkbox" name="interests" value={i.value} class="nl-check" />
+                <span class="nl-interest-text">
+                  <span class="nl-interest-title">{i.label}</span>
+                  <span class="nl-interest-desc">{i.desc}</span>
+                </span>
+              </label>
+            ))
+          }
+        </div>
+
+        <label for="nl-email" class="nl-section-label nl-email-label">Email Address <span class="nl-req">*</span></label>
+        <input
+          id="nl-email"
+          name="email"
+          type="email"
+          inputmode="email"
+          autocomplete="email"
+          placeholder="your@email.com"
+          class="nl-input"
+          required
+        />
+        <p id="nl-error" class="nl-error" role="alert" hidden>Please enter a valid email address.</p>
+
+        <button type="submit" class="nl-submit">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2" />
+            <path d="M3 7l9 6 9-6" />
+          </svg>
+          Subscribe Now
+        </button>
+
+        <p class="nl-fineprint">
+          We respect your privacy. Unsubscribe anytime. We'll only send 1–2 emails per month.
+        </p>
+      </form>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div id="nl-success-state" hidden>
+      <div class="nl-success-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 6L9 17l-5-5" />
+        </svg>
+      </div>
+      <h2 class="nl-title">You're on the list!</h2>
+      <p class="nl-subtitle">
+        Thanks for subscribing. Keep an eye on your inbox for practical AI insights from Mile High AI Labs.
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .nl-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    background: rgba(28, 43, 58, 0.55);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .nl-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nl-card {
+    position: relative;
+    width: 100%;
+    max-width: 30rem;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #ffffff;
+    border: 1px solid rgba(28, 43, 58, 0.08);
+    border-radius: var(--radius-card);
+    box-shadow: 0 24px 60px rgba(28, 43, 58, 0.22);
+    padding: 2.25rem 2rem 1.75rem;
+    transform: translateY(8px) scale(0.98);
+    transition: transform 0.3s ease;
+  }
+  .nl-overlay.is-open .nl-card {
+    transform: translateY(0) scale(1);
+  }
+
+  .nl-close {
+    position: absolute;
+    top: 0.85rem;
+    right: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    color: var(--color-ink-soft);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .nl-close:hover {
+    background: rgba(28, 43, 58, 0.06);
+    color: var(--color-navy);
+  }
+
+  .nl-title {
+    font-family: var(--font-serif);
+    color: var(--color-navy);
+    font-weight: 700;
+    font-size: 1.9rem;
+    line-height: 1.15;
+    text-align: center;
+    margin: 0 0 0.5rem;
+  }
+  .nl-subtitle {
+    color: var(--color-ink-soft);
+    text-align: center;
+    font-size: 0.975rem;
+    line-height: 1.5;
+    margin: 0 auto 1.5rem;
+    max-width: 26rem;
+  }
+
+  .nl-section-label {
+    font-weight: 700;
+    color: var(--color-navy);
+    font-size: 0.95rem;
+    margin: 0 0 0.6rem;
+  }
+
+  .nl-interests {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-height: 15rem;
+    overflow-y: auto;
+    padding-right: 0.35rem;
+    margin-bottom: 1.25rem;
+  }
+  /* Scrollbar styled to match the reference */
+  .nl-interests::-webkit-scrollbar { width: 6px; }
+  .nl-interests::-webkit-scrollbar-thumb { background: rgba(28, 43, 58, 0.25); border-radius: 9999px; }
+
+  .nl-interest {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    border: 1px solid rgba(28, 43, 58, 0.12);
+    border-radius: 0.75rem;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .nl-interest:hover {
+    border-color: rgba(232, 168, 124, 0.7);
+    background: rgba(232, 168, 124, 0.05);
+  }
+  .nl-check {
+    appearance: none;
+    -webkit-appearance: none;
+    flex-shrink: 0;
+    width: 1.3rem;
+    height: 1.3rem;
+    margin-top: 0.1rem;
+    border: 1.5px solid rgba(28, 43, 58, 0.35);
+    border-radius: 0.4rem;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .nl-check:checked {
+    background: var(--color-terracotta);
+    border-color: var(--color-terracotta);
+  }
+  .nl-check:checked::after {
+    content: '';
+    position: absolute;
+    left: 0.42rem;
+    top: 0.18rem;
+    width: 0.32rem;
+    height: 0.62rem;
+    border: solid var(--color-navy);
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg);
+  }
+  .nl-check:focus-visible {
+    outline: 2px solid var(--color-terracotta);
+    outline-offset: 2px;
+  }
+  .nl-interest-text { display: flex; flex-direction: column; gap: 0.1rem; }
+  .nl-interest-title { font-weight: 700; color: var(--color-navy); font-size: 0.95rem; }
+  .nl-interest-desc { color: var(--color-ink-soft); font-size: 0.825rem; line-height: 1.35; }
+
+  .nl-email-label { margin-top: 0.25rem; }
+  .nl-req { color: var(--color-terracotta-600); }
+  .nl-input {
+    width: 100%;
+    border: 1px solid rgba(28, 43, 58, 0.2);
+    border-radius: var(--radius-btn);
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    color: var(--color-navy);
+    background: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .nl-input::placeholder { color: rgba(28, 43, 58, 0.4); }
+  .nl-input:focus {
+    outline: none;
+    border-color: var(--color-terracotta);
+    box-shadow: 0 0 0 3px rgba(232, 168, 124, 0.25);
+  }
+  .nl-input.is-invalid { border-color: #c0392b; }
+  .nl-error { color: #c0392b; font-size: 0.825rem; margin: 0.4rem 0 0; }
+
+  .nl-submit {
+    margin-top: 1.1rem;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    background: var(--color-terracotta);
+    color: var(--color-navy);
+    font-weight: 700;
+    font-size: 1.02rem;
+    padding: 0.9rem 1rem;
+    border: none;
+    border-radius: var(--radius-btn);
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .nl-submit:hover { background: var(--color-terracotta-600); }
+
+  .nl-fineprint {
+    color: var(--color-ink-soft);
+    font-size: 0.78rem;
+    text-align: center;
+    margin: 1rem 0 0;
+  }
+
+  #nl-success-state { text-align: center; padding: 1rem 0 0.5rem; }
+  .nl-success-icon {
+    width: 3.25rem;
+    height: 3.25rem;
+    margin: 0.5rem auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: rgba(232, 168, 124, 0.18);
+    color: var(--color-terracotta-600);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nl-overlay, .nl-card { transition: none; }
+    .nl-overlay.is-open .nl-card { transform: none; }
+  }
+</style>
+
+<script>
+  const SEEN_KEY = 'mhal_nl_seen_session';
+  const SUB_KEY = 'mhal_nl_subscribed';
+  const DELAY_MS = 30000;
+
+  const overlay = document.getElementById('nl-overlay');
+  if (overlay) {
+    const card = overlay.querySelector('.nl-card');
+    const closeBtn = document.getElementById('nl-close');
+    const form = document.getElementById('nl-form') as HTMLFormElement | null;
+    const email = document.getElementById('nl-email') as HTMLInputElement | null;
+    const errorEl = document.getElementById('nl-error');
+    const formState = document.getElementById('nl-form-state');
+    const successState = document.getElementById('nl-success-state');
+    let lastFocus: HTMLElement | null = null;
+
+    const open = () => {
+      lastFocus = document.activeElement as HTMLElement;
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      (closeBtn as HTMLElement | null)?.focus();
+    };
+
+    const close = () => {
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      try { sessionStorage.setItem(SEEN_KEY, '1'); } catch {}
+      lastFocus?.focus();
+    };
+
+    closeBtn?.addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('is-open')) close();
+    });
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const value = (email?.value || '').trim();
+      const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+      if (!valid) {
+        email?.classList.add('is-invalid');
+        errorEl?.removeAttribute('hidden');
+        email?.focus();
+        return;
+      }
+      // NOTE: no backend yet; when ready, POST { email, interests } to your endpoint here.
+      try { localStorage.setItem(SUB_KEY, '1'); } catch {}
+      if (formState) formState.hidden = true;
+      if (successState) successState.hidden = false;
+      setTimeout(close, 3500);
+    });
+
+    email?.addEventListener('input', () => {
+      email.classList.remove('is-invalid');
+      errorEl?.setAttribute('hidden', '');
+    });
+
+    // Trigger: 30s after load, once per session, never if already subscribed.
+    let alreadySubscribed = false;
+    let seenThisSession = false;
+    try { alreadySubscribed = localStorage.getItem(SUB_KEY) === '1'; } catch {}
+    try { seenThisSession = sessionStorage.getItem(SEEN_KEY) === '1'; } catch {}
+    if (!alreadySubscribed && !seenThisSession) {
+      setTimeout(open, DELAY_MS);
+    }
+  }
+</script>

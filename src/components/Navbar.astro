@@ -10,14 +10,11 @@ const { solid = false } = Astro.props;
 
 <header
   id="site-nav"
-  data-solid={solid ? 'true' : 'false'}
-  class:list={[
-    'fixed inset-x-0 top-0 z-50 transition-colors duration-300',
-    solid ? 'bg-navy/95 backdrop-blur-md shadow-sm' : 'bg-transparent',
-  ]}
+  data-solid="true"
+  class="sticky inset-x-0 top-0 z-50 bg-navy shadow-sm"
 >
   <nav class="container-max flex h-16 items-center justify-between gap-4 md:h-20" aria-label="Primary">
-    <a href="/" class="flex items-center" aria-label="Mile High AI Labs — home">
+    <a href="/" class="flex items-center" aria-label="Mile High AI Labs, home">
       <img
         src="/images/logo-mhal.png"
         alt="Mile High AI Labs"
@@ -33,7 +30,7 @@ const { solid = false } = Astro.props;
         navLinks.map((link) => (
           <a
             href={link.href}
-            class="text-sm font-medium text-white/80 transition-colors hover:text-white"
+            class="text-sm font-medium text-white transition-colors hover:text-amber"
             {...(link.external ? { target: '_blank', rel: 'noopener' } : {})}
           >
             {link.label}
@@ -50,9 +47,9 @@ const { solid = false } = Astro.props;
         href={site.booking}
         target="_blank"
         rel="noopener"
-        class="rounded-lg bg-terracotta px-4 py-2 text-sm font-semibold text-navy transition-colors hover:bg-terracotta-600"
+        class="rounded-lg bg-terracotta px-4 py-2 text-sm font-medium text-navy transition-colors hover:bg-terracotta-600"
       >
-        Book a Free Audit
+        Book a Free Call
       </a>
     </div>
 
@@ -79,7 +76,7 @@ const { solid = false } = Astro.props;
         navLinks.map((link) => (
           <a
             href={link.href}
-            class="rounded-md px-2 py-2.5 text-base font-medium text-white/85 hover:bg-white/5"
+            class="rounded-md px-2 py-2.5 text-base font-medium text-white hover:bg-white/5"
             {...(link.external ? { target: '_blank', rel: 'noopener' } : {})}
           >
             {link.label}
@@ -96,9 +93,9 @@ const { solid = false } = Astro.props;
         href={site.booking}
         target="_blank"
         rel="noopener"
-        class="mt-2 rounded-lg bg-terracotta px-4 py-2.5 text-center text-base font-semibold text-navy"
+        class="mt-2 rounded-lg bg-terracotta px-4 py-2.5 text-center text-base font-medium text-navy"
       >
-        Book a Free Audit
+        Book a Free Call
       </a>
     </div>
   </div>

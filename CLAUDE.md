@@ -69,9 +69,22 @@ HITL homepage anchor headline: *"AI isn't the final word. You are."*
 | Amber Gold | `#C9A84C` | Sparing highlights / trust markers |
 | Pure White | `#FFFFFF` | Cards on warm white |
 
-- **Type:** Instrument Serif (headings; **italic** for emotional lines) + Inter (body).
-  display-lg 64/42px, headline-lg 40px, headline-md 32px, body-lg 18px, body-md 16px,
-  label-md 14px (+0.05em).
+- **Type (no italics anywhere):**
+  - **H1/H2** — Plus Jakarta Sans, ExtraBold (800). Token `--font-display`; also used for big
+    display numbers (stat values). Set on `h1,h2` in `global.css` base layer.
+  - **H3/H4** — Inter, Semi-Bold (600). Token `--font-sans`; set on `h3,h4` base layer. Do
+    NOT add `font-serif`/`font-display` to an h3/h4 (it would override to the display font).
+  - **Body** — Inter, Regular (400).
+  - **Buttons / nav / overlays** — Inter, Medium (500); all-caps labels (`.eyebrow`) add
+    +0.05em tracking.
+  - `--font-serif` is a **legacy alias mapped to the display font** (Plus Jakarta Sans) so
+    older `font-serif` utility usages still render as display — it is NOT a serif and NOT
+    italic. The emphasis highlight class is `.accent-em` (display ExtraBold, formerly the
+    italic `.accent-italic`).
+  - Fonts load from Google Fonts in `BaseHead.astro`: `Plus+Jakarta+Sans:wght@700;800` +
+    `Inter:wght@400;500;600`.
+  - Scale: display-lg 64/42px, headline-lg 40px, headline-md 32px, body-lg 18px,
+    body-md 16px, label-md 14px (+0.05em).
 - **Shapes:** buttons 8px (no pill primaries), cards 16px, badges pill.
 - **Layout:** 1280px container, 64px desktop margin, **120px section gap** (do not compress).
 - **Cards:** pure white on warm white, 1px subtle border, hover `0 4px 20px rgba(28,43,58,0.05)`.
@@ -105,7 +118,7 @@ src/
     Footer.astro          # 4 cols + address + Cal.com + email + socials (every page)
     Button.astro          # variants: primary (terracotta) / secondary (navy outline) / dark
     HITLBadge.astro       # terracotta checkmark "Human-reviewed" — on service cards
-    HeroCarousel.astro    # homepage hero right-side image carousel (see below)
+    HeroMedia.astro       # full-bleed photo hero + navy overlay (home + pillar pages; see below)
     HitlSteps.astro       # condensed 3-step process for pillar pages (middle step terracotta)
     ComparisonTable.astro # last column (Mile High AI Labs) highlighted navy
     TestimonialCard.astro # light (warm white) or dark (navy ghost-layer) variant
@@ -116,21 +129,26 @@ src/
   styles/global.css       # Tailwind v4 @theme tokens + base/components layers
 ```
 
-### Hero carousel (`HeroCarousel.astro`)
+### Hero (`HeroMedia.astro`)
 
-- Replaces the old dashboard graphic on the home hero (right side).
-- **Auto-rotates** every 5s (the `DELAY` const), with a terracotta progress bar, pause on
-  hover/focus, prev/next arrows (show on hover), and clickable dots.
-- **Ken Burns** zoom + crossfade on the active slide; respects `prefers-reduced-motion`
-  (no autoplay/zoom). Only the active slide is clickable (inactive = `pointer-events-none`).
-- 4 slides, each links to its area: Lead Gen & CRM, AI Workflows & Automation,
-  PropSpectrum (real estate, external), Marketing & Social Media.
-- Slide copy/links live in the component's `slides` array; images in `public/images/hero/`.
+- The current homepage + all three pillar pages use **`HeroMedia.astro`**: a full-bleed
+  photographic background with a navy transparency overlay (heavier on the left where the
+  headline sits), and the page content passed in via `<slot>`. This replaced the older
+  right-side `HeroCarousel.astro` (now unused — safe to delete).
+- Props: `images: string[]` (one → static background; many → a horizontal sliding
+  carousel behind the fixed slot content), `interval` (ms per slide, default 5500),
+  `class`. Multi-image mode clones the first slide at the end for a seamless loop, shows
+  clickable dots, pauses on hover, and respects `prefers-reduced-motion` (snaps instead
+  of sliding). The slide JS lives inline in the component.
+- Home passes 5 rotating photos (`/images/heroes/mhal-1..5.jpg`, `interval={4000}`); each
+  service page passes a single themed image (`leadgen.jpg` / `marketing.jpg` /
+  `ai-workflows.jpg`).
 
 ## Assets & images
 
-- **Original brand assets** live in `assets/` (`Milehighai labs logo.png`,
-  `appsconsultantslogo.png`). **Web-optimized versions** live in `public/images/`.
+- **Original brand assets** live in `assets/` (`milehighlogo.png`, `appsconsultantslogo.png`,
+  plus the high-res hero source PNGs `mhal-1..5.png`, `leadgen.png`, `Marketing-1.png`,
+  `AIworkflows.png`). **Web-optimized versions** live in `public/images/`.
 - **`scripts/process-logos.mjs`** regenerates the web logos with `sharp`. Re-run it
   (`node scripts/process-logos.mjs`) whenever a source logo changes. It:
   - Keys the **black background out of the Mile High logo** using a steep alpha ramp
@@ -141,9 +159,12 @@ src/
 - **Logo placement:** Mile High logo is in the **nav (left) on every page** (h-9 mobile /
   h-11 desktop, links home). Apps Consultants logo sits on a **white rounded card** in the
   home "Strategic Partner" (Deep Forest) section so the red reads cleanly.
-- **Hero carousel photos** (`public/images/hero/*.jpg`) are licensed Unsplash photos,
-  downloaded locally (no hotlinking) so they deploy to S3/CloudFront. Swap by replacing
-  the files at the same paths.
+- **Hero photos** (`public/images/heroes/*.jpg`) are generated by
+  **`scripts/process-hero-images.mjs`** with `sharp`: it downscales the large source PNGs
+  in `assets/` to 2400px-wide quality-82 mozjpeg JPGs. Re-run
+  (`node scripts/process-hero-images.mjs`) after replacing a source PNG; edit the `JOBS`
+  map to add/rename a hero image. (These are local files, not hotlinked, so they deploy to
+  S3/CloudFront.)
 - **Favicon / OG:** `public/favicon.svg` (mountain-peak mark) + `public/og-default.svg`.
 
 ## SEO / AEO (brand-new — do NOT reuse the previous site's tags/sitemap)
@@ -153,14 +174,93 @@ src/
 - AEO: concise FAQ section per page, semantic HTML, `/llms.txt`.
 - `@astrojs/sitemap` → `sitemap-index.xml`; hand-written `robots.txt`.
 
+### Interior-page components
+
+- `BackLink.astro` — small "← Back" link for the top-left of interior pages.
+  Props: `href`, `label` (default "Back"), `variant` ('light' for navy heroes /
+  'dark' for light backgrounds). Hover widens the arrow gap.
+- `NewsletterPopup.astro` — modal mounted globally in `BaseLayout.astro` (so it
+  appears on every Astro page). Opens 30s after load, **once per session**
+  (`sessionStorage` `mhal_nl_seen_session`), and is **suppressed forever once
+  subscribed** (`localStorage` `mhal_nl_subscribed`). ⚠️ **No backend yet** — submit
+  only validates the email client-side and shows a success state. To wire it, POST
+  `{ email, interests }` inside the form's submit handler (see the `NOTE` comment).
+
+## The PropSpectrum static-site pipeline (`/propspectrum/*`)
+
+> ⚠️ **Currently a placeholder.** PropSpectrum is intentionally stubbed to a single
+> branded "Coming Soon" page at `public/propspectrum/index.html`. The full built
+> sub-pages (propai, propleads, propoptics[+portfolio,+design-studio], propreach)
+> are preserved out of the deploy in **`propspectrum-prebuilt/`** at repo root. The
+> main site links only to `/propspectrum` (no sub-page links): homepage suite cards
+> are non-clickable "Coming soon" teasers, `site.ts` `propspectrum` is `/propspectrum`,
+> `propProducts` have no `href`, and the sitemap lists only `/propspectrum`.
+> **To re-enable:** move `propspectrum-prebuilt/*` back into `public/propspectrum/`,
+> restore the sub-page `href`s (homepage cards + `site.ts` `propProducts`), and re-add
+> the 6 sub-routes to `astro.config.mjs` `customPages`. The pipeline below regenerates
+> those built pages.
+
+PropSpectrum pages are **NOT Astro pages**. They are pre-built static HTML in
+`public/propspectrum/**/index.html`, generated by transforming the upstream
+`PropSpectrum-main/PropSpectrum-main/**/code v2.html` source. Editing the
+`public/propspectrum/*` files directly is wrong — they are **build artifacts** and
+will be overwritten. Change the **source HTML** or the **transform scripts** instead,
+then rebuild.
+
+Three scripts (run in this order; none are wired into `package.json`, run manually):
+
+1. `node scripts/fetch-propspectrum-images.mjs` — downloads each unique Unsplash
+   image once (keyed by photo id) into `public/images/propspectrum/unsplash/`, copies
+   PropOptics' local `images/` + `portfolio-images/` folders verbatim, and substitutes
+   thematically-matching local fallbacks for retired Unsplash URLs (the `FALLBACKS`
+   map). Exits non-zero on any unresolved download.
+2. Build the PropSpectrum CSS (the pages were authored against a **Tailwind v3 Play
+   CDN** token set, separate from the main site's Tailwind v4):
+   ```bash
+   npx tailwindcss@3 -c scripts/tailwind.propspectrum.config.cjs \
+     -i scripts/propspectrum.input.css \
+     -o public/images/propspectrum/propspectrum.css --minify
+   ```
+   `tailwind.propspectrum.config.cjs` is the merged union of every source page's
+   inline `tailwind.config`, with fonts remapped to Instrument Serif + Inter.
+3. `node scripts/build-propspectrum.mjs` — the main transform. For each page it:
+   strips the Tailwind CDN `<script>`, swaps fonts to Instrument Serif/Inter, rewrites
+   all internal links to clean routes (`/propspectrum/...`) and Unsplash/local image
+   refs to root-absolute `/images/propspectrum/...`, points all CTAs at
+   `cal.com/milehighailabs/15min`, **anonymizes named real brokerages** to neutral
+   trust phrases (the `BROKERAGES` map — never reintroduce real client names), wires
+   footer social/contact links to the MHAL socials, and injects a "Back" arrow in the
+   header. Output map is the `PAGES` const.
+
+After building, validate with `node scripts/check-propspectrum-links.mjs` — it walks
+`dist/propspectrum/**` + `dist/index.html` and asserts every root-absolute `href`/`src`
+resolves to a real file (exits non-zero on broken links). Run `npm run build` first so
+`dist/` exists.
+
+`astro.config.mjs` lists all seven PropSpectrum routes under `sitemap({ customPages })`
+because they live in `public/` and aren't auto-discovered by the sitemap integration.
+If you add/remove a PropSpectrum page, update **both** the `PAGES`/`linkRules` in the
+scripts **and** the `customPages` array.
+
 ## Commands
+
+> Requires **Node ≥ 22.12.0** (`package.json` `engines`). `astro.config.mjs` sets
+> `trailingSlash: 'never'` and `output: 'static'` — keep internal links un-slashed
+> (`/services/lead-gen-crm`, not `/services/lead-gen-crm/`) so they stay canonical.
 
 ```bash
 npm install
 npm run dev      # local dev server → http://localhost:4321
 npm run build    # static output → dist/
 npm run preview  # preview built site → http://localhost:4321
-node scripts/process-logos.mjs   # regenerate web logos from assets/ (after a logo changes)
+node scripts/process-logos.mjs        # regenerate web logos from assets/ (after a logo changes)
+node scripts/process-hero-images.mjs  # regenerate hero JPGs in public/images/heroes/ from assets/ PNGs
+
+# PropSpectrum pipeline (manual, in order — see the PropSpectrum section above)
+node scripts/fetch-propspectrum-images.mjs
+npx tailwindcss@3 -c scripts/tailwind.propspectrum.config.cjs -i scripts/propspectrum.input.css -o public/images/propspectrum/propspectrum.css --minify
+node scripts/build-propspectrum.mjs
+node scripts/check-propspectrum-links.mjs   # run after npm run build
 ```
 
 ## Deployment

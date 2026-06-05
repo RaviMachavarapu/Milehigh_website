@@ -9,7 +9,7 @@ export function organization() {
     url: site.domain,
     logo: `${site.domain}/og-default.svg`,
     description:
-      'Mile High AI Labs builds, runs, and manages AI systems for small and medium businesses — with a Human-in-the-Loop review on every output.',
+      'Mile High AI Labs builds, runs, and looks after helpful AI for small and medium businesses, with a real person checking the work before it reaches you.',
     email: site.email,
     address: {
       '@type': 'PostalAddress',

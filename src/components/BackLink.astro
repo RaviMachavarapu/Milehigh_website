@@ -1,0 +1,36 @@
+---
+// Small "← Back" link for the top-left of interior pages.
+// variant 'light' for dark/navy heroes, 'dark' for light backgrounds.
+interface Props {
+  href: string;
+  label?: string;
+  variant?: 'light' | 'dark';
+  class?: string;
+}
+const { href, label = 'Back', variant = 'dark', class: className = '' } = Astro.props;
+---
+
+<a href={href} class:list={['back-link', variant, className]} aria-label={label}>
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M19 12H5M12 19l-7-7 7-7" />
+  </svg>
+  <span>{label}</span>
+</a>
+
+<style>
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease, gap 0.2s ease;
+  }
+  .back-link:hover { gap: 0.6rem; }
+  .back-link.dark { color: var(--color-ink-soft); }
+  .back-link.dark:hover { color: var(--color-navy); }
+  .back-link.light { color: rgba(255, 255, 255, 0.7); }
+  .back-link.light:hover { color: #ffffff; }
+  .back-link svg { flex-shrink: 0; }
+</style>

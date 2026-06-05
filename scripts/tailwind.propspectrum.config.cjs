@@ -1,13 +1,13 @@
 /* Standalone Tailwind v3 config for the PropSpectrum static pages.
    The pages were authored against this token set (Tailwind Play CDN, v3).
    Merged union of every page's inline `tailwind.config`, with the font
-   families remapped to MHAL's Instrument Serif (headings) + Inter (body).
+   families remapped to MHAL's single professional family (Manrope).
    Build:
      npx tailwindcss@3 -c scripts/tailwind.propspectrum.config.cjs \
        -i scripts/propspectrum.input.css \
        -o public/images/propspectrum/propspectrum.css --minify */
-const SERIF = ['Instrument Serif', 'ui-serif', 'Georgia', 'serif'];
-const SANS = ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'];
+const SERIF = ['Manrope', 'ui-sans-serif', 'system-ui', 'sans-serif'];
+const SANS = ['Manrope', 'ui-sans-serif', 'system-ui', 'sans-serif'];
 
 module.exports = {
   content: ['./public/propspectrum/**/*.html'],

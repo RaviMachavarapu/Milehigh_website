@@ -1,1262 +1,143 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- ── SEO ── -->
-  <meta name="description" content="PropSpectrum automates the operational layer of real estate — AI lead follow-up, pipeline management, visual staging, and content marketing. Built for agents who want to close more and work less." />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://milehighlabs.ai/propspectrum/" />
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="PropSpectrum" />
-  <meta property="og:title" content="PropSpectrum: The AI Back-Office for Real Estate" />
-  <meta property="og:description" content="PropSpectrum automates the operational layer of real estate — AI lead follow-up, pipeline management, visual staging, and content marketing. Built for agents who want to close more and work less." />
-  <meta property="og:url" content="https://milehighlabs.ai/propspectrum/" />
-  <meta property="og:image" content="https://milehighlabs.ai/propspectrum/assets/og-image.jpg" />
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="PropSpectrum: The AI Back-Office for Real Estate" />
-  <meta name="twitter:description" content="PropSpectrum automates the operational layer of real estate — AI lead follow-up, pipeline management, visual staging, and content marketing. Built for agents who want to close more and work less." />
-  <meta name="twitter:image" content="https://milehighlabs.ai/propspectrum/assets/og-image.jpg" />
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "PropSpectrum",
-    "url": "https://milehighlabs.ai/propspectrum",
-    "description": "AI-powered back-office tools for real estate agents and brokerages.",
-    "logo": "https://milehighlabs.ai/propspectrum/assets/logo.png",
-    "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "sales",
-        "url": "https://cal.com/milehighailabs/15min"
-    },
-    "sameAs": []
-}
-  </script>
-  <title>PropSpectrum: The AI Back-Office for Real Estate</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet" />
-  
-  
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: #F5F2ED; color: #1C2B3A; -webkit-font-smoothing: antialiased; }
-
-    /* Slideshow */
-    .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.75s ease; pointer-events: none; }
-    .hero-slide.active { opacity: 1; pointer-events: auto; }
-    .progress-dot { width: 24px; height: 2px; background: rgba(255,255,255,0.2); transition: background 0.3s; cursor: pointer; border-radius: 2px; }
-    .progress-dot.active { background: #E8A87C; }
-
-    /* Ticker */
-    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    .ticker-track { display: flex; align-items: center; animation: ticker 44s linear infinite; width: max-content; }
-    .ticker-track:hover { animation-play-state: paused; }
-    .ticker-item { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
-    .ticker-logo { height: 20px; width: auto; max-width: 80px; object-fit: contain; opacity: 0.28; filter: grayscale(100%); }
-
-    /* Testimonial carousel */
-    .testimonial-track { display: flex; transition: transform 0.5s ease; }
-
-    /* FAQ */
-    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-    .faq-answer.open { max-height: 500px; }
-    .faq-icon { transition: transform 0.3s ease; display: inline-block; }
-    .faq-item.open .faq-icon { transform: rotate(45deg); }
-
-    /* Product color variables: used for CTAs and subtle accents only */
-    :root {
-      --propai:     #1A3028;
-      --propleads:  #C9A84C;
-      --propoptics: #E8A87C;
-      --propreach:  #6B8FA8;
-    }
-
-    /* Badge: pill, unified across all products */
-    .badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: 'Inter', sans-serif;
-      font-size: 12px; font-weight: 700;
-      letter-spacing: 0.03em;
-      border-radius: 100px;
-      padding: 8px 18px;
-      white-space: nowrap;
-    }
-
-    /* On dark backgrounds: frosted glass pill */
-    .badge-propai, .badge-propleads, .badge-propoptics, .badge-propreach {
-      background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.9);
-    }
-
-    /* On light backgrounds: add class badge-lgt */
-    .badge-lgt.badge-propai    { background: transparent; border: 1.5px solid rgba(26,48,40,0.35);  color: #1A3028; }
-    .badge-lgt.badge-propleads { background: transparent; border: 1.5px solid rgba(161,131,55,0.5);  color: #7d6014; }
-    .badge-lgt.badge-propoptics{ background: transparent; border: 1.5px solid rgba(196,126,84,0.5);  color: #a05820; }
-    .badge-lgt.badge-propreach { background: transparent; border: 1.5px solid rgba(74,122,150,0.5);  color: #3d6e8a; }
-
-    /* Status chips in mockups */
-    .st-active  { background: rgba(26,48,40,0.85); color: #6ee7b7; border: 1px solid rgba(110,231,183,0.25); border-radius:9999px; padding:2px 8px; font-size:11px; font-weight:600; white-space:nowrap; }
-    .st-sent    { background: rgba(255,255,255,0.08); color:rgba(255,255,255,0.5); border-radius:9999px; padding:2px 8px; font-size:11px; font-weight:600; white-space:nowrap; }
-    .st-draft   { background:rgba(232,168,124,0.2); color:#E8A87C; border:1px solid rgba(232,168,124,0.4); border-radius:9999px; padding:2px 8px; font-size:11px; font-weight:600; white-space:nowrap; }
-    .st-hot     { background:rgba(220,38,38,0.15); color:#fca5a5; border:1px solid rgba(220,38,38,0.3); border-radius:9999px; padding:2px 8px; font-size:11px; font-weight:600; }
-    .st-warm    { background:rgba(251,146,60,0.15); color:#fdba74; border:1px solid rgba(251,146,60,0.3); border-radius:9999px; padding:2px 8px; font-size:11px; font-weight:600; }
-    .st-cold    { color:rgba(255,255,255,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:9999px; padding:2px 8px; font-size:11px; font-weight:600; }
-    .st-review  { background:rgba(232,168,124,0.2); color:#E8A87C; border-radius:9999px; padding:2px 8px; font-size:11px; font-weight:600; }
-    .st-inprog  { background:rgba(201,168,76,0.15); color:#C9A84C; border-radius:9999px; padding:2px 8px; font-size:11px; font-weight:600; }
-    .st-done    { background:rgba(26,48,40,0.7); color:#6ee7b7; border-radius:9999px; padding:2px 8px; font-size:11px; font-weight:600; }
-    .st-mhal    { background:rgba(107,143,168,0.25); color:#6B8FA8; border-radius:9999px; padding:2px 8px; font-size:11px; font-weight:600; }
-
-    /* Mockup card */
-    .mockup-card { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; }
-    .row-base    { background:rgba(255,255,255,0.04); }
-    .row-terra   { background:rgba(232,168,124,0.08); border:1px solid rgba(232,168,124,0.2); }
-    .row-steel   { background:rgba(107,143,168,0.08); border:1px solid rgba(107,143,168,0.2); }
-
-    /* Product cards */
-    .product-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
-    .product-card:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(28,43,58,0.1); }
-
-    /* Image placeholder */
-    .img-placeholder { display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; }
-  </style>
-  <link rel="stylesheet" href="/images/propspectrum/propspectrum.css" />
-</head>
-<body>
-
-<!-- ===== MOBILE MENU ===== -->
-<div id="mobile-menu" class="fixed inset-0 z-50 bg-midnight flex flex-col p-8 hidden">
-  <div class="flex justify-between items-center mb-12">
-    <a href="/propspectrum" class="font-serif font-bold text-2xl text-white hover:opacity-80 transition-opacity">PropSpectrum</a>
-    <button onclick="toggleMenu()" class="text-white"><span class="material-symbols-outlined text-3xl">close</span></button>
-  </div>
-  <nav class="flex flex-col gap-8">
-    <a href="/propspectrum/propai" onclick="toggleMenu()" class="text-2xl text-white font-light">PropAI</a>
-    <a href="/propspectrum/propleads" onclick="toggleMenu()" class="text-2xl text-white font-light">PropLeads</a>
-    <a href="/propspectrum/propoptics" onclick="toggleMenu()" class="text-2xl text-white font-light">PropOptics</a>
-    <a href="/propspectrum/propreach" onclick="toggleMenu()" class="text-2xl text-white font-light">PropReach</a>
-    <a href="#resources" onclick="toggleMenu()" class="text-2xl text-white font-light">Resources</a>
-  </nav>
-  <div class="mt-auto">
-    <a href="https://cal.com/milehighailabs/15min" class="block w-full text-center bg-terracotta text-midnight font-semibold py-4 rounded text-lg">Book Free Audit</a>
-  </div>
-</div>
-
-<!-- ===== NAV ===== -->
-<header class="fixed top-0 left-0 right-0 z-40 border-b border-white/15" style="background:rgba(28,43,58,0.82); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12 h-16 flex items-center justify-between">
-    <a href="/propspectrum" class="font-serif font-bold text-2xl text-white hover:opacity-80 transition-opacity">PropSpectrum</a>
-    <nav class="hidden md:flex items-center gap-8">
-      <a href="/propspectrum/propai" class="text-sm text-white/60 hover:text-white transition-colors">PropAI</a>
-      <a href="/propspectrum/propleads" class="text-sm text-white/60 hover:text-white transition-colors">PropLeads</a>
-      <a href="/propspectrum/propoptics" class="text-sm text-white/60 hover:text-white transition-colors">PropOptics</a>
-      <a href="/propspectrum/propreach" class="text-sm text-white/60 hover:text-white transition-colors">PropReach</a>
-      <a href="#resources" class="text-sm text-white/60 hover:text-white transition-colors">Resources</a>
-    </nav>
-    <div class="flex items-center gap-4">
-      <a href="https://cal.com/milehighailabs/15min" class="hidden md:inline-flex items-center bg-terracotta text-midnight text-sm font-semibold px-5 py-2.5 rounded hover:bg-[#d4956a] transition-colors">Book Free Audit</a>
-      <button onclick="toggleMenu()" class="md:hidden text-white"><span class="material-symbols-outlined">menu</span></button>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PropSpectrum — Coming Soon | Mile High AI Labs</title>
+    <meta
+      name="description"
+      content="PropSpectrum, the real-estate suite from Mile High AI Labs, is coming soon."
+    />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy: #1c2b3a;
+        --warm: #f5f2ed;
+        --terracotta: #e8a87c;
+        --terracotta-600: #d8895a;
+        --ink-soft: #5b6976;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 24px;
+        background: var(--warm);
+        color: var(--navy);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        text-align: center;
+        -webkit-font-smoothing: antialiased;
+      }
+      .logo {
+        height: 44px;
+        width: auto;
+        margin-bottom: 56px;
+      }
+      .eyebrow {
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--terracotta-600);
+        margin: 0 0 12px;
+      }
+      h1 {
+        font-family: 'Instrument Serif', Georgia, serif;
+        font-weight: 400;
+        font-size: clamp(40px, 8vw, 64px);
+        line-height: 1.05;
+        margin: 0 0 20px;
+      }
+      h1 em {
+        font-style: italic;
+        color: var(--terracotta-600);
+      }
+      p.lede {
+        max-width: 34rem;
+        margin: 0 auto 40px;
+        font-size: 18px;
+        line-height: 1.6;
+        color: var(--ink-soft);
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: center;
+        justify-content: center;
+      }
+      .btn {
+        display: inline-block;
+        padding: 14px 28px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        transition:
+          background-color 0.18s ease,
+          opacity 0.18s ease;
+      }
+      .btn-primary {
+        background: var(--terracotta);
+        color: var(--navy);
+      }
+      .btn-primary:hover {
+        background: var(--terracotta-600);
+      }
+      .btn-ghost {
+        color: var(--navy);
+        opacity: 0.75;
+      }
+      .btn-ghost:hover {
+        opacity: 1;
+      }
+      .back {
+        margin-top: 56px;
+        font-size: 14px;
+        color: var(--ink-soft);
+        text-decoration: none;
+        transition: color 0.18s ease;
+      }
+      .back:hover {
+        color: var(--navy);
+      }
+    </style>
+  </head>
+  <body>
+    <img class="logo" src="/images/logo-mhal.png" alt="Mile High AI Labs" />
+    <p class="eyebrow">For real estate</p>
+    <h1>PropSpectrum is <em>coming soon.</em></h1>
+    <p class="lede">
+      Our real-estate suite — the same hands-on help and human review, built for agents and teams —
+      is on its way. Want a first look? Book a 15-minute call and we'll walk you through it.
+    </p>
+    <div class="actions">
+      <a
+        class="btn btn-primary"
+        href="https://cal.com/milehighailabs/15min"
+        target="_blank"
+        rel="noopener"
+        >Book a free consultation</a
+      >
+      <a class="btn btn-ghost" href="/">Explore Mile High AI Labs →</a>
     </div>
-  </div>
-</header>
-
-<!-- ===== HERO SLIDESHOW ===== -->
-<section class="relative bg-midnight overflow-hidden" style="height:100vh; min-height:680px;">
-  <div class="relative h-full">
-
-    <!-- SLIDE 2: PropAI -->
-    <div class="hero-slide" id="slide-1">
-      <img src="/images/propspectrum/unsplash/1560472354-b33ff0c44a43.jpg" class="absolute inset-0 w-full h-full object-cover" style="object-position:right center; opacity:0.07;" />
-      <div class="absolute inset-0" style="background:radial-gradient(ellipse at 20% 55%, rgba(26,48,40,0.55) 0%, transparent 60%);"></div>
-      <div class="relative h-full max-w-7xl mx-auto px-6 lg:px-12 flex items-center pt-16">
-        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
-          <div>
-            <span class="badge badge-propai mb-8 inline-flex">
-              <span class="material-symbols-outlined" style="font-size:14px;">psychology</span>PropAI
-            </span>
-            <h1 class="font-serif font-bold text-5xl lg:text-[64px] text-white leading-[1.05] mb-6">
-              Never drop a lead again.
-            </h1>
-            <p class="text-white/65 text-lg leading-relaxed mb-8 max-w-md" style="font-size:17px;">
-              PropAI responds to every new lead in under 5 minutes, automatically. Every message reviewed by our team before it sends. You stop losing business to whoever picked up first.
-            </p>
-            <div class="flex flex-wrap gap-4 mb-7">
-              <a href="https://cal.com/milehighailabs/15min" class="inline-flex items-center bg-terracotta text-midnight font-semibold px-6 py-3 rounded hover:bg-[#d4956a] transition-colors">Book Free Audit</a>
-              <a href="/propspectrum/propai" class="inline-flex items-center border border-white/25 text-white px-6 py-3 rounded hover:border-terracotta hover:text-terracotta transition-colors">Explore PropAI</a>
-            </div>
-            <p class="text-white/55 text-sm">From $999/mo &nbsp;·&nbsp; No software to learn</p>
-          </div>
-          <div class="hidden lg:block">
-            <div class="mockup-card p-6">
-              <div class="flex items-center justify-between mb-5">
-                <span class="text-white/60 text-xs font-semibold tracking-widest uppercase">PropAI - Live Activity</span>
-                <span class="flex items-center gap-1.5 text-xs" style="color:#6ee7b7;"><span class="w-1.5 h-1.5 rounded-full" style="background:#6ee7b7;"></span>Live</span>
-              </div>
-              <div class="space-y-2.5">
-                <div class="flex items-start gap-3 p-3 rounded row-base">
-                  <div class="w-8 h-8 rounded-full flex items-center justify-center text-white/80 text-xs font-semibold flex-shrink-0" style="background:#1A3028;">SM</div>
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between mb-1"><span class="text-white text-sm font-medium">Sarah M.</span><span class="st-active">Responded · 3m 47s</span></div>
-                    <p class="text-white/65 text-xs truncate">Zillow inquiry - "Hi Sarah, thanks for reaching out about 1820 Oak Lane..."</p>
-                  </div>
-                </div>
-                <div class="flex items-start gap-3 p-3 rounded row-base">
-                  <div class="w-8 h-8 rounded-full flex items-center justify-center text-white/80 text-xs font-semibold flex-shrink-0" style="background:#1A3028;">DK</div>
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between mb-1"><span class="text-white text-sm font-medium">David K.</span><span class="st-active">Appt. booked</span></div>
-                    <p class="text-white/65 text-xs truncate">Showing confirmed Sat 2pm · Added to calendar automatically</p>
-                  </div>
-                </div>
-                <div class="flex items-start gap-3 p-3 rounded row-terra">
-                  <div class="w-8 h-8 rounded-full flex items-center justify-center text-midnight text-xs font-semibold flex-shrink-0" style="background:#E8A87C;">AT</div>
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between mb-1"><span class="text-white text-sm font-medium">Alex T.</span><span class="st-draft">Drafting... 11:47pm</span></div>
-                    <p class="text-white/65 text-xs truncate">Instagram ad · Under $800k in Highlands - drafting response</p>
-                  </div>
-                </div>
-                <div class="flex items-start gap-3 p-3 rounded row-base">
-                  <div class="w-8 h-8 rounded-full flex items-center justify-center text-white/70 text-xs font-semibold flex-shrink-0" style="background:rgba(255,255,255,0.1);">MG</div>
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between mb-1"><span class="text-white text-sm font-medium">Maria G.</span><span class="st-sent">Sent · auto</span></div>
-                    <p class="text-white/65 text-xs truncate">6-month market update delivered - referral sequence triggered</p>
-                  </div>
-                </div>
-              </div>
-              <p class="text-white/65 text-xs mt-4 pt-4 border-t border-white/10">Every outgoing message reviewed by the MHAL team before delivery</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 3: PropLeads -->
-    <div class="hero-slide" id="slide-2">
-      <img src="/images/propspectrum/unsplash/1454165804606-c3d57bc86b40.jpg" class="absolute inset-0 w-full h-full object-cover" style="object-position:right center; opacity:0.06;" />
-      <div class="absolute inset-0" style="background:radial-gradient(ellipse at 70% 50%, rgba(201,168,76,0.14) 0%, transparent 60%);"></div>
-      <div class="relative h-full max-w-7xl mx-auto px-6 lg:px-12 flex items-center pt-16">
-        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
-          <div>
-            <span class="badge badge-propleads mb-8 inline-flex">
-              <span class="material-symbols-outlined" style="font-size:14px;">leaderboard</span>PropLeads
-            </span>
-            <h1 class="font-serif font-bold text-5xl lg:text-[64px] text-white leading-[1.05] mb-6">
-              Always know who to call.
-            </h1>
-            <p class="text-white/65 text-lg leading-relaxed mb-8 max-w-md" style="font-size:17px;">
-              Your full pipeline - new prospects, past clients, referral sources - scored, segmented, and in active nurture. Know who to call today, every day.
-            </p>
-            <div class="flex flex-wrap gap-4 mb-7">
-              <a href="https://cal.com/milehighailabs/15min" class="inline-flex items-center bg-terracotta text-midnight font-semibold px-6 py-3 rounded hover:bg-[#d4956a] transition-colors">Book Free Audit</a>
-              <a href="/propspectrum/propleads" class="inline-flex items-center border border-white/25 text-white px-6 py-3 rounded hover:border-amber-400 hover:text-amber-400 transition-colors">Explore PropLeads</a>
-            </div>
-            <p class="text-white/55 text-sm">From $599/mo &nbsp;·&nbsp; No CRM expertise needed</p>
-          </div>
-          <div class="hidden lg:block">
-            <div class="mockup-card p-6">
-              <div class="flex items-center justify-between mb-5">
-                <span class="text-white/60 text-xs font-semibold tracking-widest uppercase">Pipeline - Today</span>
-                <span class="badge badge-propleads" style="font-size:11px; padding:3px 8px;">14 Active</span>
-              </div>
-              <div class="space-y-3">
-                <div class="p-3 rounded" style="background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.2);">
-                  <div class="flex justify-between items-center mb-2"><span class="text-white text-sm font-medium">Jordan W. · Zillow</span><span class="st-hot">HOT</span></div>
-                  <div class="h-1.5 bg-white/10 rounded-full"><div class="h-full rounded-full" style="width:92%;background:#ef4444;"></div></div>
-                  <span class="text-white/55 text-xs mt-1.5 block">Score: 92 · Follow up today</span>
-                </div>
-                <div class="p-3 rounded" style="background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.2);">
-                  <div class="flex justify-between items-center mb-2"><span class="text-white text-sm font-medium">Lisa M. · Referral</span><span class="st-warm">WARM</span></div>
-                  <div class="h-1.5 bg-white/10 rounded-full"><div class="h-full rounded-full" style="width:68%;background:#fb923c;"></div></div>
-                  <span class="text-white/55 text-xs mt-1.5 block">Score: 68 · 6-mo check-in due</span>
-                </div>
-                <div class="p-3 rounded row-base">
-                  <div class="flex justify-between items-center mb-2"><span class="text-white text-sm font-medium">Tom B. · Past client</span><span class="st-cold">PAST</span></div>
-                  <div class="h-1.5 bg-white/10 rounded-full"><div class="h-full rounded-full" style="width:45%;background:rgba(255,255,255,0.3);"></div></div>
-                  <span class="text-white/55 text-xs mt-1.5 block">Score: 45 · Nurture active</span>
-                </div>
-                <div class="p-3 rounded" style="background:rgba(255,255,255,0.02);">
-                  <div class="flex justify-between items-center mb-2"><span class="text-white text-sm font-medium">Amy R. · Website</span><span class="st-cold">COLD</span></div>
-                  <div class="h-1.5 bg-white/10 rounded-full"><div class="h-full rounded-full" style="width:22%;background:rgba(255,255,255,0.15);"></div></div>
-                  <span class="text-white/55 text-xs mt-1.5 block">Score: 22 · 30-day drip active</span>
-                </div>
-              </div>
-              <p class="text-white/65 text-xs mt-4 pt-4 border-t border-white/10">All scoring rules reviewed and validated by the MHAL team</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 4: PropOptics -->
-    <div class="hero-slide" id="slide-3">
-      <img src="/images/propspectrum/unsplash/1600210492486-724fe5c67fb0.jpg" class="absolute inset-0 w-full h-full object-cover" style="object-position:center; opacity:0.09;" />
-      <div class="absolute inset-0" style="background:radial-gradient(ellipse at 35% 60%, rgba(232,168,124,0.14) 0%, transparent 60%);"></div>
-      <div class="relative h-full max-w-7xl mx-auto px-6 lg:px-12 flex items-center pt-16">
-        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
-          <div>
-            <span class="badge badge-propoptics mb-8 inline-flex">
-              <span class="material-symbols-outlined" style="font-size:14px;">photo_camera</span>PropOptics
-            </span>
-            <h1 class="font-serif font-bold text-5xl lg:text-[64px] text-white leading-[1.05] mb-5">
-              The listing that sells<br/>before the open house.
-            </h1>
-            <div class="flex gap-7 mb-7">
-              <div><p class="font-serif text-3xl font-semibold text-terracotta">73%</p><p class="text-white/65 text-xs mt-1">Faster home sales</p></div>
-              <div class="w-px bg-white/10"></div>
-              <div><p class="font-serif text-3xl font-semibold text-terracotta">95%</p><p class="text-white/65 text-xs mt-1">Cheaper than physical</p></div>
-              <div class="w-px bg-white/10"></div>
-              <div><p class="font-serif text-3xl font-semibold text-terracotta">24h</p><p class="text-white/65 text-xs mt-1">Turnaround</p></div>
-            </div>
-            <p class="text-white/65 text-lg leading-relaxed mb-8 max-w-md" style="font-size:17px;">
-              AI-powered staging and photo enhancement, delivered in 24 hours, reviewed by a real designer, at a fraction of physical staging cost.
-            </p>
-            <div class="flex flex-wrap gap-4 mb-7">
-              <a href="https://cal.com/milehighailabs/15min" class="inline-flex items-center bg-terracotta text-midnight font-semibold px-6 py-3 rounded hover:bg-[#d4956a] transition-colors">Book Free Audit</a>
-              <a href="/propspectrum/propoptics" class="inline-flex items-center border border-white/25 text-white px-6 py-3 rounded hover:border-terracotta hover:text-terracotta transition-colors">Explore PropOptics</a>
-            </div>
-            <p class="text-white/55 text-sm">From $199/mo &nbsp;·&nbsp; 24h delivery &nbsp;·&nbsp; Designer-reviewed</p>
-          </div>
-          <div class="hidden lg:block">
-            <div class="mockup-card p-6">
-              <div class="flex items-center justify-between mb-5">
-                <span class="text-white/60 text-xs font-semibold tracking-widest uppercase">247 Maple Ridge - In Progress</span>
-                <span class="badge badge-propoptics" style="font-size:11px; padding:3px 8px;">3 Rooms</span>
-              </div>
-              <div class="space-y-3">
-                <div class="p-3.5 rounded" style="background:rgba(232,168,124,0.08);border:1px solid rgba(232,168,124,0.2);">
-                  <div class="flex justify-between items-center">
-                    <div><p class="text-white text-sm font-medium">Living Room</p><p class="text-white/60 text-xs mt-0.5">Modern Contemporary · 4 renders</p></div>
-                    <span class="st-review">Designer Review</span>
-                  </div>
-                </div>
-                <div class="p-3.5 rounded" style="background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.2);">
-                  <div class="flex justify-between items-center">
-                    <div><p class="text-white text-sm font-medium">Master Bedroom</p><p class="text-white/60 text-xs mt-0.5">Warm Neutral · 3 renders</p></div>
-                    <span class="st-inprog">In Progress</span>
-                  </div>
-                </div>
-                <div class="p-3.5 rounded" style="background:rgba(26,48,40,0.5);border:1px solid rgba(110,231,183,0.2);">
-                  <div class="flex justify-between items-center">
-                    <div><p class="text-white text-sm font-medium">Kitchen</p><p class="text-white/60 text-xs mt-0.5">Bright &amp; Open · 4 renders</p></div>
-                    <span class="st-done">Approved &#10003;</span>
-                  </div>
-                </div>
-              </div>
-              <div class="mt-5 pt-4 border-t border-white/10">
-                <div class="flex justify-between text-xs text-white/35 mb-2"><span>Delivery progress</span><span>67%</span></div>
-                <div class="h-1.5 bg-white/10 rounded-full"><div class="h-full rounded-full bg-terracotta" style="width:67%;"></div></div>
-                <p class="text-white/65 text-xs mt-3">Every render reviewed by a real designer before delivery</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 1: PropSpectrum Suite Overview -->
-    <div class="hero-slide active" id="slide-0">
-      <img src="/images/propspectrum/unsplash/1486325212027-8081e485255e.jpg" class="absolute inset-0 w-full h-full object-cover" style="object-position:center 40%; opacity:0.06;" />
-      <div class="absolute inset-0" style="background:radial-gradient(ellipse at 25% 60%, rgba(26,48,40,0.5) 0%, transparent 55%), radial-gradient(ellipse at 75% 35%, rgba(107,143,168,0.12) 0%, transparent 50%);"></div>
-      <div class="relative h-full max-w-7xl mx-auto px-6 lg:px-12 flex items-center pt-16">
-        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
-          <div>
-            <span class="badge badge-propai mb-8 inline-flex">
-              <span class="material-symbols-outlined" style="font-size:14px;">auto_awesome</span>PropSpectrum Suite
-            </span>
-            <h1 class="font-serif font-bold text-5xl lg:text-[64px] text-white leading-[1.05] mb-6">
-              One team runs<br/>your whole business.
-            </h1>
-            <p class="text-white/65 text-lg leading-relaxed mb-8 max-w-md" style="font-size:17px;">
-              Lead response, pipeline, visual listings, marketing - each product works standalone, and even better together. One managed team handles all of it.
-            </p>
-            <div class="flex flex-wrap gap-4 mb-7">
-              <a href="https://cal.com/milehighailabs/15min" class="inline-flex items-center bg-terracotta text-midnight font-semibold px-6 py-3 rounded hover:bg-[#d4956a] transition-colors">Book Free Audit</a>
-              <a href="#products" class="inline-flex items-center border border-white/25 text-white px-6 py-3 rounded hover:border-white/60 transition-colors">See All Products</a>
-            </div>
-            <p class="text-white/55 text-sm">Mix and match &nbsp;·&nbsp; One team &nbsp;·&nbsp; Every product MHAL-reviewed</p>
-          </div>
-          <div class="hidden lg:block">
-            <div class="mockup-card p-6">
-              <div class="flex items-center justify-between mb-5">
-                <span class="text-white/60 text-xs font-semibold tracking-widest uppercase">Suite Overview - Active</span>
-                <span class="flex items-center gap-1.5 text-xs" style="color:#6ee7b7;"><span class="w-1.5 h-1.5 rounded-full" style="background:#6ee7b7;"></span>All Systems Live</span>
-              </div>
-              <div class="space-y-2.5">
-                <div class="flex items-center gap-3 p-3.5 rounded" style="background:rgba(26,48,40,0.45); border:1px solid rgba(110,231,183,0.15);">
-                  <span class="material-symbols-outlined text-white/60" style="font-size:18px;">psychology</span>
-                  <div class="flex-1">
-                    <div class="flex items-center justify-between">
-                      <span class="text-white text-sm font-medium">PropAI</span>
-                      <span class="st-active">3 leads responded</span>
-                    </div>
-                    <p class="text-white/55 text-xs mt-0.5">Avg response: 4m 12s today</p>
-                  </div>
-                </div>
-                <div class="flex items-center gap-3 p-3.5 rounded" style="background:rgba(201,168,76,0.07); border:1px solid rgba(201,168,76,0.18);">
-                  <span class="material-symbols-outlined text-white/60" style="font-size:18px;">leaderboard</span>
-                  <div class="flex-1">
-                    <div class="flex items-center justify-between">
-                      <span class="text-white text-sm font-medium">PropLeads</span>
-                      <span class="st-warm">14 contacts active</span>
-                    </div>
-                    <p class="text-white/55 text-xs mt-0.5">2 HOT leads flagged for call</p>
-                  </div>
-                </div>
-                <div class="flex items-center gap-3 p-3.5 rounded" style="background:rgba(232,168,124,0.07); border:1px solid rgba(232,168,124,0.18);">
-                  <span class="material-symbols-outlined text-white/60" style="font-size:18px;">photo_camera</span>
-                  <div class="flex-1">
-                    <div class="flex items-center justify-between">
-                      <span class="text-white text-sm font-medium">PropOptics</span>
-                      <span class="st-review">2 listings in review</span>
-                    </div>
-                    <p class="text-white/55 text-xs mt-0.5">Designer review - delivery in 6h</p>
-                  </div>
-                </div>
-                <div class="flex items-center gap-3 p-3.5 rounded" style="background:rgba(107,143,168,0.08); border:1px solid rgba(107,143,168,0.18);">
-                  <span class="material-symbols-outlined text-white/60" style="font-size:18px;">campaign</span>
-                  <div class="flex-1">
-                    <div class="flex items-center justify-between">
-                      <span class="text-white text-sm font-medium">PropReach</span>
-                      <span class="st-mhal">8 posts this week</span>
-                    </div>
-                    <p class="text-white/55 text-xs mt-0.5">Next post: Mon 9am - approved</p>
-                  </div>
-                </div>
-              </div>
-              <p class="text-white/65 text-xs mt-4 pt-4 border-t border-white/10">Every action across every product reviewed by the MHAL team</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 5: PropReach -->
-    <div class="hero-slide" id="slide-4">
-      <img src="/images/propspectrum/unsplash/1519389950473-47ba0277781c.jpg" class="absolute inset-0 w-full h-full object-cover" style="object-position:center; opacity:0.07;" />
-      <div class="absolute inset-0" style="background:radial-gradient(ellipse at 65% 40%, rgba(107,143,168,0.14) 0%, transparent 60%);"></div>
-      <div class="relative h-full max-w-7xl mx-auto px-6 lg:px-12 flex items-center pt-16">
-        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
-          <div>
-            <span class="badge badge-propreach mb-8 inline-flex">
-              <span class="material-symbols-outlined" style="font-size:14px;">campaign</span>PropReach
-            </span>
-            <h1 class="font-serif font-bold text-5xl lg:text-[64px] text-white leading-[1.05] mb-6">
-              We write it.<br/>We review it.<br/>We post it.
-            </h1>
-            <p class="text-white/65 text-lg leading-relaxed mb-8 max-w-md" style="font-size:17px;">
-              Social posts, past client market updates, and email campaigns - written in your voice, reviewed by our team, posted automatically. You approve. We handle the rest.
-            </p>
-            <div class="flex flex-wrap gap-4 mb-7">
-              <a href="https://cal.com/milehighailabs/15min" class="inline-flex items-center bg-terracotta text-midnight font-semibold px-6 py-3 rounded hover:bg-[#d4956a] transition-colors">Book Free Audit</a>
-              <a href="/propspectrum/propreach" class="inline-flex items-center border border-white/25 text-white px-6 py-3 rounded hover:border-steel-blue transition-colors" style="--tw-border-opacity:1;">Explore PropReach</a>
-            </div>
-            <p class="text-white/55 text-sm">From $299/mo &nbsp;·&nbsp; Your voice, our process</p>
-          </div>
-          <div class="hidden lg:block">
-            <div class="mockup-card p-6">
-              <div class="flex items-center justify-between mb-5">
-                <span class="text-white/60 text-xs font-semibold tracking-widest uppercase">Content Queue - This Week</span>
-                <span class="badge badge-propreach" style="font-size:11px; padding:3px 8px;">8 Posts</span>
-              </div>
-              <div class="space-y-3">
-                <div class="p-3.5 rounded row-steel">
-                  <div class="flex items-center gap-2 mb-1.5"><span class="text-white/65 text-xs uppercase tracking-wider font-semibold">LinkedIn</span><span class="st-mhal">MHAL Reviewing</span></div>
-                  <p class="text-white/70 text-sm">"Denver market update: inventory dropped 12% this quarter..."</p>
-                  <p class="text-white/55 text-xs mt-1.5">Scheduled: Mon 9am · 847 reach est.</p>
-                </div>
-                <div class="p-3.5 rounded" style="background:rgba(232,168,124,0.05);border:1px solid rgba(232,168,124,0.15);">
-                  <div class="flex items-center gap-2 mb-1.5"><span class="text-white/65 text-xs uppercase tracking-wider font-semibold">Instagram</span><span class="st-done">Approved &#10003;</span></div>
-                  <p class="text-white/70 text-sm">"5 things buyers overlook in a hot market"</p>
-                  <p class="text-white/55 text-xs mt-1.5">Scheduled: Wed 11am · Carousel</p>
-                </div>
-                <div class="p-3.5 rounded row-base">
-                  <div class="flex items-center gap-2 mb-1.5"><span class="text-white/65 text-xs uppercase tracking-wider font-semibold">Facebook</span><span class="st-draft">Drafting</span></div>
-                  <p class="text-white/70 text-sm">"Just closed: 3/2 in Centennial"</p>
-                  <p class="text-white/55 text-xs mt-1.5">Scheduled: Fri 2pm</p>
-                </div>
-              </div>
-              <p class="text-white/65 text-xs mt-4 pt-4 border-t border-white/10">Every post reviewed by the MHAL team before posting</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Slide controls -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 z-10">
-    <button onclick="prevSlide()" class="text-white/30 hover:text-white transition-colors"><span class="material-symbols-outlined" style="font-size:20px;">arrow_back</span></button>
-    <div class="flex gap-2" id="slide-dots">
-      <div class="progress-dot active" onclick="goToSlide(0)"></div>
-      <div class="progress-dot" onclick="goToSlide(1)"></div>
-      <div class="progress-dot" onclick="goToSlide(2)"></div>
-      <div class="progress-dot" onclick="goToSlide(3)"></div>
-      <div class="progress-dot" onclick="goToSlide(4)"></div>
-    </div>
-    <button onclick="nextSlide()" class="text-white/30 hover:text-white transition-colors"><span class="material-symbols-outlined" style="font-size:20px;">arrow_forward</span></button>
-  </div>
-</section>
-
-<!-- ===== WHO IT'S FOR (directly after hero) ===== -->
-<section class="bg-warm-white py-20 lg:py-28">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <p class="text-midnight/35 text-xs font-semibold tracking-widest uppercase text-center mb-4">Who We Serve</p>
-    <h2 class="font-serif font-semibold text-4xl lg:text-5xl text-midnight text-center mb-14 leading-tight">Built for the agents who are already producing.</h2>
-    <div class="grid lg:grid-cols-2 gap-6">
-      <!-- For Agents -->
-      <div class="bg-white border border-midnight/10 rounded-xl overflow-hidden">
-        <div class="h-44 overflow-hidden">
-          <img src="/images/propspectrum/unsplash/1573496359142-b8d87734a5a2.jpg" class="w-full h-full object-cover" style="object-position:center 30%;" />
-        </div>
-        <div class="p-8">
-        <div class="inline-flex items-center gap-2 badge badge-propai badge-lgt mb-6">
-          <span class="material-symbols-outlined" style="font-size:14px;">person</span>For Agents
-        </div>
-        <h3 class="font-serif font-semibold text-2xl text-midnight mb-5">Individual agents doing 20+ transactions a year.</h3>
-        <ul class="space-y-3.5">
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:18px;">check_circle</span><span class="text-midnight/70 text-sm leading-relaxed">New leads responded to in under 5 minutes, automatically</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:18px;">check_circle</span><span class="text-midnight/70 text-sm leading-relaxed">Past clients nurtured - birthdays, market updates, check-ins - without you remembering</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:18px;">check_circle</span><span class="text-midnight/70 text-sm leading-relaxed">Referral sequences built in - so closed deals keep generating business</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:18px;">check_circle</span><span class="text-midnight/70 text-sm leading-relaxed">Content and posting that sounds like you, not a template</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:18px;">check_circle</span><span class="text-midnight/70 text-sm leading-relaxed">Listings staged and delivered without lifting a finger</span></li>
-        </ul>
-        <a href="https://cal.com/milehighailabs/15min" class="inline-flex items-center gap-2 mt-8 text-sm font-medium text-midnight border border-midnight/20 px-5 py-2.5 rounded hover:bg-midnight hover:text-white transition-colors">Book Free Audit <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span></a>
-        </div><!-- end p-8 -->
-      </div>
-      <!-- For Teams -->
-      <div class="rounded-xl overflow-hidden" style="background:#1C2B3A;">
-        <div class="h-44 overflow-hidden">
-          <img src="/images/propspectrum/unsplash/1556761175-b413da4baf72.jpg" class="w-full h-full object-cover" style="object-position:center 40%; opacity:0.7;" />
-        </div>
-        <div class="p-8">
-        <div class="inline-flex items-center gap-2 badge badge-propai mb-6">
-          <span class="material-symbols-outlined" style="font-size:14px;">groups</span>For Teams &amp; Brokerages
-        </div>
-        <h3 class="font-serif font-semibold text-2xl text-white mb-5">Teams of 5 to 20 agents who need standardized operations.</h3>
-        <ul class="space-y-3.5">
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:18px;">check_circle</span><span class="text-white/70 text-sm leading-relaxed">Standardized workflow deployed across the full team</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:18px;">check_circle</span><span class="text-white/70 text-sm leading-relaxed">Pipeline visibility at the team lead level</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:18px;">check_circle</span><span class="text-white/70 text-sm leading-relaxed">Consistent content and marketing across all agents</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:18px;">check_circle</span><span class="text-white/70 text-sm leading-relaxed">Single point of accountability - we manage it all</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:18px;">check_circle</span><span class="text-white/70 text-sm leading-relaxed">Scoped and priced for team size, not a per-seat SaaS</span></li>
-        </ul>
-        <a href="https://cal.com/milehighailabs/15min" class="inline-flex items-center gap-2 mt-8 text-sm font-medium bg-terracotta text-midnight px-5 py-2.5 rounded hover:bg-[#d4956a] transition-colors">Book Discovery Call <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span></a>
-        </div><!-- end p-8 -->
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== TRUST TICKER ===== -->
-<div class="bg-white border-y border-midnight/8 py-4 overflow-hidden">
-  <div class="ticker-track">
-    <!-- First set -->
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Denver-Metro Agents</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Luxury Listing Specialists</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Front Range Teams</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Independent Brokerages</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Mountain-Resort Realtors</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Independent Real Estate Teams</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">High-Volume Producers</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Growing Brokerages</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Solo Agents &amp; Teams</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Property Management Groups</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">HomeSmart</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Keller Williams</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><svg class="ticker-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.28;"><path d="M3 9.5L12 3l9 6.5V21H15v-5h-6v5H3V9.5z" fill="currentColor"/></svg><span class="text-midnight/30 text-sm font-medium">Abodeable Properties</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">HomeVestors</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <!-- Duplicate for seamless loop -->
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Denver-Metro Agents</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Luxury Listing Specialists</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Front Range Teams</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Independent Brokerages</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Mountain-Resort Realtors</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Independent Real Estate Teams</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">High-Volume Producers</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Growing Brokerages</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Solo Agents &amp; Teams</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Property Management Groups</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">HomeSmart</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">Keller Williams</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><svg class="ticker-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.28;"><path d="M3 9.5L12 3l9 6.5V21H15v-5h-6v5H3V9.5z" fill="currentColor"/></svg><span class="text-midnight/30 text-sm font-medium">Abodeable Properties</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-    <span class="ticker-item mx-8"><span class="text-midnight/30 text-sm font-medium">HomeVestors</span></span>
-    <span class="mx-4 text-midnight/15 text-sm">/</span>
-  </div>
-</div>
-
-<!-- ===== STATS STRIP ===== -->
-<section class="bg-warm-white border-b border-midnight/8 py-16">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-      <div class="text-center">
-        <span class="badge badge-propai badge-lgt mb-5 inline-block">PropAI</span>
-        <p class="font-serif font-bold text-5xl text-midnight mb-3">&lt;5min</p>
-        <p class="text-midnight/50 text-sm leading-snug">Lead response time - every lead, every time</p>
-      </div>
-      <div class="text-center">
-        <span class="badge badge-propoptics badge-lgt mb-5 inline-block">PropOptics</span>
-        <p class="font-serif font-bold text-5xl text-midnight mb-3">73%</p>
-        <p class="text-midnight/50 text-sm leading-snug">Faster home sales with staged listings</p>
-      </div>
-      <div class="text-center">
-        <span class="badge badge-propreach badge-lgt mb-5 inline-block">PropReach</span>
-        <p class="font-serif font-bold text-5xl text-midnight mb-3">3&times;</p>
-        <p class="text-midnight/50 text-sm leading-snug">More leads via consistent content marketing</p>
-      </div>
-      <div class="text-center">
-        <span class="badge mb-5 inline-block" style="background:transparent; border:1.5px solid rgba(28,43,58,0.3); color:#1C2B3A;">All Products</span>
-        <p class="font-serif font-bold text-5xl text-midnight mb-3">100%</p>
-        <p class="text-midnight/50 text-sm leading-snug">Of outputs reviewed by a human before reaching your clients</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== HITL SECTION ===== -->
-<section class="bg-midnight py-24 lg:py-32">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-      <div>
-        <p class="text-white/30 text-xs font-semibold tracking-widest uppercase mb-6">Human-in-the-Loop</p>
-        <h2 class="font-serif font-semibold text-4xl lg:text-5xl text-white mb-8 leading-tight">Every AI output. Reviewed by a human. Before it reaches you.</h2>
-        <div class="space-y-5 text-white/60 text-base leading-relaxed">
-          <p>Every AI tool on the market runs on autopilot. It generates an email, sends it. Builds an automation, deploys it. No one checks. When it goes wrong, it goes wrong in front of your clients.</p>
-          <p>PropSpectrum puts a human between the AI and the output every single time. That is what you are paying for.</p>
-          <p>And before we build anything, we learn how you communicate. Your tone, the way you address clients, what you would never say. Every automation and every piece of content is calibrated to sound like you on your best day.</p>
-        </div>
-        <a href="https://cal.com/milehighailabs/15min" class="inline-flex items-center gap-2 mt-10 bg-terracotta text-midnight font-semibold px-6 py-3 rounded hover:bg-[#d4956a] transition-colors">
-          Book Free Audit <span class="material-symbols-outlined" style="font-size:18px;">arrow_forward</span>
-        </a>
-      </div>
-      <div class="flex items-center justify-center">
-        <div class="w-full rounded-2xl overflow-hidden border border-white/10" style="height:460px;">
-          <img src="/images/propspectrum/unsplash/1552664730-d307ca884978.jpg" class="w-full h-full object-cover" style="object-position:center; opacity:0.65;" />
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== COMPARISON ===== -->
-<section class="bg-warm-white py-24 lg:py-32">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <p class="text-midnight/35 text-xs font-semibold tracking-widest uppercase text-center mb-4">Why PropSpectrum</p>
-    <h2 class="font-serif font-semibold text-4xl lg:text-5xl text-midnight text-center mb-16 leading-tight">A smarter way to operate.</h2>
-    <div class="grid lg:grid-cols-2 gap-6">
-      <div class="bg-white border border-midnight/10 rounded-xl p-8">
-        <div class="flex items-center gap-3 mb-8">
-          <span class="material-symbols-outlined text-midnight/25 text-xl">cancel</span>
-          <h3 class="text-xs font-semibold tracking-widest uppercase text-midnight/40">The DIY Approach</h3>
-        </div>
-        <ul class="space-y-4">
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-red-400 flex-shrink-0 mt-0.5" style="font-size:16px;">close</span><span class="text-midnight/45 text-sm line-through">Subscribe to 5 to 7 separate AI tools and figure out how they connect</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-red-400 flex-shrink-0 mt-0.5" style="font-size:16px;">close</span><span class="text-midnight/45 text-sm line-through">Spend evenings configuring automations instead of with clients</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-red-400 flex-shrink-0 mt-0.5" style="font-size:16px;">close</span><span class="text-midnight/45 text-sm line-through">AI sends the wrong email to a prospect and you find out too late</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-red-400 flex-shrink-0 mt-0.5" style="font-size:16px;">close</span><span class="text-midnight/45 text-sm line-through">No one reviewing outputs - autopilot means autopilot errors</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-red-400 flex-shrink-0 mt-0.5" style="font-size:16px;">close</span><span class="text-midnight/45 text-sm line-through">Results vary by month depending on how much time you put in</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-red-400 flex-shrink-0 mt-0.5" style="font-size:16px;">close</span><span class="text-midnight/45 text-sm line-through">When something breaks, you are the one troubleshooting it at 10pm</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-red-400 flex-shrink-0 mt-0.5" style="font-size:16px;">close</span><span class="text-midnight/45 text-sm line-through">Generic templates that could have come from any agent</span></li>
-        </ul>
-      </div>
-      <div class="rounded-xl p-8" style="background:#1A3028;">
-        <div class="flex items-center gap-3 mb-8">
-          <span class="material-symbols-outlined text-terracotta text-xl">check_circle</span>
-          <h3 class="text-xs font-semibold tracking-widest uppercase text-white/60">The PropSpectrum Way</h3>
-        </div>
-        <ul class="space-y-4">
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:16px;">check</span><span class="text-white/80 text-sm">Our team selects and connects the right AI tools for your specific workflow - no two clients use the same stack</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:16px;">check</span><span class="text-white/80 text-sm">We build everything. You do nothing except approve the final result</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:16px;">check</span><span class="text-white/80 text-sm">Human review on every output before it ever reaches a lead or client</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:16px;">check</span><span class="text-white/80 text-sm">We monitor the first 48 hours and catch anything before you do</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:16px;">check</span><span class="text-white/80 text-sm">Monthly check-ins, tuning, and iteration - this is a managed service, not a one-time setup</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:16px;">check</span><span class="text-white/80 text-sm">When something needs fixing, we fix it. You find out after it is resolved</span></li>
-          <li class="flex items-start gap-3"><span class="material-symbols-outlined text-terracotta flex-shrink-0 mt-0.5" style="font-size:16px;">check</span><span class="text-white/80 text-sm">Every email, text, and post built around your voice - your clients feel like they are hearing from you</span></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== PRODUCT SUITE - 2x2 grid with image placeholders ===== -->
-<div id="products"></div>
-<section class="bg-white py-24 lg:py-32">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <p class="text-midnight/35 text-xs font-semibold tracking-widest uppercase text-center mb-4">The Products</p>
-    <h2 class="font-serif font-semibold text-4xl lg:text-5xl text-midnight text-center mb-4 leading-tight">The four products that run your back office.</h2>
-    <p class="text-midnight/50 text-center text-base mb-14 max-w-2xl mx-auto">Each product is a managed service. We build it, we run it, we review every output. Choose the gap you need closed first, or run the full suite.</p>
-
-    <div class="grid md:grid-cols-2 gap-6">
-
-      <!-- PropAI -->
-      <div class="product-card bg-white border border-midnight/10 rounded-xl overflow-hidden flex flex-col">
-        <div class="p-7 flex-1">
-          <span class="badge badge-propai badge-lgt mb-5 inline-flex items-center gap-1.5">
-            <span class="material-symbols-outlined" style="font-size:14px;">psychology</span>PropAI
-          </span>
-          <h3 class="font-serif font-bold text-3xl text-midnight mb-3 leading-tight">Autonomous Lead Response</h3>
-          <p class="text-midnight/60 text-sm leading-relaxed mb-6">Automated lead response, follow-up sequences, past client check-ins - all built, managed, and reviewed by our team. You stop losing leads to slow response times.</p>
-          <div class="flex flex-wrap gap-2 mb-6">
-            <span class="text-xs text-midnight/45 border border-midnight/10 px-2.5 py-1 rounded-full">Lead response</span>
-            <span class="text-xs text-midnight/45 border border-midnight/10 px-2.5 py-1 rounded-full">Nurture sequences</span>
-            <span class="text-xs text-midnight/45 border border-midnight/10 px-2.5 py-1 rounded-full">Referral triggers</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-midnight/60 text-sm font-medium">From $999/mo</span>
-            <a href="/propspectrum/propai" class="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded" style="background:#1A3028; color:#fff;">Explore PropAI <span class="material-symbols-outlined" style="font-size:15px;">arrow_forward</span></a>
-          </div>
-        </div>
-        <div class="h-52 overflow-hidden border-t border-midnight/8">
-          <img src="/images/propspectrum/unsplash/1560472354-b33ff0c44a43.jpg" class="w-full h-full object-cover" style="object-position:center 20%;" />
-        </div>
-      </div>
-
-      <!-- PropLeads -->
-      <div class="product-card bg-white border border-midnight/10 rounded-xl overflow-hidden flex flex-col">
-        <div class="p-7 flex-1">
-          <span class="badge badge-propleads badge-lgt mb-5 inline-flex items-center gap-1.5">
-            <span class="material-symbols-outlined" style="font-size:14px;">leaderboard</span>PropLeads
-          </span>
-          <h3 class="font-serif font-bold text-3xl text-midnight mb-3 leading-tight">Intelligent Pipeline Management</h3>
-          <p class="text-midnight/60 text-sm leading-relaxed mb-6">Your full pipeline - new prospects, past clients, referral sources - scored, segmented, and in active nurture. Know who to call today, every day.</p>
-          <div class="flex flex-wrap gap-2 mb-6">
-            <span class="text-xs text-midnight/45 border border-midnight/10 px-2.5 py-1 rounded-full">CRM setup</span>
-            <span class="text-xs text-midnight/45 border border-midnight/10 px-2.5 py-1 rounded-full">Lead scoring</span>
-            <span class="text-xs text-midnight/45 border border-midnight/10 px-2.5 py-1 rounded-full">Pipeline segmentation</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-midnight/60 text-sm font-medium">From $599/mo</span>
-            <a href="/propspectrum/propleads" class="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded" style="background:#C9A84C; color:#1C2B3A;">Explore PropLeads <span class="material-symbols-outlined" style="font-size:15px;">arrow_forward</span></a>
-          </div>
-        </div>
-        <div class="h-52 overflow-hidden border-t border-midnight/8">
-          <img src="/images/propspectrum/unsplash/1551288049-bebda4e38f71.jpg" class="w-full h-full object-cover" style="object-position:center;" />
-        </div>
-      </div>
-
-      <!-- PropOptics -->
-      <div class="product-card bg-white border border-midnight/10 rounded-xl overflow-hidden flex flex-col">
-        <div class="p-7 flex-1">
-          <span class="badge badge-propoptics badge-lgt mb-5 inline-flex items-center gap-1.5">
-            <span class="material-symbols-outlined" style="font-size:14px;">photo_camera</span>PropOptics
-          </span>
-          <h3 class="font-serif font-bold text-3xl text-midnight mb-3 leading-tight">Visual AI Staging</h3>
-          <p class="text-midnight/60 text-sm leading-relaxed mb-6">AI-powered staging, photo enhancement, and visual content - delivered in 24 hours, reviewed by a designer, at a fraction of the cost of physical staging.</p>
-          <div class="flex flex-wrap gap-2 mb-6">
-            <span class="text-xs text-midnight/45 border border-midnight/10 px-2.5 py-1 rounded-full">AI staging</span>
-            <span class="text-xs text-midnight/45 border border-midnight/10 px-2.5 py-1 rounded-full">Photo enhancement</span>
-            <span class="text-xs text-midnight/45 border border-midnight/10 px-2.5 py-1 rounded-full">Video tours</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-midnight/60 text-sm font-medium">From $199/mo</span>
-            <a href="/propspectrum/propoptics" class="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded" style="background:#E8A87C; color:#1C2B3A;">Explore PropOptics <span class="material-symbols-outlined" style="font-size:15px;">arrow_forward</span></a>
-          </div>
-        </div>
-        <div class="h-52 overflow-hidden border-t border-midnight/8">
-          <img src="/images/propspectrum/unsplash/1600596542815-ffad4c1539a9.jpg" class="w-full h-full object-cover" style="object-position:center;" />
-        </div>
-      </div>
-
-      <!-- PropReach -->
-      <div class="product-card bg-white border border-midnight/10 rounded-xl overflow-hidden flex flex-col">
-        <div class="p-7 flex-1">
-          <span class="badge badge-propreach badge-lgt mb-5 inline-flex items-center gap-1.5">
-            <span class="material-symbols-outlined" style="font-size:14px;">campaign</span>PropReach
-          </span>
-          <h3 class="font-serif font-bold text-3xl text-midnight mb-3 leading-tight">Marketing on Autopilot</h3>
-          <p class="text-midnight/60 text-sm leading-relaxed mb-6">Social posts, past client market updates, video scripts - written in your voice, reviewed by our team, and posted automatically. You approve. We handle the rest.</p>
-          <div class="flex flex-wrap gap-2 mb-6">
-            <span class="text-xs text-midnight/45 border border-midnight/10 px-2.5 py-1 rounded-full">Social content</span>
-            <span class="text-xs text-midnight/45 border border-midnight/10 px-2.5 py-1 rounded-full">Email campaigns</span>
-            <span class="text-xs text-midnight/45 border border-midnight/10 px-2.5 py-1 rounded-full">Auto-posting</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-midnight/60 text-sm font-medium">From $299/mo</span>
-            <a href="/propspectrum/propreach" class="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded" style="background:#6B8FA8; color:#fff;">Explore PropReach <span class="material-symbols-outlined" style="font-size:15px;">arrow_forward</span></a>
-          </div>
-        </div>
-        <div class="h-52 overflow-hidden border-t border-midnight/8">
-          <img src="/images/propspectrum/unsplash/1432888498266-38ffec3eaf0a.jpg" class="w-full h-full object-cover" style="object-position:center 40%;" />
-        </div>
-      </div>
-
-    </div>
-
-    <div class="mt-8 text-center border border-midnight/10 rounded-xl py-5 px-8 bg-warm-white">
-      <p class="text-midnight text-sm lg:text-base">
-        <span class="font-semibold">Full suite from $1,499/mo</span>
-        <span class="text-midnight/30 mx-3">/</span>
-        <a href="https://cal.com/milehighailabs/15min" class="text-terracotta font-semibold hover:underline">Book Free Audit</a>
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ===== COMPATIBILITY AND PARTNERSHIPS ===== -->
-<section class="py-24 lg:py-32" style="background:#1C2B3A;">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <p class="text-white/30 text-xs font-semibold tracking-widest uppercase text-center mb-4">Flexible by Design</p>
-    <h2 class="font-serif font-semibold text-4xl lg:text-5xl text-white text-center mb-6 leading-tight">Works with what you already have.</h2>
-    <p class="text-white/50 text-lg text-center max-w-2xl mx-auto mb-16 leading-relaxed">Already using a CRM, a photographer, or a posting tool? We build around your existing stack. No rip-and-replace. And if you're a team or brokerage, ask about our partnership programs.</p>
-
-    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
-
-      <!-- Left: CRM Compatibility -->
-      <div class="rounded-2xl border border-white/10 p-8" style="background:rgba(255,255,255,0.04);">
-        <div class="flex items-center gap-3 mb-6">
-          <span class="material-symbols-outlined text-terracotta-accent" style="font-size:22px">hub</span>
-          <h3 class="font-serif font-bold text-xl text-white">Works with your CRM</h3>
-        </div>
-        <p class="text-white/50 text-sm leading-relaxed mb-7">PropSpectrum connects with every major real estate CRM. We configure around what you already use. If you don't have one, we include setup as part of the build at no extra cost.</p>
-        <div class="flex flex-wrap gap-3 mb-6">
-          <span class="inline-flex items-center gap-2 text-xs font-semibold text-white/80 border border-white/15 rounded-full px-4 py-2" style="background:rgba(255,255,255,0.06);">
-            <span class="w-1.5 h-1.5 rounded-full bg-terracotta-accent inline-block"></span>Follow Up Boss
-          </span>
-          <span class="inline-flex items-center gap-2 text-xs font-semibold text-white/80 border border-white/15 rounded-full px-4 py-2" style="background:rgba(255,255,255,0.06);">
-            <span class="w-1.5 h-1.5 rounded-full bg-terracotta-accent inline-block"></span>kvCORE
-          </span>
-          <span class="inline-flex items-center gap-2 text-xs font-semibold text-white/80 border border-white/15 rounded-full px-4 py-2" style="background:rgba(255,255,255,0.06);">
-            <span class="w-1.5 h-1.5 rounded-full bg-terracotta-accent inline-block"></span>HubSpot
-          </span>
-          <span class="inline-flex items-center gap-2 text-xs font-semibold text-white/80 border border-white/15 rounded-full px-4 py-2" style="background:rgba(255,255,255,0.06);">
-            <span class="w-1.5 h-1.5 rounded-full bg-terracotta-accent inline-block"></span>Go High Level
-          </span>
-          <span class="inline-flex items-center gap-2 text-xs font-semibold text-white/80 border border-white/15 rounded-full px-4 py-2" style="background:rgba(255,255,255,0.06);">
-            <span class="w-1.5 h-1.5 rounded-full bg-terracotta-accent inline-block"></span>LionDesk
-          </span>
-          <span class="inline-flex items-center gap-2 text-xs font-semibold text-white/60 border border-white/10 rounded-full px-4 py-2">
-            + ask us about yours
-          </span>
-        </div>
-        <p class="text-white/30 text-xs">Already have tools for photography, posting, or email? We layer in on top. No disruption to what's working.</p>
-      </div>
-
-      <!-- Right: Partnership Programs -->
-      <div class="rounded-2xl border border-white/10 p-8" style="background:rgba(255,255,255,0.04);">
-        <div class="flex items-center gap-3 mb-6">
-          <span class="material-symbols-outlined text-terracotta-accent" style="font-size:22px">handshake</span>
-          <h3 class="font-serif font-bold text-xl text-white">Partnership programs</h3>
-        </div>
-        <p class="text-white/50 text-sm leading-relaxed mb-7">Teams, brokerages, and agencies can offer PropSpectrum services to their agents under a partnership arrangement. White-label delivery available for qualifying partners.</p>
-        <div class="space-y-4 mb-6">
-          <div class="flex items-start gap-3">
-            <span class="material-symbols-outlined text-terracotta-accent shrink-0 mt-0.5" style="font-size:16px">check_circle</span>
-            <div>
-              <p class="text-white/80 text-sm font-semibold">Brokerage partnerships</p>
-              <p class="text-white/40 text-xs">Offer PropSpectrum as a service benefit for your agents. Volume pricing available.</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-3">
-            <span class="material-symbols-outlined text-terracotta-accent shrink-0 mt-0.5" style="font-size:16px">check_circle</span>
-            <div>
-              <p class="text-white/80 text-sm font-semibold">White-label delivery</p>
-              <p class="text-white/40 text-xs">Your brand. Our tech and human team operating behind the scenes.</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-3">
-            <span class="material-symbols-outlined text-terracotta-accent shrink-0 mt-0.5" style="font-size:16px">check_circle</span>
-            <div>
-              <p class="text-white/80 text-sm font-semibold">Referral program</p>
-              <p class="text-white/40 text-xs">Coaches, consultants, and vendors: refer an agent and earn recurring revenue.</p>
-            </div>
-          </div>
-        </div>
-        <a href="https://cal.com/milehighailabs/15min" class="inline-flex items-center gap-2 text-sm font-semibold text-terracotta-accent hover:text-white transition-colors">
-          Talk to us about partnerships <span class="material-symbols-outlined" style="font-size:16px">arrow_forward</span>
-        </a>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ===== TESTIMONIALS ===== -->
-<section class="bg-midnight py-24 lg:py-32 overflow-hidden">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <p class="text-white/30 text-xs font-semibold tracking-widest uppercase text-center mb-4">From the Field</p>
-    <h2 class="font-serif font-semibold text-4xl lg:text-5xl text-white text-center mb-16 leading-tight">Real agents. Real outcomes.<br/>From the first 30 days.</h2>
-    <div class="overflow-hidden">
-      <div class="testimonial-track" id="testimonial-track">
-        <div class="w-full lg:w-1/3 flex-shrink-0 px-3">
-          <div class="border border-white/10 rounded-xl p-7 h-full" style="background:rgba(255,255,255,0.04);">
-            <div class="text-terracotta text-sm mb-4">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-            <span class="badge badge-propai inline-block mb-5">PropAI</span>
-            <p class="text-white/80 text-sm leading-relaxed mb-6 italic">"I used to lose leads over the weekend. I would check my phone Monday morning and see three inquiries from Saturday and by then they had already talked to two other agents. PropAI had a response out in under 4 minutes. I closed a deal in the first week that I would have missed."</p>
-            <div class="border-t border-white/10 pt-5">
-              <p class="text-white text-sm font-medium">Marcus T.</p>
-              <p class="text-white/40 text-xs mt-1">Independent Agent · Phoenix, AZ</p>
-            </div>
-          </div>
-        </div>
-        <div class="w-full lg:w-1/3 flex-shrink-0 px-3">
-          <div class="border border-white/10 rounded-xl p-7 h-full" style="background:rgba(255,255,255,0.04);">
-            <div class="text-terracotta text-sm mb-4">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-            <span class="badge badge-propoptics inline-block mb-5">PropOptics</span>
-            <p class="text-white/80 text-sm leading-relaxed mb-6 italic">"I sent over 18 photos from a vacant condo at 9am. By the next morning I had fully staged renders - living room, master, kitchen. My client approved every one. The listing got 40 showings in 5 days."</p>
-            <div class="border-t border-white/10 pt-5">
-              <p class="text-white text-sm font-medium">Diane R.</p>
-              <p class="text-white/40 text-xs mt-1">Listing Specialist · Denver, CO</p>
-            </div>
-          </div>
-        </div>
-        <div class="w-full lg:w-1/3 flex-shrink-0 px-3">
-          <div class="border border-white/10 rounded-xl p-7 h-full" style="background:rgba(255,255,255,0.04);">
-            <div class="text-terracotta text-sm mb-4">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-            <span class="badge badge-propreach inline-block mb-5">PropReach</span>
-            <p class="text-white/80 text-sm leading-relaxed mb-6 italic">"I had not posted on LinkedIn in 6 months. PropReach built me a full content calendar, ran it by me, and started posting automatically. Two past clients reached out in the first month. One is back under contract."</p>
-            <div class="border-t border-white/10 pt-5">
-              <p class="text-white text-sm font-medium">James O.</p>
-              <p class="text-white/40 text-xs mt-1">Luxury Buyer's Agent · Austin, TX</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="flex justify-center gap-3 mt-8">
-      <button onclick="prevTestimonial()" class="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center text-white/50 hover:border-terracotta hover:text-terracotta transition-colors"><span class="material-symbols-outlined" style="font-size:18px;">chevron_left</span></button>
-      <button onclick="nextTestimonial()" class="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center text-white/50 hover:border-terracotta hover:text-terracotta transition-colors"><span class="material-symbols-outlined" style="font-size:18px;">chevron_right</span></button>
-    </div>
-    <p class="text-white/20 text-xs text-center mt-6">Results are from real client check-ins. Names changed at client request.</p>
-  </div>
-</section>
-
-<!-- ===== PROPREACH POSTING FLOW ===== -->
-<section class="bg-warm-white py-16 border-y border-midnight/8">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <div class="grid grid-cols-3 divide-x divide-midnight/10">
-      <div class="text-center px-6 lg:px-12">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-4" style="background:rgba(26,48,40,0.1);"><span class="material-symbols-outlined text-deep-forest" style="font-size:18px;">smart_toy</span></div>
-        <p class="text-xs font-semibold tracking-widest uppercase text-midnight/45 mb-2">AI Generates</p>
-        <p class="text-midnight/65 text-sm leading-relaxed">Content written in your voice, calibrated to your market and content pillars.</p>
-      </div>
-      <div class="text-center px-6 lg:px-12">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-4" style="background:rgba(232,168,124,0.15);"><span class="material-symbols-outlined text-terracotta" style="font-size:18px;">person_check</span></div>
-        <p class="text-xs font-semibold tracking-widest uppercase text-terracotta mb-2">MHAL Team Reviews</p>
-        <p class="text-midnight/65 text-sm leading-relaxed">Every post read by a human. Brand-consistent, accurate, on-message.</p>
-      </div>
-      <div class="text-center px-6 lg:px-12">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-4" style="background:rgba(107,143,168,0.12);"><span class="material-symbols-outlined" style="font-size:18px;color:#6B8FA8;">schedule_send</span></div>
-        <p class="text-xs font-semibold tracking-widest uppercase mb-2" style="color:#6B8FA8;">Posts Automatically</p>
-        <p class="text-midnight/65 text-sm leading-relaxed">Approved content posted on cadence across LinkedIn, Instagram, and Facebook.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== PROCESS ===== -->
-<section class="bg-white py-24 lg:py-32">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <p class="text-midnight/35 text-xs font-semibold tracking-widest uppercase text-center mb-4">How It Works</p>
-    <h2 class="font-serif font-semibold text-4xl lg:text-5xl text-midnight text-center mb-6 leading-tight">A clear path from audit to live.</h2>
-    <p class="text-midnight/50 text-center text-base mb-16 max-w-xl mx-auto">From your first call to a fully running AI back-office. Here is every step.</p>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-      <div class="border border-midnight/10 rounded-xl p-6">
-        <span class="text-xs font-semibold tracking-widest uppercase text-midnight/40 bg-warm-white px-2.5 py-1 rounded-full">Step 1</span>
-        <h3 class="font-serif font-semibold text-xl text-midnight mt-4 mb-3">Free Audit</h3>
-        <p class="text-midnight/55 text-sm leading-relaxed">30-min call. We map your workflow and show you exactly where PropSpectrum plugs in.</p>
-      </div>
-      <div class="border border-midnight/10 rounded-xl p-6">
-        <span class="text-xs font-semibold tracking-widest uppercase text-midnight/40 bg-warm-white px-2.5 py-1 rounded-full">Step 2</span>
-        <h3 class="font-serif font-semibold text-xl text-midnight mt-4 mb-3">Scope</h3>
-        <p class="text-midnight/55 text-sm leading-relaxed">One-page proposal. Which products, what is built, what we need from you. You sign off.</p>
-      </div>
-      <div class="border border-midnight/10 rounded-xl p-6">
-        <span class="text-xs font-semibold tracking-widest uppercase text-midnight/40 bg-warm-white px-2.5 py-1 rounded-full">Step 3</span>
-        <h3 class="font-serif font-semibold text-xl text-midnight mt-4 mb-3">Build</h3>
-        <p class="text-midnight/55 text-sm leading-relaxed">Our team builds everything. You get one status update. Nothing required from you.</p>
-      </div>
-      <div class="border border-white/20 rounded-xl p-6" style="background:#E8A87C;">
-        <span class="text-xs font-semibold tracking-widest uppercase text-midnight/55 bg-white/25 px-2.5 py-1 rounded-full">Step 4</span>
-        <h3 class="font-serif font-semibold text-xl text-midnight mt-4 mb-3">HITL Review</h3>
-        <p class="text-midnight/65 text-sm leading-relaxed">You see the final output and approve. This is our quality checkpoint before anything goes live.</p>
-      </div>
-      <div class="rounded-xl p-6" style="background:#1A3028;">
-        <span class="text-xs font-semibold tracking-widest uppercase text-white/40 bg-white/10 px-2.5 py-1 rounded-full">Step 5</span>
-        <h3 class="font-serif font-semibold text-xl text-white mt-4 mb-3">Go-Live</h3>
-        <p class="text-white/55 text-sm leading-relaxed">PropSpectrum goes live. We monitor the first 48 hours and catch anything before you do.</p>
-      </div>
-      <div class="rounded-xl p-6" style="background:#1C2B3A;">
-        <span class="text-xs font-semibold tracking-widest uppercase text-white/40 bg-white/10 px-2.5 py-1 rounded-full">Ongoing</span>
-        <h3 class="font-serif font-semibold text-xl text-white mt-4 mb-3">Managed</h3>
-        <p class="text-white/55 text-sm leading-relaxed">Monthly check-ins. Tuning, adjustments, and iteration as your business grows.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== FAQ ===== -->
-<section class="bg-warm-white py-24 lg:py-32">
-  <div class="max-w-3xl mx-auto px-6 lg:px-12">
-    <p class="text-midnight/35 text-xs font-semibold tracking-widest uppercase text-center mb-4">FAQ</p>
-    <h2 class="font-serif font-semibold text-4xl lg:text-5xl text-midnight text-center mb-16 leading-tight">Honest answers to the questions we hear most.</h2>
-    <div class="space-y-3">
-      <div class="faq-item bg-white border border-midnight/10 rounded-xl overflow-hidden">
-        <button class="w-full text-left p-6 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
-          <span class="text-midnight font-medium text-base">Will the automation sound like me or like a bot?</span>
-          <span class="material-symbols-outlined faq-icon text-midnight/35 flex-shrink-0" style="font-size:20px;">add</span>
-        </button>
-        <div class="faq-answer px-6">
-          <p class="text-midnight/60 text-sm leading-relaxed pb-6">Before we build a single sequence, we do a brand voice session with you. We learn how you greet clients, how you close a follow-up, the phrases you use, and the ones you would never put your name on. Every email, text, and automation is written and reviewed against that profile - then reviewed again by a human on our team before it ever sends. Our clients' leads regularly comment that the follow-up felt personal and attentive. That is the point.</p>
-        </div>
-      </div>
-      <div class="faq-item bg-white border border-midnight/10 rounded-xl overflow-hidden">
-        <button class="w-full text-left p-6 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
-          <span class="text-midnight font-medium text-base">Can't I just use ChatGPT or buy the AI tools myself?</span>
-          <span class="material-symbols-outlined faq-icon text-midnight/35 flex-shrink-0" style="font-size:20px;">add</span>
-        </button>
-        <div class="faq-answer px-6">
-          <p class="text-midnight/60 text-sm leading-relaxed pb-6">You can. The tools are available to anyone. But there is a reason most agents who try to build this themselves quit after two weeks - because selecting the right tools, configuring them correctly, connecting them to each other, and making sure every output is actually right is a full-time job. We have done this enough times to have a process that works. You are not paying for the tools. You are paying for the process, the expertise, and the team that runs it. The tools are instruments. The process is the product.</p>
-        </div>
-      </div>
-      <div class="faq-item bg-white border border-midnight/10 rounded-xl overflow-hidden">
-        <button class="w-full text-left p-6 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
-          <span class="text-midnight font-medium text-base">My clients want a human touch, not a bot.</span>
-          <span class="material-symbols-outlined faq-icon text-midnight/35 flex-shrink-0" style="font-size:20px;">add</span>
-        </button>
-        <div class="faq-answer px-6">
-          <p class="text-midnight/60 text-sm leading-relaxed pb-6">They do. And that is exactly what they will get. PropSpectrum does not replace the human parts of your business - it handles the operational layer underneath so you can show up more present for the parts that matter. When a client gets a birthday message from you or a market update on their neighbourhood, they are not thinking this must be automated. They are thinking my agent remembered. That is what we build.</p>
-        </div>
-      </div>
-      <div class="faq-item bg-white border border-midnight/10 rounded-xl overflow-hidden">
-        <button class="w-full text-left p-6 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
-          <span class="text-midnight font-medium text-base">I tried a CRM once and it never stuck.</span>
-          <span class="material-symbols-outlined faq-icon text-midnight/35 flex-shrink-0" style="font-size:20px;">add</span>
-        </button>
-        <div class="faq-answer px-6">
-          <p class="text-midnight/60 text-sm leading-relaxed pb-6">Because you were the one who had to run it. That is the difference. PropSpectrum builds your pipeline, imports your contacts, configures your scoring, writes your nurture sequences, and maintains the whole thing every month. You are not the one who has to log in and update it. We do that. The CRM works because we run it - not because you became a CRM person overnight.</p>
-        </div>
-      </div>
-      <div class="faq-item bg-white border border-midnight/10 rounded-xl overflow-hidden">
-        <button class="w-full text-left p-6 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
-          <span class="text-midnight font-medium text-base">How long before I see results?</span>
-          <span class="material-symbols-outlined faq-icon text-midnight/35 flex-shrink-0" style="font-size:20px;">add</span>
-        </button>
-        <div class="faq-answer px-6">
-          <p class="text-midnight/60 text-sm leading-relaxed pb-6">In the first 30 days: lead response time drops to under 5 minutes, follow-up sequences are running without any input from you, and your pipeline has a score next to every contact so you know who to call. By day 30, the most common thing we hear is: "I stopped checking my phone at night because I know it is handled." The longer-term results - referrals from past client outreach, more showings from staged listings, inbound from content - typically show up in months two and three.</p>
-        </div>
-      </div>
-      <div class="faq-item bg-white border border-midnight/10 rounded-xl overflow-hidden">
-        <button class="w-full text-left p-6 flex items-center justify-between gap-4" onclick="toggleFaq(this)">
-          <span class="text-midnight font-medium text-base">What does this actually cost and is it worth it?</span>
-          <span class="material-symbols-outlined faq-icon text-midnight/35 flex-shrink-0" style="font-size:20px;">add</span>
-        </button>
-        <div class="faq-answer px-6">
-          <p class="text-midnight/60 text-sm leading-relaxed pb-6">Pricing is scoped at the audit because no two agents have the same workflow. Entry-level services start at $199/mo (PropOptics) and $999/mo (PropAI). The full suite is $1,499/mo. Here is the frame we use: a single extra qualified lead per month from faster response time is worth $10 to $15K in commission. PropAI at $999 pays for itself the moment it saves you one weekend lead. Most clients close that math in the first two weeks.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ===== RESOURCES ===== -->
-<section id="resources" style="background:#1C2B3A;" class="py-20 lg:py-28">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <p class="text-white/50 text-xs font-semibold tracking-widest uppercase text-center mb-4" style="font-family:'Inter',sans-serif;">Resources</p>
-    <h2 class="font-serif font-semibold text-4xl lg:text-5xl text-white text-center mb-4 leading-tight">Built to help you sell more.</h2>
-    <p class="text-white/65 text-lg text-center mb-14 max-w-xl mx-auto" style="font-family:'Inter',sans-serif;">Guides, tools, and market intelligence for agents who take their business seriously.</p>
-    <div class="grid md:grid-cols-3 gap-6 mb-10">
-      <!-- Guide -->
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:12px;" class="p-6 hover:border-white/30 transition-colors">
-        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-5" style="background:rgba(232,168,124,0.15);">
-          <span class="material-symbols-outlined" style="font-size:20px;color:#E8A87C;">menu_book</span>
-        </div>
-        <p class="text-white/50 text-xs font-semibold tracking-widest uppercase mb-2" style="font-family:'Inter',sans-serif;">Guide</p>
-        <h3 class="font-serif text-xl text-white font-semibold mb-3 leading-snug">The 5-Minute Lead Response Playbook</h3>
-        <p class="text-white/65 text-sm leading-relaxed mb-5" style="font-family:'Inter',sans-serif;">Why speed-to-lead wins deals, and how to build a system that responds in under 5 minutes, every time, even at 11 pm.</p>
-        <a href="https://cal.com/milehighailabs/15min" class="inline-flex items-center gap-2 text-sm font-semibold transition-all" style="color:#E8A87C;font-family:'Inter',sans-serif;">Read Guide <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span></a>
-      </div>
-      <!-- Calculator -->
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:12px;" class="p-6 hover:border-white/30 transition-colors">
-        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-5" style="background:rgba(201,168,76,0.15);">
-          <span class="material-symbols-outlined" style="font-size:20px;color:#C9A84C;">calculate</span>
-        </div>
-        <p class="text-white/50 text-xs font-semibold tracking-widest uppercase mb-2" style="font-family:'Inter',sans-serif;">Tool</p>
-        <h3 class="font-serif text-xl text-white font-semibold mb-3 leading-snug">Pipeline ROI Calculator</h3>
-        <p class="text-white/65 text-sm leading-relaxed mb-5" style="font-family:'Inter',sans-serif;">Enter your average GCI and lead volume. See exactly what a managed pipeline is worth to your business this year.</p>
-        <a href="https://cal.com/milehighailabs/15min" class="inline-flex items-center gap-2 text-sm font-semibold transition-all" style="color:#C9A84C;font-family:'Inter',sans-serif;">Try Calculator <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span></a>
-      </div>
-      <!-- Report -->
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:12px;" class="p-6 hover:border-white/30 transition-colors">
-        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-5" style="background:rgba(107,143,168,0.15);">
-          <span class="material-symbols-outlined" style="font-size:20px;color:#6B8FA8;">bar_chart</span>
-        </div>
-        <p class="text-white/50 text-xs font-semibold tracking-widest uppercase mb-2" style="font-family:'Inter',sans-serif;">Report</p>
-        <h3 class="font-serif text-xl text-white font-semibold mb-3 leading-snug">2025 AI Adoption in Real Estate</h3>
-        <p class="text-white/65 text-sm leading-relaxed mb-5" style="font-family:'Inter',sans-serif;">Which agents are using AI, what they're automating, and where the production gap is growing. Data from 1,200+ agents.</p>
-        <a href="https://cal.com/milehighailabs/15min" class="inline-flex items-center gap-2 text-sm font-semibold transition-all" style="color:#6B8FA8;font-family:'Inter',sans-serif;">Download Report <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== NEWSLETTER ===== -->
-<section style="background:#1A3028;" class="py-20">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <div class="max-w-2xl mx-auto text-center">
-      <span class="material-symbols-outlined mb-5 block" style="font-size:36px;color:#E8A87C;">mail</span>
-      <h2 class="font-serif font-semibold text-3xl lg:text-4xl text-white mb-4 leading-tight">Market intelligence, monthly.</h2>
-      <p class="text-white/65 text-lg mb-8 max-w-lg mx-auto" style="font-family:'Inter',sans-serif;">Real data on AI adoption, lead conversion, and what top-producing agents are doing differently. No templates. No noise.</p>
-      <form onsubmit="handleNewsletterSubmit(event)" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-4">
-        <input
-          type="email"
-          id="newsletter-email"
-          placeholder="your@email.com"
-          required
-          style="flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:8px;padding:12px 16px;font-size:14px;font-family:'Inter',sans-serif;outline:none;"
-          onfocus="this.style.borderColor='#E8A87C'"
-          onblur="this.style.borderColor='rgba(255,255,255,0.2)'"
-        />
-        <button type="submit" style="background:#E8A87C;color:#1C2B3A;font-family:'Inter',sans-serif;font-weight:700;padding:12px 24px;border-radius:8px;font-size:14px;border:none;cursor:pointer;white-space:nowrap;" onmouseover="this.style.background='#d4956a'" onmouseout="this.style.background='#E8A87C'">Subscribe Free</button>
-      </form>
-      <p id="newsletter-msg" style="display:none;color:rgba(255,255,255,0.65);font-size:13px;font-family:'Inter',sans-serif;margin-top:8px;">You're in. First issue lands next week.</p>
-      <p style="color:rgba(255,255,255,0.35);font-size:12px;font-family:'Inter',sans-serif;margin-top:8px;">No spam. Unsubscribe anytime. Sent monthly to serious agents only.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ===== PRE-FOOTER CTA ===== -->
-<section class="bg-midnight py-24 lg:py-32">
-  <div class="max-w-3xl mx-auto px-6 lg:px-12 text-center">
-    <p class="text-white/30 text-xs font-semibold tracking-widest uppercase mb-6">Get Started</p>
-    <h2 class="font-serif font-semibold text-4xl lg:text-5xl text-white mb-6 leading-tight">Ready to close the gap?</h2>
-    <p class="text-white/60 text-lg leading-relaxed mb-10">Book a free audit. We map your current operation, show you exactly where the gaps are, and tell you which PropSpectrum products close them. No pressure. Delivers value whether or not you proceed.</p>
-    <a href="https://cal.com/milehighailabs/15min" class="inline-flex items-center gap-3 bg-terracotta text-midnight font-semibold px-8 py-4 rounded text-lg hover:bg-[#d4956a] transition-colors">
-      <span class="material-symbols-outlined">calendar_month</span>Book Free Audit
-    </a>
-    <p class="text-white/25 text-sm mt-6">Individual services from $199/mo. Full suite from $1,499/mo.</p>
-  </div>
-</section>
-
-<!-- ===== FOOTER ===== -->
-<footer class="bg-midnight border-t border-white/10 py-16">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <div class="grid md:grid-cols-4 gap-12 mb-12">
-      <div class="md:col-span-1">
-        <p class="font-serif text-xl text-white mb-3">PropSpectrum</p>
-        <p class="text-white/40 text-sm leading-relaxed mb-4">The AI back-office for serious real estate agents. By Mile High AI Labs.</p>
-        <p class="text-white/40 text-xs">milehighlabs.ai/propspectrum</p>
-      </div>
-      <div>
-        <p class="text-white/40 text-xs font-semibold tracking-widest uppercase mb-5">Products</p>
-        <ul class="space-y-3">
-          <li><a href="/propspectrum/propai" class="text-white/55 text-sm hover:text-white transition-colors">PropAI</a></li>
-          <li><a href="/propspectrum/propleads" class="text-white/55 text-sm hover:text-white transition-colors">PropLeads</a></li>
-          <li><a href="/propspectrum/propoptics" class="text-white/55 text-sm hover:text-white transition-colors">PropOptics</a></li>
-          <li><a href="/propspectrum/propreach" class="text-white/55 text-sm hover:text-white transition-colors">PropReach</a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="text-white/40 text-xs font-semibold tracking-widest uppercase mb-5">Company</p>
-        <ul class="space-y-3">
-          <li><a href="/" class="text-white/55 text-sm hover:text-white transition-colors">Mile High AI Labs</a></li>
-          <li><a href="https://appsconsultants.com" class="text-white/55 text-sm hover:text-white transition-colors">Apps Consultants</a></li>
-          <li><a href="mailto:sales@milehighlabs.ai" class="text-white/55 text-sm hover:text-white transition-colors">sales@milehighlabs.ai</a></li>
-          <li><a href="https://cal.com/milehighailabs/15min" class="text-white/55 text-sm hover:text-white transition-colors">Book Free Audit</a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="text-white/40 text-xs font-semibold tracking-widest uppercase mb-5">Follow</p>
-        <ul class="space-y-3">
-          <li><a href="https://www.linkedin.com/company/107492824/" class="text-white/55 text-sm hover:text-white transition-colors">LinkedIn</a></li>
-          <li><a href="https://www.instagram.com/" class="text-white/55 text-sm hover:text-white transition-colors">Instagram</a></li>
-          <li><a href="https://www.facebook.com/profile.php?id=61576855723694" class="text-white/55 text-sm hover:text-white transition-colors">Facebook</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <p class="text-white/40 text-xs">&copy; 2026 Mile High AI Labs. All rights reserved.</p>
-      <p class="text-white/40 text-xs">Expert. Process. Accountable.</p>
-    </div>
-  </div>
-</footer>
-
-<script>
-function toggleMenu() {
-  document.getElementById('mobile-menu').classList.toggle('hidden');
-}
-
-var currentSlide = 0;
-var totalSlides = 5;
-var slideTimer;
-
-function goToSlide(index) {
-  document.getElementById('slide-' + currentSlide).classList.remove('active');
-  document.querySelectorAll('.progress-dot')[currentSlide].classList.remove('active');
-  currentSlide = (index + totalSlides) % totalSlides;
-  document.getElementById('slide-' + currentSlide).classList.add('active');
-  document.querySelectorAll('.progress-dot')[currentSlide].classList.add('active');
-  clearInterval(slideTimer);
-  slideTimer = setInterval(function() { goToSlide(currentSlide + 1); }, 6000);
-}
-function nextSlide() { goToSlide(currentSlide + 1); }
-function prevSlide() { goToSlide(currentSlide - 1); }
-slideTimer = setInterval(function() { goToSlide(currentSlide + 1); }, 6000);
-
-(function() {
-  var startX = 0;
-  var hero = document.getElementById('slide-0').parentElement;
-  hero.addEventListener('touchstart', function(e) { startX = e.changedTouches[0].screenX; }, { passive: true });
-  hero.addEventListener('touchend', function(e) {
-    var dx = e.changedTouches[0].screenX - startX;
-    if (Math.abs(dx) > 50) { dx < 0 ? nextSlide() : prevSlide(); }
-  }, { passive: true });
-})();
-
-var testimonialIndex = 0;
-var testimonialTrack = document.getElementById('testimonial-track');
-function updateTestimonial() {
-  var isDesktop = window.innerWidth >= 1024;
-  var pct = isDesktop ? (testimonialIndex * 100 / 3) : (testimonialIndex * 100);
-  testimonialTrack.style.transform = 'translateX(-' + pct + '%)';
-}
-function nextTestimonial() { testimonialIndex = (testimonialIndex + 1) % 3; updateTestimonial(); }
-function prevTestimonial() { testimonialIndex = (testimonialIndex + 2) % 3; updateTestimonial(); }
-window.addEventListener('resize', updateTestimonial);
-
-function toggleFaq(btn) {
-  var item = btn.closest('.faq-item');
-  var answer = item.querySelector('.faq-answer');
-  var wasOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(function(el) {
-    el.classList.remove('open');
-    el.querySelector('.faq-answer').classList.remove('open');
-  });
-  if (!wasOpen) { item.classList.add('open'); answer.classList.add('open'); }
-}
-</script>
-</body>
+    <a class="back" href="/">← Back to Mile High AI Labs</a>
+  </body>
 </html>

@@ -17,8 +17,10 @@
   --color-ink: #091f18; /* on-surface text */
   --color-ink-soft: #44474c; /* on-surface-variant */
 
-  /* Fonts */
-  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  /* Fonts — Plus Jakarta Sans for H1/H2 (+ display numbers); Inter for everything else.
+     --font-serif is kept as a legacy alias mapped to the display font (no serif/italic). */
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* Radii */
@@ -45,13 +47,21 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* H1/H2 — Plus Jakarta Sans, ExtraBold */
   h1,
-  h2,
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  /* H3/H4 — Inter, Semi-Bold */
   h3,
   h4 {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    line-height: 1.2;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    line-height: 1.25;
     letter-spacing: -0.01em;
   }
 
@@ -109,10 +119,10 @@
     border-color: rgba(28, 43, 58, 0.14);
   }
 
-  /* Emotional italic serif accent */
-  .accent-italic {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 400;
+  /* Emphasis accent — display font, ExtraBold (no italics) */
+  .accent-em {
+    font-family: var(--font-display);
+    font-style: normal;
+    font-weight: 800;
   }
 }

@@ -8,15 +8,17 @@ import { mkdir } from 'node:fs/promises';
 const OUT = 'public/images';
 await mkdir(OUT, { recursive: true });
 
-// ---- Mile High AI Labs: black -> transparent ----
-const src = 'assets/Milehighai labs logo.png';
+// ---- Mile High AI Labs: dark-green background -> transparent ----
+const src = 'assets/milehighlogo.png';
 const { data, info } = await sharp(src).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 const ch = info.channels; // 4
-// Steep alpha ramp so the foreground stays FULLY opaque (no fading/blending):
-// only near-black background pixels go transparent; a narrow ramp keeps edges
-// anti-aliased without making the text/mountain semi-transparent.
-const LOW = 38; // below this brightness -> transparent (background)
-const HIGH = 90; // above this -> fully opaque (foreground)
+// Luminance alpha ramp so the cream wordmark + mountain stay FULLY opaque (no
+// fading/blending) while the dark-green gradient background goes transparent.
+// The logo is cleanly bimodal: green bg brightness tops out ~109, the cream
+// foreground is ~200-255, so this ramp sits safely in the gap and keeps edges
+// anti-aliased.
+const LOW = 110; // below this brightness -> transparent (green background)
+const HIGH = 185; // above this -> fully opaque (cream foreground)
 for (let i = 0; i < data.length; i += ch) {
   const lum = Math.max(data[i], data[i + 1], data[i + 2]);
   let a = (lum - LOW) / (HIGH - LOW);
@@ -24,6 +26,7 @@ for (let i = 0; i < data.length; i += ch) {
   data[i + 3] = Math.round(a * 255);
 }
 await sharp(data, { raw: { width: info.width, height: info.height, channels: ch } })
+  .modulate({ brightness: 1.28 }) // lift the cream wordmark/mountain toward white so it reads brighter on navy
   .trim({ threshold: 12 }) // crop the transparent border for a tight wordmark
   .resize({ width: 560, withoutEnlargement: true })
   .png({ compressionLevel: 9 })

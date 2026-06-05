@@ -1,13 +1,13 @@
 ---
 import { site, services } from '../data/site';
-const year = new Date().getFullYear();
+const year = 2025;
 ---
 
 <footer class="bg-navy text-white/70">
   <div class="container-max grid gap-10 py-16 md:grid-cols-2 lg:grid-cols-4">
     <!-- Brand -->
     <div>
-      <a href="/" class="inline-flex items-center" aria-label="Mile High AI Labs — home">
+      <a href="/" class="inline-flex items-center" aria-label="Mile High AI Labs, home">
         <img
           src="/images/logo-mhal.png"
           alt="Mile High AI Labs"
@@ -17,7 +17,7 @@ const year = new Date().getFullYear();
         />
       </a>
       <p class="mt-4 max-w-xs text-sm leading-relaxed">
-        AI systems built, run, and reviewed by humans — for small and medium businesses in
+        Helpful AI built, run, and checked by real people, for small and medium businesses in
         Denver and beyond.
       </p>
       <address class="mt-5 text-sm not-italic leading-relaxed">
@@ -40,7 +40,7 @@ const year = new Date().getFullYear();
           ))
         }
         <li>
-          <a href={site.propspectrum} target="_blank" rel="noopener" class="transition-colors hover:text-white">
+          <a href={site.propspectrum} class="transition-colors hover:text-white">
             PropSpectrum (Real Estate)
           </a>
         </li>
@@ -67,7 +67,7 @@ const year = new Date().getFullYear();
       <ul class="mt-4 space-y-3 text-sm">
         <li>
           <a href={site.booking} target="_blank" rel="noopener" class="font-semibold text-terracotta hover:underline">
-            Book a Free Audit →
+            Book a Free Call →
           </a>
         </li>
         <li><a href={`mailto:${site.email}`} class="transition-colors hover:text-white">{site.email}</a></li>
@@ -81,7 +81,7 @@ const year = new Date().getFullYear();
   <div class="border-t border-white/10">
     <div class="container-max flex flex-col items-center justify-between gap-3 py-6 text-xs text-white/50 sm:flex-row">
       <p>© {year} Mile High AI Labs. All rights reserved.</p>
-      <p>Denver-built · Human-in-the-Loop on every output.</p>
+      <p>Denver-built · A real person checks every result.</p>
     </div>
   </div>
 </footer>

@@ -13,7 +13,7 @@ const PAGES = {
   'propreach_marketing_growth/code v2.html': 'public/propspectrum/propreach/index.html',
 };
 
-const FONT_LINK = '<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />';
+const FONT_LINK = '<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />';
 const CSS_LINK = '<link rel="stylesheet" href="/images/propspectrum/propspectrum.css" />';
 
 // id->filename helper must MATCH fetch script.
@@ -55,13 +55,18 @@ for (const [src, out] of Object.entries(PAGES)) {
   html = html.replace(/<script src="https:\/\/cdn\.tailwindcss\.com[^"]*"><\/script>/g, '');
   html = html.replace(/<script[^>]*>\s*tailwind\.config[\s\S]*?<\/script>/g, '');
 
-  // 2) Swap font <link> (Plus Jakarta + DM Sans) -> Instrument Serif + Inter, and add CSS link.
+  // 2) Swap font <link> (Plus Jakarta + DM Sans) -> Manrope, and add CSS link.
   html = html.replace(/<link href="https:\/\/fonts\.googleapis\.com\/css2\?family=Plus\+Jakarta[^>]*>/g, FONT_LINK);
   html = html.replace('</head>', `  ${CSS_LINK}\n</head>`);
 
-  // 3) Inline font-family swaps.
-  html = html.replace(/'Plus Jakarta Sans'/g, "'Instrument Serif'").replace(/Plus Jakarta Sans/g, 'Instrument Serif');
-  html = html.replace(/'DM Sans'/g, "'Inter'").replace(/DM Sans/g, 'Inter');
+  // 3) Inline font-family swaps -> single professional family (Manrope).
+  html = html.replace(/'Plus Jakarta Sans'/g, "'Manrope'").replace(/Plus Jakarta Sans/g, 'Manrope');
+  html = html.replace(/'DM Sans'/g, "'Manrope'").replace(/DM Sans/g, 'Manrope');
+
+  // 3b) Remove em dashes (read as AI-written). They are used here as separators in
+  //     labels/captions and as parenthetical breaks; a spaced hyphen reads naturally
+  //     in both. The regex normalizes surrounding whitespace to a single space.
+  html = html.replace(/\s*—\s*/g, ' - ');
 
   // 4) CTA links -> MHAL booking.
   html = html.replace(/https:\/\/calendly\.com\/propspectrum\/audit/g, 'https://cal.com/milehighailabs/15min');
@@ -118,6 +123,18 @@ for (const [src, out] of Object.entries(PAGES)) {
   html = html.replace(/(<a\b[^>]*?)href="#"([^>]*?>How It Works<\/a>)/g, '$1href="#how-it-works"$2');
   //    c) Remove dead Privacy/Terms links (no such pages yet).
   html = html.replace(/<a\b[^>]*href="#"[^>]*>(?:Privacy|Terms)<\/a>\s*/g, '');
+
+  // 10) Back arrow in the header, beside the PropSpectrum brand.
+  //     Target: products -> /propspectrum; portfolio/design-studio -> /propspectrum/propoptics;
+  //     PropSpectrum home -> / (Mile High AI Labs).
+  let back = '/propspectrum';
+  if (out.endsWith('propspectrum/index.html')) back = '/';
+  else if (out.includes('/propoptics/portfolio/') || out.includes('/propoptics/design-studio/')) back = '/propspectrum/propoptics';
+  const backAnchor = `<a href="${back}" aria-label="Back" style="display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.7);text-decoration:none;font-size:14px;font-weight:600;white-space:nowrap;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</a>`;
+  html = html.replace(
+    /(<header\b[^>]*>\s*<div\b[^>]*>\s*)(<a href="\/propspectrum"[^>]*>PropSpectrum<\/a>)/,
+    (_m, pre, brand) => `${pre}<span style="display:inline-flex;align-items:center;gap:14px;">${backAnchor}${brand}</span>`
+  );
 
   await mkdir(path.dirname(out), { recursive: true });
   await writeFile(out, html);
