@@ -6,12 +6,19 @@
    ============================================================ */
 @theme {
   /* Colors */
-  --color-navy: #1c2b3a; /* Midnight Navy — headlines, dark sections, nav */
-  --color-navy-700: #233747; /* ghost-layer lighter navy for dark cards */
-  --color-navy-900: #14202b; /* ghost-layer darker navy */
-  --color-warm: #f5f2ed; /* Warm White — primary surface */
-  --color-terracotta: #e8a87c; /* Primary CTA + HITL highlight */
-  --color-terracotta-600: #d8915f; /* hover */
+  --color-navy: #121316; /* Near-black — headlines, dark sections, nav, footer */
+  --color-navy-700: #24262b; /* ghost-layer lighter near-black for dark cards */
+  --color-navy-900: #0b0c0e; /* ghost-layer darker near-black */
+
+  /* Hero blue (deep slate) — kept ONLY for hero sections, independent of the
+     near-black UI color above. */
+  --color-hero: #1c2b3a;
+  --color-hero-700: #233747;
+  --color-hero-900: #14202b;
+  --color-warm: #f5f5fb; /* Soft near-white (lavender-gray) — primary surface */
+  --color-terracotta: #7c5cff; /* Brand Violet — logo, highlights, text, headings, CTA (one color everywhere) */
+  --color-terracotta-600: #6a45f0; /* hover (deeper violet) */
+  --color-terracotta-300: #7c5cff; /* same brand violet (used on dark backgrounds) */
   --color-forest: #1a3028; /* Deep Forest — secondary accent */
   --color-amber: #c9a84c; /* Amber Gold — sparing highlights */
   --color-ink: #091f18; /* on-surface text */
@@ -67,7 +74,7 @@
 
   ::selection {
     background-color: var(--color-terracotta);
-    color: var(--color-navy);
+    color: #ffffff;
   }
 }
 
@@ -117,6 +124,82 @@
     box-shadow: 0 4px 20px rgba(28, 43, 58, 0.08);
     transform: translateY(-2px);
     border-color: rgba(28, 43, 58, 0.14);
+  }
+
+  /* Flip card — image front flips to content back on tap/click.
+     The back sits in normal flow and defines the card height; the front is
+     a full-bleed image overlay, so there is never empty space. */
+  .flip-card {
+    perspective: 1600px;
+  }
+  .flip-inner {
+    position: relative;
+    width: 100%;
+    transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+  .flip-card.is-flipped .flip-inner {
+    transform: rotateY(180deg);
+  }
+  .flip-front,
+  .flip-back {
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .flip-front {
+    position: absolute;
+    inset: 0;
+  }
+  .flip-back {
+    position: relative;
+    transform: rotateY(180deg);
+  }
+  /* Only the face currently shown should receive clicks, so the hidden front
+     overlay doesn't swallow taps on the back (e.g. the "Learn more" link). */
+  .flip-card.is-flipped .flip-front {
+    pointer-events: none;
+  }
+  .flip-card:not(.is-flipped) .flip-back {
+    pointer-events: none;
+  }
+  .flip-card:focus-visible {
+    outline: 2px solid var(--color-terracotta);
+    outline-offset: 3px;
+    border-radius: var(--radius-card);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flip-inner {
+      transition: none;
+    }
+  }
+
+  /* Hero diagonal background — black at top, brightening to blue toward the
+     bottom along a diagonal, with a soft blue glow near the bottom. */
+  .hero-split-bg {
+    background:
+      radial-gradient(50% 70% at 76% 42%, rgba(124, 92, 255, 0.24) 0%, rgba(124, 92, 255, 0) 60%),
+      radial-gradient(60% 75% at 18% 12%, rgba(124, 92, 255, 0.14) 0%, rgba(124, 92, 255, 0) 55%),
+      radial-gradient(65% 80% at 85% 95%, rgba(45, 68, 90, 0.55) 0%, rgba(28, 43, 58, 0) 55%),
+      linear-gradient(
+        152deg,
+        #050507 0%,
+        #0a1016 30%,
+        #18233a 64%,
+        var(--color-hero) 100%
+      );
+  }
+
+  /* Plain blue hero background (service pages) — uses hero blue, not the
+     site-wide near-black, so heroes stay blue. */
+  .hero-navy-bg {
+    background-image: linear-gradient(
+      to bottom right,
+      var(--color-hero-900),
+      var(--color-hero) 50%,
+      var(--color-hero-700)
+    );
   }
 
   /* Emphasis accent — display font, ExtraBold (no italics) */

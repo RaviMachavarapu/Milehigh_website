@@ -8,25 +8,29 @@ import { mkdir } from 'node:fs/promises';
 const OUT = 'public/images';
 await mkdir(OUT, { recursive: true });
 
-// ---- Mile High AI Labs: dark-green background -> transparent ----
+// ---- Mile High AI Labs: violet wordmark on a LIGHT background ----
+// The source is a violet "MILE HIGH AI LABS" wordmark + mountain on near-white.
+// For the dark navy nav we key OUT the light background (transparent) and recolor
+// the wordmark to a BRIGHT violet so it reads vivid and crisp on dark.
 const src = 'assets/milehighlogo.png';
 const { data, info } = await sharp(src).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 const ch = info.channels; // 4
-// Luminance alpha ramp so the cream wordmark + mountain stay FULLY opaque (no
-// fading/blending) while the dark-green gradient background goes transparent.
-// The logo is cleanly bimodal: green bg brightness tops out ~109, the cream
-// foreground is ~200-255, so this ramp sits safely in the gap and keeps edges
-// anti-aliased.
-const LOW = 110; // below this brightness -> transparent (green background)
-const HIGH = 185; // above this -> fully opaque (cream foreground)
+// Perceived-luminance alpha ramp: bright (white) background -> transparent,
+// dark/colored (violet wordmark) -> opaque. Anti-aliased edges blend smoothly.
+const OPAQUE_BELOW = 150; // L at/below this -> fully opaque (the wordmark)
+const CLEAR_ABOVE = 205; // L at/above this -> fully transparent (white bg)
+// Brand violet to paint the wordmark (matches the one brand violet #7c5cff).
+const FG = [124, 92, 255];
 for (let i = 0; i < data.length; i += ch) {
-  const lum = Math.max(data[i], data[i + 1], data[i + 2]);
-  let a = (lum - LOW) / (HIGH - LOW);
+  const lum = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+  let a = (CLEAR_ABOVE - lum) / (CLEAR_ABOVE - OPAQUE_BELOW);
   a = a < 0 ? 0 : a > 1 ? 1 : a;
+  data[i] = FG[0];
+  data[i + 1] = FG[1];
+  data[i + 2] = FG[2];
   data[i + 3] = Math.round(a * 255);
 }
 await sharp(data, { raw: { width: info.width, height: info.height, channels: ch } })
-  .modulate({ brightness: 1.28 }) // lift the cream wordmark/mountain toward white so it reads brighter on navy
   .trim({ threshold: 12 }) // crop the transparent border for a tight wordmark
   .resize({ width: 560, withoutEnlargement: true })
   .png({ compressionLevel: 9 })

@@ -15,6 +15,8 @@ interface Props {
   /** when set, renders a "Back" link pinned to the hero's top-left */
   backHref?: string;
   backLabel?: string;
+  /** use the black-left / blue-right split background (no images) */
+  splitBg?: boolean;
 }
 const {
   images = [],
@@ -22,6 +24,7 @@ const {
   class: className = '',
   backHref,
   backLabel = 'Back',
+  splitBg = false,
 } = Astro.props;
 const hasImages = images.length > 0;
 const multi = images.length > 1;
@@ -31,7 +34,7 @@ const trackSlides = multi ? [...images, images[0]] : images;
 
 <section
   class:list={[
-    'hero-media relative isolate flex min-h-[560px] items-center overflow-hidden bg-navy text-white md:min-h-[600px] lg:min-h-[640px]',
+    'hero-media hero-navy-bg relative isolate flex min-h-[560px] items-center overflow-hidden text-white md:min-h-[600px] lg:min-h-[640px]',
     className,
   ]}
   style={`--hero-delay:${interval}ms`}
@@ -59,9 +62,12 @@ const trackSlides = multi ? [...images, images[0]] : images;
         <div class="absolute inset-0 bg-gradient-to-b from-navy/75 via-navy/55 to-navy/80" />
         <div class="absolute inset-0 bg-navy/25" />
       </div>
+    ) : splitBg ? (
+      /* Black-left / blue-right split background (homepage hero) */
+      <div class="hero-split-bg absolute inset-0 -z-10" />
     ) : (
-      /* Plain navy hero: subtle gradient + soft glow for depth (no images) */
-      <div class="absolute inset-0 -z-10 bg-gradient-to-br from-navy-900 via-navy to-navy-700">
+      /* Plain blue hero: subtle gradient + soft glow for depth (no images) */
+      <div class="hero-navy-bg absolute inset-0 -z-10">
         <div class="absolute -top-1/3 left-1/2 h-[120%] w-[80%] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(232,168,124,0.10),transparent)]" />
       </div>
     )

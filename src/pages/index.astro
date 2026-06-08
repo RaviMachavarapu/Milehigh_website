@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import TestimonialCard from '../components/TestimonialCard.astro';
-import HeroMedia from '../components/HeroMedia.astro';
 import { site, services, propProducts, lifecycle } from '../data/site';
 import { organization, breadcrumb } from '../lib/jsonld';
 
@@ -21,6 +20,46 @@ const parseStat = (value: string) => {
   return { prefix: m[1], target: Number(m[2]), suffix: m[3] };
 };
 
+// Hero carousel service slides (slide 1 is the main hero, defined in markup).
+const heroSlides = [
+  {
+    badge: 'Lead Gen & CRM',
+    headline: 'Never lose a good lead again.',
+    text: 'We capture every enquiry, score the leads worth your time, and follow up automatically, so good customers never slip through the cracks.',
+    primary: { label: 'Book a Free Call', href: site.booking, external: true },
+    secondary: { label: 'Explore Lead Gen', href: '/services/lead-gen-crm' },
+    markers: ['Every enquiry captured', 'Auto follow-up', 'Human-reviewed'],
+    image: '/images/content/slide-leadgen.jpg',
+  },
+  {
+    badge: 'Marketing & Growth',
+    headline: 'Marketing that sounds just like you.',
+    text: 'We write, review, and publish on-brand content across the channels your customers actually use, like a full marketing team without the extra payroll.',
+    primary: { label: 'Book a Free Call', href: site.booking, external: true },
+    secondary: { label: 'Explore Marketing', href: '/services/marketing-growth' },
+    markers: ['On-brand content', 'Posted for you', 'Human-reviewed'],
+    image: '/images/content/slide-marketing.jpg',
+  },
+  {
+    badge: 'AI Solutions & Workflows',
+    headline: 'The help that never sleeps.',
+    text: 'Custom automation takes repetitive daily work off your plate, from enquiries and follow-ups to scheduling and data entry, with a real person checking the work.',
+    primary: { label: 'Book a Free Call', href: site.booking, external: true },
+    secondary: { label: 'Explore AI Workflows', href: '/services/ai-workflows' },
+    markers: ['24/7 cover', 'Instant replies', 'Human-reviewed'],
+    image: '/images/content/slide-aiworkflows.jpg',
+  },
+  {
+    badge: 'PropSpectrum · For real estate',
+    headline: 'Built for real estate teams.',
+    text: 'Our real estate suite, PropAI, PropLeads, PropOptics, and PropReach. The same hands-on, looked-after help, built for agents and teams.',
+    primary: { label: 'Explore PropSpectrum', href: '/propspectrum' },
+    secondary: { label: 'Book a Free Call', href: site.booking, external: true },
+    markers: ['PropAI', 'PropLeads', 'PropOptics', 'PropReach'],
+    image: '/images/content/propspectrum-hero.jpg',
+  },
+];
+
 const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
 ---
 
@@ -31,25 +70,196 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
   keywords="AI for small business, managed AI services, business automation, lead generation AI, human-in-the-loop AI, Denver AI company"
   jsonLd={jsonLd}
 >
-  <!-- ============ HERO ============ -->
-  <HeroMedia>
-    <div class="mx-auto max-w-3xl text-center">
-      <p class="eyebrow text-lg text-amber md:text-xl">Made for growing small and medium businesses</p>
-      <h1 class="mt-5 font-serif text-5xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">
-        We build <span class="accent-em text-terracotta">custom AI solutions</span> designed
-        specifically for growing businesses.
-      </h1>
-      <p class="mt-6 mx-auto max-w-2xl text-lg leading-relaxed text-white">
-        We set up helpful AI for small and medium businesses, and a real person keeps an eye
-        on it the whole way through. You don't build it, set it up, or watch over it. You
-        just get the result.
-      </p>
-      <div class="mt-9 flex flex-wrap justify-center gap-4">
-        <Button href={site.booking} external>Book a Free Call →</Button>
-        <Button href="#lifecycle" variant="dark">See how it works</Button>
+  <!-- ============ HERO CAROUSEL ============ -->
+  <section
+    class="hero-carousel relative isolate flex min-h-[600px] items-stretch overflow-hidden text-white md:min-h-[660px] lg:min-h-[680px]"
+    data-hero-carousel
+    aria-roledescription="carousel"
+    aria-label="Mile High AI Labs services"
+  >
+    <!-- Fixed dark gradient background (the present hero look) -->
+    <div class="hero-split-bg absolute inset-0 -z-10"></div>
+
+    <!-- Sliding track -->
+    <div class="hero-track flex w-full transition-transform duration-700 ease-out" data-track>
+      <!-- SLIDE 1 — present hero (content left, image right) -->
+      <div class="relative flex w-full shrink-0 basis-full items-center">
+        {/* Full-bleed image, with the dark hero colour melting diagonally into it */}
+        <div class="absolute inset-0 hidden lg:block">
+          <img
+            src="/images/heroes/hero-home.jpg"
+            alt=""
+            aria-hidden="true"
+            loading="eager"
+            decoding="async"
+            class="h-full w-full object-cover object-center"
+          />
+          <div
+            class="absolute inset-0"
+            style="background-image: linear-gradient(115deg, #0a0d12 0%, #0a0d12 30%, rgba(10,13,18,0.55) 55%, rgba(10,13,18,0.12) 78%, rgba(10,13,18,0) 100%);"
+          />
+          <div
+            class="absolute inset-0"
+            style="background-image: linear-gradient(to bottom, rgba(10,13,18,0.40) 0%, rgba(10,13,18,0.10) 45%, rgba(10,13,18,0.20) 100%);"
+          />
+        </div>
+        <div class="container-max relative z-10 w-full py-16 md:py-20">
+          <div class="max-w-xl text-left">
+            <p class="eyebrow text-terracotta-300">Made for growing small and medium businesses</p>
+            <h1 class="mt-4 font-serif text-4xl font-extrabold leading-[1.1] tracking-tight text-white md:text-5xl">
+              We build <span class="accent-em text-white">Custom AI Solutions</span> designed
+              specifically for growing businesses.
+            </h1>
+            <p class="mt-6 max-w-lg text-lg leading-relaxed text-white/85">
+              We set up helpful AI for small and medium businesses, and a real person keeps an eye
+              on it the whole way through. You don't build it, set it up, or watch over it. You
+              just get the result.
+            </p>
+            <div class="mt-8 flex flex-wrap gap-4">
+              <Button href={site.booking} external>Book a Free Call →</Button>
+              <Button href="#lifecycle" variant="dark">See how it works</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SERVICE SLIDES -->
+      {
+        heroSlides.map((s) => (
+          <div class="relative flex w-full shrink-0 basis-full items-center">
+            {/* Full-bleed image, with the dark hero colour melting smoothly into it */}
+            <div class="absolute inset-0 hidden lg:block">
+              <img src={s.image} alt="" aria-hidden="true" loading="lazy" decoding="async" class="h-full w-full object-cover object-center" />
+              {/* Diagonal blend: dark hero colour melts into the image at an angle */}
+              <div
+                class="absolute inset-0"
+                style="background-image: linear-gradient(115deg, #0a0d12 0%, #0a0d12 30%, rgba(10,13,18,0.55) 55%, rgba(10,13,18,0.12) 78%, rgba(10,13,18,0) 100%);"
+              />
+              {/* Vertical depth: ~40% dark at the top, ~20% at the bottom */}
+              <div
+                class="absolute inset-0"
+                style="background-image: linear-gradient(to bottom, rgba(10,13,18,0.40) 0%, rgba(10,13,18,0.10) 45%, rgba(10,13,18,0.20) 100%);"
+              />
+            </div>
+
+            {/* Left content */}
+            <div class="container-max relative z-10 w-full py-16 md:py-20">
+              <div class="max-w-xl">
+                <span class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
+                  <svg class="h-4 w-4 text-terracotta-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2l1.9 5.1L19 9l-5.1 1.9L12 16l-1.9-5.1L5 9l5.1-1.9L12 2zM19 14l.9 2.6L22 17.5l-2.1.9L19 21l-.9-2.6L16 17.5l2.1-.9L19 14z" />
+                  </svg>
+                  {s.badge}
+                </span>
+                <h2 class="mt-6 font-serif text-4xl font-extrabold leading-[1.08] tracking-tight text-white md:text-5xl">
+                  {s.headline}
+                </h2>
+                <p class="mt-5 max-w-lg text-lg leading-relaxed text-white/85">{s.text}</p>
+                <div class="mt-8 flex flex-wrap gap-4">
+                  <Button href={s.primary.href} external={s.primary.external}>
+                    {s.primary.label} →
+                  </Button>
+                  <Button href={s.secondary.href} variant="dark">
+                    {s.secondary.label}
+                  </Button>
+                </div>
+                <p class="mt-8 text-sm font-medium text-white/55">{s.markers.join('  ·  ')}</p>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Controls: arrows + indicators -->
+    <div class="container-max pointer-events-none absolute inset-x-0 bottom-6 z-10">
+      <div class="flex items-center justify-center gap-5">
+        <button
+          type="button"
+          data-prev
+          aria-label="Previous slide"
+          class="pointer-events-auto flex h-10 w-10 items-center justify-center rounded-full border border-white/30 text-white transition-colors hover:border-white hover:bg-white/10"
+        >
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+        </button>
+        <div class="flex items-center gap-2" data-dots>
+          {
+            [0, 1, 2, 3, 4].map((i) => (
+              <button
+                type="button"
+                data-dot={i}
+                aria-label={`Go to slide ${i + 1}`}
+                class="hero-dot h-1.5 rounded-full bg-white/40 transition-all duration-300"
+              />
+            ))
+          }
+        </div>
+        <button
+          type="button"
+          data-next
+          aria-label="Next slide"
+          class="pointer-events-auto flex h-10 w-10 items-center justify-center rounded-full border border-white/30 text-white transition-colors hover:border-white hover:bg-white/10"
+        >
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+        </button>
       </div>
     </div>
-  </HeroMedia>
+  </section>
+
+  <script>
+    const root = document.querySelector<HTMLElement>('[data-hero-carousel]');
+    if (root) {
+      const track = root.querySelector<HTMLElement>('[data-track]')!;
+      const dots = Array.from(root.querySelectorAll<HTMLButtonElement>('.hero-dot'));
+      const total = dots.length;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let current = 0;
+      let timer: number | undefined;
+
+      const setDots = () => {
+        dots.forEach((d, i) => {
+          const on = i === current;
+          d.classList.toggle('w-8', on);
+          d.classList.toggle('bg-terracotta', on);
+          d.classList.toggle('w-2.5', !on);
+          d.classList.toggle('bg-white/40', !on);
+        });
+      };
+      const go = (i: number) => {
+        current = (i + total) % total;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        setDots();
+      };
+      const stop = () => {
+        if (timer) window.clearInterval(timer);
+      };
+      const start = () => {
+        if (reduce) return;
+        stop();
+        timer = window.setInterval(() => go(current + 1), 6500);
+      };
+
+      root.querySelector('[data-prev]')?.addEventListener('click', () => {
+        go(current - 1);
+        start();
+      });
+      root.querySelector('[data-next]')?.addEventListener('click', () => {
+        go(current + 1);
+        start();
+      });
+      dots.forEach((d, i) =>
+        d.addEventListener('click', () => {
+          go(i);
+          start();
+        }),
+      );
+      root.addEventListener('mouseenter', stop);
+      root.addEventListener('mouseleave', start);
+
+      setDots();
+      start();
+    }
+  </script>
 
   <!-- ============ STAT BAR ============ -->
   <section class="border-b border-navy/10 bg-warm" aria-label="Key results">
@@ -129,87 +339,166 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
           after it, so the hard parts leave your plate and the results stay.
         </p>
       </div>
-      <div class="mt-14 grid gap-6 md:grid-cols-3">
+      <div class="mt-14 grid items-stretch gap-6 md:grid-cols-3">
         {
           services.map((s) => (
-            <a href={s.href} class="card-lift group flex flex-col overflow-hidden">
-              <div class="overflow-hidden">
-                <img
-                  src={s.image}
-                  alt={`${s.label} — Mile High AI Labs`}
-                  width="800"
-                  height="420"
-                  loading="lazy"
-                  decoding="async"
-                  class="h-44 w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                />
-              </div>
-              <div class="flex flex-1 flex-col p-8">
-                <h3 class="text-2xl text-navy">{s.label}</h3>
-                <ul class="mt-6 flex-1 space-y-3.5">
-                  {s.features.map((f) => (
-                    <li class="flex items-start gap-3 text-base text-navy/85">
-                      <svg
-                        class="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-600"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0L3.3 9.7a1 1 0 0 1 1.4-1.4l3.8 3.79 6.8-6.8a1 1 0 0 1 1.4 0Z"
-                          clip-rule="evenodd"
-                        />
+            <div
+              class="flip-card group"
+              data-flip
+              role="button"
+              tabindex="0"
+              aria-label={`${s.label} — tap to see what's included`}
+            >
+              <div class="flip-inner h-full">
+                {/* BACK — content (defines the card height) */}
+                <div class="flip-back flex h-full flex-col border border-navy/10 bg-white p-6">
+                  <div class="flex items-start justify-between gap-3">
+                    <span class="inline-flex items-center gap-2 rounded-full border border-navy/20 px-3.5 py-1.5 text-sm font-semibold text-navy">
+                      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="12" cy="8" r="3.5" />
+                        <path d="M5.5 20a6.5 6.5 0 0 1 13 0" />
                       </svg>
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <span class="mt-7 text-sm font-semibold text-navy transition-colors group-hover:text-terracotta-600">
-                  Learn more →
-                </span>
+                      {s.label}
+                    </span>
+                    <button
+                      type="button"
+                      data-flip-close
+                      aria-label="Close"
+                      class="-mr-1 -mt-1 rounded-full p-1.5 text-navy/40 transition-colors hover:bg-navy/5 hover:text-navy"
+                    >
+                      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="m6 6 12 12M18 6 6 18" />
+                      </svg>
+                    </button>
+                  </div>
+                  <h3 class="mt-4 text-xl leading-snug text-navy">{s.tagline}</h3>
+                  <ul class="mt-4 flex-1 space-y-3">
+                    {s.features.map((f) => (
+                      <li class="flex items-start gap-2.5 text-sm leading-relaxed text-navy/80">
+                        <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <circle cx="12" cy="12" r="9" />
+                          <path d="m8.5 12 2.5 2.5 4.5-5" />
+                        </svg>
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div class="mt-5 border-t border-navy/10 pt-4">
+                    <a
+                      href={s.href}
+                      class="inline-flex items-center gap-2 rounded-lg bg-terracotta px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-terracotta-600"
+                    >
+                      Learn more →
+                    </a>
+                  </div>
+                </div>
+
+                {/* FRONT — full-bleed image with overlaid badge + headline */}
+                <div class="flip-front border border-navy/8 shadow-sm">
+                  <img
+                    src={s.image}
+                    alt={`${s.label} — Mile High AI Labs`}
+                    width="800"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                    class="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-[#0a121b]/95 via-[#0a121b]/40 to-[#0a121b]/15" />
+                  <div class="absolute left-5 top-5">
+                    <span class="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">
+                      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="12" cy="8" r="3.5" />
+                        <path d="M5.5 20a6.5 6.5 0 0 1 13 0" />
+                      </svg>
+                      {s.label}
+                    </span>
+                  </div>
+                  <div class="absolute inset-x-0 bottom-0 p-6">
+                    <h3 class="text-2xl font-bold leading-tight text-white">{s.tagline}</h3>
+                    <span class="mt-3 inline-flex items-center gap-2 text-sm font-medium text-white/85">
+                      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74c1.21-.81 2-2.18 2-3.74a4 4 0 1 0-8 0c0 1.56.79 2.93 2 3.74Zm6.84 1.05-3.01-1.49c-.11-.06-.24-.09-.36-.09H12v-6c0-.83-.67-1.5-1.5-1.5S9 4.67 9 5.5v10.74l-3.44-.72c-.34-.07-.69.04-.93.28-.4.41-.39 1.07.02 1.47l3.49 3.49c.38.37.89.58 1.42.58h6.18c.74 0 1.38-.55 1.49-1.29l.62-4.43c.09-.62-.24-1.23-.81-1.51Z" />
+                      </svg>
+                      Tap to see what's included
+                    </span>
+                  </div>
+                </div>
               </div>
-            </a>
+            </div>
           ))
         }
       </div>
+
+      <script>
+        document.querySelectorAll<HTMLElement>('[data-flip]').forEach((card) => {
+          card.addEventListener('click', (e) => {
+            const target = e.target as HTMLElement;
+            if (target.closest('a')) return; // links navigate normally
+            // Click flips open; clicking again (or the ✕) flips it back.
+            card.classList.toggle('is-flipped');
+          });
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              card.classList.toggle('is-flipped');
+            } else if (e.key === 'Escape') {
+              card.classList.remove('is-flipped');
+            }
+          });
+        });
+      </script>
     </div>
   </section>
 
   <!-- ============ PROPSPECTRUM SUITE ============ -->
   <section class="section bg-warm pt-0">
     <div class="container-max">
-      <div class="mx-auto max-w-2xl text-center">
-        <p class="eyebrow text-amber">For real estate</p>
-        <h2 class="mt-3 text-3xl md:text-4xl">The PropSpectrum Suite</h2>
-        <p class="mt-4 text-lg leading-relaxed text-ink-soft">
-          Our real estate side. The same hands-on, looked-after help, built for agents and
-          teams.
-        </p>
-      </div>
-      <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {
-          propProducts.map((p) => (
-            <div class="flex flex-col rounded-2xl border border-navy/10 bg-white p-7">
-              <span
-                class:list={[
-                  'inline-block h-1.5 w-10 rounded-full',
-                  p.color === 'forest' && 'bg-forest',
-                  p.color === 'amber' && 'bg-amber',
-                  p.color === 'terracotta' && 'bg-terracotta',
-                ]}
-              />
-              <h3 class="mt-5 text-xl text-navy">{p.name}</h3>
-              <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">{p.oneLine}</p>
-              <span class="mt-5 inline-flex w-fit items-center rounded-full bg-warm px-3 py-1 text-xs font-semibold uppercase tracking-wide text-navy/50">
-                Coming soon
-              </span>
-            </div>
-          ))
-        }
-      </div>
-      <div class="mt-12 text-center">
-        <Button href="/propspectrum" variant="secondary">Learn more about PropSpectrum →</Button>
+      <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        {/* LEFT — product cards (2 x 2) */}
+        <div class="grid gap-5 sm:grid-cols-2">
+          {
+            propProducts.map((p) => (
+              <div class="flex h-full flex-col rounded-2xl border border-navy/10 bg-white p-6">
+                <span
+                  class:list={[
+                    'inline-block h-1.5 w-10 rounded-full',
+                    p.color === 'forest' && 'bg-forest',
+                    p.color === 'amber' && 'bg-amber',
+                    p.color === 'terracotta' && 'bg-terracotta',
+                  ]}
+                />
+                <h3 class="mt-5 text-xl text-navy">{p.name}</h3>
+                <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">{p.oneLine}</p>
+                <span class="mt-5 inline-flex w-fit items-center rounded-full bg-warm px-3 py-1 text-xs font-semibold uppercase tracking-wide text-navy/50">
+                  Coming soon
+                </span>
+              </div>
+            ))
+          }
+        </div>
+
+        {/* RIGHT — context + image + CTA */}
+        <div>
+          <p class="eyebrow text-terracotta">For real estate</p>
+          <h2 class="mt-3 text-3xl md:text-4xl">The PropSpectrum Suite</h2>
+          <p class="mt-4 text-lg leading-relaxed text-ink-soft">
+            Our real estate side. The same hands-on, looked-after help, built for agents and
+            teams.
+          </p>
+          <img
+            src="/images/content/propspectrum.jpg"
+            alt="An aerial view of a residential neighborhood, representing the PropSpectrum real estate suite"
+            width="1400"
+            height="764"
+            loading="lazy"
+            decoding="async"
+            class="mt-8 aspect-[16/9] w-full rounded-2xl border border-navy/10 object-cover shadow-lg shadow-navy/5"
+          />
+          <div class="mt-8">
+            <Button href="/propspectrum" variant="secondary">Learn more about PropSpectrum →</Button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -219,7 +508,7 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
     <div class="container-max">
       <div class="grid items-stretch gap-14 lg:grid-cols-2">
         <div class="flex flex-col justify-center">
-          <p class="eyebrow text-amber">Who are we</p>
+          <p class="eyebrow text-terracotta">Who are we</p>
           <h2 class="mt-3 text-3xl md:text-4xl">A team behind your AI, not a tool you rent</h2>
           <p class="mt-5 text-lg leading-relaxed text-ink-soft">
             Mile High AI Labs is a Denver team that builds, runs, and looks after AI for small
@@ -229,7 +518,7 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
           </p>
         </div>
         <img
-          src="/images/content/team.jpg"
+          src="/images/content/who-we-are.jpg"
           alt="The Mile High AI Labs team collaborating on a project"
           width="800"
           height="600"
@@ -246,7 +535,7 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
             { h: 'Accountable', p: 'A real person signs off before anything reaches your customers.' },
             { h: 'Denver-built', p: 'Rooted in a real place and a real business community.' },
           ].map((item) => (
-            <div class="card-lift h-full border-[#e7e0d2] bg-[#f5f2ed] p-6">
+            <div class="card-lift h-full border-navy/10 bg-warm p-6">
               <h3 class="text-xl text-navy">{item.h}</h3>
               <p class="mt-2 text-sm leading-relaxed text-ink-soft">{item.p}</p>
             </div>
@@ -257,11 +546,17 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
   </section>
 
   <!-- ============ HITL ANCHOR (navy) ============ -->
-  <section class="bg-navy py-20 text-white lg:py-28">
-    <div class="container-max grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:items-start">
+  <section class="relative isolate overflow-hidden bg-navy py-20 text-white lg:py-28">
+    {/* half-circular violet gradient fade, bottom-left */}
+    <div
+      class="pointer-events-none absolute -bottom-40 -left-40 h-[34rem] w-[34rem] rounded-full blur-2xl"
+      style="background: radial-gradient(closest-side, rgba(124,92,255,0.30), rgba(124,92,255,0.12) 45%, rgba(124,92,255,0) 72%);"
+      aria-hidden="true"
+    />
+    <div class="container-max relative z-10 grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:items-start">
       <div>
         <h2 class="font-serif text-4xl font-bold leading-tight md:text-5xl">
-          AI isn't the final word.<br /><span class="accent-em text-terracotta">You are.</span>
+          AI isn't the final word.<br /><span class="accent-em text-terracotta-300">You are.</span>
         </h2>
         <p class="mt-6 max-w-lg text-lg leading-relaxed text-white/75">
           Most AI tools run on their own, and nobody checks the work until it goes wrong in
@@ -296,32 +591,29 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
           looking after things long term.
         </p>
       </div>
-      <ol class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Workflow diagram — connected numbered steps with the HITL step highlighted */}
+      <ol class="mt-16 grid gap-12 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 lg:grid-cols-6 lg:gap-4">
         {
           lifecycle.map((s, i) => (
-            <li
-              class:list={[
-                'rounded-2xl border p-7',
-                s.hitl ? 'border-terracotta bg-terracotta/10' : 'border-navy/10 bg-white',
-              ]}
-            >
-              <div class="flex items-center gap-3">
-                <span
-                  class:list={[
-                    'flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold',
-                    s.hitl ? 'bg-terracotta text-navy' : 'bg-navy text-white',
-                  ]}
-                >
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <h3 class="text-xl text-navy">{s.step}</h3>
-                {s.hitl && (
-                  <span class="ml-auto rounded-full bg-terracotta px-2.5 py-0.5 text-xs font-semibold text-navy">
-                    Human check
-                  </span>
-                )}
+            <li class:list={[
+              'relative flex flex-col items-center text-center',
+              "lg:after:absolute lg:after:top-7 lg:after:left-[calc(50%+1.75rem)] lg:after:h-0.5 lg:after:w-[calc(100%-2.5rem)] lg:after:bg-navy/15 lg:after:content-[''] lg:last:after:hidden",
+            ]}>
+              <div
+                class:list={[
+                  'relative z-10 flex h-14 w-14 items-center justify-center rounded-full text-base font-bold shadow-sm',
+                  s.hitl ? 'bg-terracotta text-white ring-4 ring-terracotta/20' : 'bg-navy text-white',
+                ]}
+              >
+                {String(i + 1).padStart(2, '0')}
               </div>
-              <p class="mt-4 text-sm leading-relaxed text-ink-soft">{s.desc}</p>
+              <h3 class="mt-4 text-base font-semibold text-navy">{s.step}</h3>
+              {s.hitl && (
+                <span class="mt-1.5 inline-flex items-center rounded-full bg-terracotta/15 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-terracotta-600">
+                  Human check
+                </span>
+              )}
+              <p class="mt-2 max-w-[15rem] text-sm leading-relaxed text-ink-soft">{s.desc}</p>
             </li>
           ))
         }
@@ -333,17 +625,17 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
   <section class="section bg-white">
     <div class="container-max">
       <div class="mx-auto max-w-2xl text-center">
-        <h2 class="text-3xl text-amber md:text-4xl">Voice of the partners</h2>
+        <h2 class="text-3xl text-terracotta md:text-4xl">Voice of the partners</h2>
       </div>
       <div class="mx-auto mt-12 grid max-w-4xl gap-6 md:grid-cols-2">
         <TestimonialCard
-          class="border-[#e7e0d2] bg-[#f5f2ed] hover:shadow-[0_4px_20px_rgba(28,43,58,0.10)]"
+          class="border-navy/10 bg-warm hover:shadow-[0_4px_20px_rgba(28,43,58,0.10)]"
           quote="Our front desk used to lose an hour a day chasing confirmations. That's gone now, and we didn't have to rip out a single tool the staff actually likes using."
           name="Priya Nair"
           role="Operations lead, dental group · Denver, CO"
         />
         <TestimonialCard
-          class="border-[#e7e0d2] bg-[#f5f2ed] hover:shadow-[0_4px_20px_rgba(28,43,58,0.10)]"
+          class="border-navy/10 bg-warm hover:shadow-[0_4px_20px_rgba(28,43,58,0.10)]"
           quote="What I appreciate is the honesty. They told me one of my ideas wasn't worth automating yet. You don't hear that from agencies trying to bill you for everything."
           name="Tom Caldwell"
           role="Founder, B2B logistics startup"
@@ -352,33 +644,40 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
     </div>
   </section>
 
-  <!-- ============ APPS CONSULTANTS ============ -->
-  <section class="bg-forest py-16 text-white">
-    <div class="container-max flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:gap-10 md:text-left">
-      <a
-        href="https://appsconsultants.com"
-        target="_blank"
-        rel="noopener"
-        class="shrink-0 transition-transform hover:-translate-y-0.5"
-        aria-label="Apps Consultants"
-      >
-        <img
-          src="/images/logo-apps-consultants.png"
-          alt="Apps Consultants"
-          width="318"
-          height="159"
-          class="h-16 w-auto rounded-xl"
-        />
-      </a>
-      <div class="md:flex-1">
-        <p class="eyebrow text-amber">Strategic partner · Apps Consultants</p>
-        <p class="mt-3 text-lg leading-relaxed text-white/85">
-          Got something bigger? We hand you to our sister company, Apps Consultants, trusted
-          by Fortune 1000 companies since 2005. Together we can help anyone, from a
-          five-person shop to a Fortune 1000 company.
-        </p>
+  <!-- ============ APPS CONSULTANTS (highlighted) ============ -->
+  <section class="bg-warm py-12 md:py-16">
+    <div class="container-max">
+      <div class="relative overflow-hidden rounded-3xl bg-[#2a2d33] px-8 py-12 text-white shadow-xl shadow-navy/15 ring-1 ring-terracotta/35 md:px-12">
+        {/* subtle violet highlight glow */}
+        <div class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[radial-gradient(closest-side,rgba(124,92,255,0.20),transparent)]" />
+        <div class="pointer-events-none absolute -bottom-24 -left-16 h-56 w-56 rounded-full bg-[radial-gradient(closest-side,rgba(124,92,255,0.12),transparent)]" />
+        <div class="relative flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:gap-10 md:text-left">
+          <a
+            href="https://appsconsultants.com"
+            target="_blank"
+            rel="noopener"
+            class="shrink-0 transition-transform hover:-translate-y-0.5"
+            aria-label="Apps Consultants"
+          >
+            <img
+              src="/images/logo-apps-consultants.png"
+              alt="Apps Consultants"
+              width="318"
+              height="159"
+              class="h-16 w-auto rounded-xl"
+            />
+          </a>
+          <div class="md:flex-1">
+            <p class="eyebrow text-terracotta-300">Strategic partner · Apps Consultants</p>
+            <p class="mt-3 text-lg leading-relaxed text-white/85">
+              Got something bigger? We hand you to our sister company, Apps Consultants, trusted
+              by Fortune 1000 companies since 2005. Together we can help anyone, from a
+              five-person shop to a Fortune 1000 company.
+            </p>
+          </div>
+          <Button href="https://appsconsultants.com" external variant="dark" class="shrink-0">Connect with Apps Consultants →</Button>
+        </div>
       </div>
-      <Button href="https://appsconsultants.com" external variant="dark" class="shrink-0">Connect with Apps Consultants →</Button>
     </div>
   </section>
 

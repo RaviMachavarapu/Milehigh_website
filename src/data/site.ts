@@ -38,7 +38,9 @@ export const services = [
     slug: 'lead-gen-crm',
     label: 'Lead Gen & CRM',
     href: '/services/lead-gen-crm',
-    image: '/images/content/card-lead-gen-crm.jpg',
+    image: '/images/content/leadgen-crm.jpg',
+    photo: '/images/content/team.jpg',
+    tagline: 'Never lose a good lead again.',
     blurb:
       'AI lead generation and CRM automation that captures every enquiry, scores the leads worth your time, and follows up automatically, so good customers never slip through the cracks.',
     features: [
@@ -51,7 +53,9 @@ export const services = [
     slug: 'marketing-growth',
     label: 'Marketing & Growth',
     href: '/services/marketing-growth',
-    image: '/images/content/card-marketing-growth.jpg',
+    image: '/images/content/marketing-content.jpg',
+    photo: '/images/content/marketing-content.jpg',
+    tagline: 'Marketing that sounds just like you.',
     blurb:
       'Done-for-you marketing: we write, review, and publish on-brand content across the channels your customers actually use, like a full marketing team without the extra payroll.',
     features: [
@@ -64,7 +68,9 @@ export const services = [
     slug: 'ai-workflows',
     label: 'AI Solutions & Workflows',
     href: '/services/ai-workflows',
-    image: '/images/content/card-ai-workflows.jpg',
+    image: '/images/content/ai-workflows-team.jpg',
+    photo: '/images/content/ai-workflows-team.jpg',
+    tagline: 'The help that never sleeps.',
     blurb:
       'Custom AI workflow automation that takes repetitive daily work off your plate, from enquiries and follow-ups to scheduling and data entry, with a real person checking the work before it reaches your customers.',
     features: [

@@ -67,11 +67,11 @@ const jsonLd = [
   jsonLd={jsonLd}
 >
   <!-- HERO -->
-  <HeroMedia backHref="/">
+  <HeroMedia images={['/images/heroes/hero-aiworkflows.jpg']}>
     <div class="mx-auto max-w-3xl text-center">
-      <p class="eyebrow text-lg text-amber md:text-xl">AI Solutions & Workflows</p>
+      <p class="eyebrow text-lg text-terracotta-300 md:text-xl">AI Solutions & Workflows</p>
       <h1 class="mt-5 font-serif text-4xl font-extrabold leading-[1.1] md:text-5xl">
-        The help that <span class="accent-em text-terracotta">never</span> sleeps
+        The help that <span class="accent-em text-terracotta-300">never</span> sleeps
       </h1>
       <p class="mt-6 mx-auto max-w-xl text-lg leading-relaxed text-white">
         We swap slow, manual, mistake-prone tasks for always-on AI that replies to enquiries,
@@ -146,7 +146,7 @@ const jsonLd = [
   <section class="bg-navy py-20 text-white lg:py-28">
     <div class="container-max">
       <div class="mx-auto max-w-2xl text-center">
-        <h2 class="font-serif text-3xl font-bold text-amber md:text-4xl">The outcomes we deliver</h2>
+        <h2 class="font-serif text-3xl font-bold text-terracotta-300 md:text-4xl">The outcomes we deliver</h2>
         <p class="mt-4 text-lg leading-relaxed text-white/70">
           What changes once the everyday tasks run themselves.
         </p>
@@ -167,16 +167,18 @@ const jsonLd = [
   <FAQ items={faqs} />
 
   <!-- CLOSING TESTIMONIAL + CTA -->
-  <section class="section bg-warm">
-    <div class="container-max max-w-3xl text-center">
-      <p class="accent-em text-3xl leading-snug text-navy md:text-4xl">
-        “We were drowning in follow-up. Now every enquiry gets answered in under a minute, and
-        I only get pinged when something actually needs me.”
-      </p>
-      <p class="mt-5 text-sm font-medium text-ink-soft">Operations director, home services company</p>
-      <div class="mt-10 flex flex-wrap justify-center gap-4">
-        <Button href={site.booking} external>Book a Free Call</Button>
-        <Button href={`mailto:${site.email}`} variant="secondary">Talk to our team</Button>
+  <section class="section bg-warm pt-0">
+    <div class="container-max">
+      <div class="rounded-3xl bg-navy px-8 py-16 text-center text-white md:px-16 md:py-20">
+        <p class="accent-em mx-auto max-w-2xl text-3xl leading-snug text-white md:text-4xl">
+          “We were drowning in follow-up. Now every enquiry gets answered in under a minute, and
+          I only get pinged when something actually needs me.”
+        </p>
+        <p class="mt-5 text-sm font-medium text-white/70">Operations director, home services company</p>
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+          <Button href={site.booking} external>Book a Free Call</Button>
+          <Button href={`mailto:${site.email}`} variant="dark">Talk to our team</Button>
+        </div>
       </div>
     </div>
   </section>

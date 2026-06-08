@@ -30,7 +30,7 @@ const { solid = false } = Astro.props;
         navLinks.map((link) => (
           <a
             href={link.href}
-            class="text-sm font-medium text-white transition-colors hover:text-amber"
+            class="text-sm font-medium text-white transition-colors hover:text-terracotta-300"
             {...(link.external ? { target: '_blank', rel: 'noopener' } : {})}
           >
             {link.label}
@@ -47,7 +47,7 @@ const { solid = false } = Astro.props;
         href={site.booking}
         target="_blank"
         rel="noopener"
-        class="rounded-lg bg-terracotta px-4 py-2 text-sm font-medium text-navy transition-colors hover:bg-terracotta-600"
+        class="rounded-lg bg-terracotta px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-terracotta-600"
       >
         Book a Free Call
       </a>
@@ -93,7 +93,7 @@ const { solid = false } = Astro.props;
         href={site.booking}
         target="_blank"
         rel="noopener"
-        class="mt-2 rounded-lg bg-terracotta px-4 py-2.5 text-center text-base font-medium text-navy"
+        class="mt-2 rounded-lg bg-terracotta px-4 py-2.5 text-center text-base font-medium text-white"
       >
         Book a Free Call
       </a>

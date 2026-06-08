@@ -68,11 +68,11 @@ const jsonLd = [
   jsonLd={jsonLd}
 >
   <!-- HERO -->
-  <HeroMedia backHref="/">
+  <HeroMedia images={['/images/heroes/hero-leadgen.jpg']}>
     <div class="mx-auto max-w-3xl text-center">
-      <p class="eyebrow text-lg text-amber md:text-xl">Lead Gen & CRM</p>
+      <p class="eyebrow text-lg text-terracotta-300 md:text-xl">Lead Gen & CRM</p>
       <h1 class="mt-5 font-serif text-4xl font-extrabold leading-[1.1] md:text-5xl">
-        Never lose a good <span class="accent-em text-terracotta">lead</span> again
+        Never lose a good <span class="accent-em text-terracotta-300">lead</span> again
       </h1>
       <p class="mt-6 mx-auto max-w-xl text-lg leading-relaxed text-white">
         We use smart AI to sort and follow up with every single lead, so none slip away.
@@ -145,7 +145,7 @@ const jsonLd = [
   <section class="bg-navy py-20 text-white lg:py-28">
     <div class="container-max">
       <div class="mx-auto max-w-2xl text-center">
-        <h2 class="font-serif text-3xl font-bold text-amber md:text-4xl">The results we promise</h2>
+        <h2 class="font-serif text-3xl font-bold text-terracotta-300 md:text-4xl">The results we promise</h2>
         <p class="mt-4 text-lg leading-relaxed text-white/70">
           What your leads look like with Mile High AI Labs.
         </p>
@@ -166,15 +166,17 @@ const jsonLd = [
   <FAQ items={faqs} />
 
   <!-- CLOSING TESTIMONIAL + CTA -->
-  <section class="section bg-warm">
-    <div class="container-max max-w-3xl text-center">
-      <p class="accent-em text-3xl leading-snug text-navy md:text-4xl">
-        “Mile High AI Labs transformed our lead flow in 3 weeks.”
-      </p>
-      <p class="mt-5 text-sm font-medium text-ink-soft">Founder, professional services firm</p>
-      <div class="mt-10 flex flex-wrap justify-center gap-4">
-        <Button href={site.booking} external>Book a Free Call</Button>
-        <Button href={`mailto:${site.email}`} variant="secondary">Talk to our team</Button>
+  <section class="section bg-warm pt-0">
+    <div class="container-max">
+      <div class="rounded-3xl bg-navy px-8 py-16 text-center text-white md:px-16 md:py-20">
+        <p class="accent-em mx-auto max-w-2xl text-3xl leading-snug text-white md:text-4xl">
+          “Mile High AI Labs transformed our lead flow in 3 weeks.”
+        </p>
+        <p class="mt-5 text-sm font-medium text-white/70">Founder, professional services firm</p>
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+          <Button href={site.booking} external>Book a Free Call</Button>
+          <Button href={`mailto:${site.email}`} variant="dark">Talk to our team</Button>
+        </div>
       </div>
     </div>
   </section>
