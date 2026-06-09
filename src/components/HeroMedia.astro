@@ -17,6 +17,8 @@ interface Props {
   backLabel?: string;
   /** use the black-left / blue-right split background (no images) */
   splitBg?: boolean;
+  /** text-left / image-right layout with a black scrim that blends into the photo */
+  sideText?: boolean;
 }
 const {
   images = [],
@@ -25,6 +27,7 @@ const {
   backHref,
   backLabel = 'Back',
   splitBg = false,
+  sideText = false,
 } = Astro.props;
 const hasImages = images.length > 0;
 const multi = images.length > 1;
@@ -53,14 +56,28 @@ const trackSlides = multi ? [...images, images[0]] : images;
                 aria-hidden="true"
                 loading={i === 0 ? 'eager' : 'lazy'}
                 decoding="async"
-                class="h-full w-full object-cover object-center"
+                class:list={[
+                  'h-full w-full object-cover',
+                  sideText ? 'object-right' : 'object-center',
+                ]}
               />
             </div>
           ))}
         </div>
-        {/* Transparency overlay so the centered text reads cleanly on any photo */}
-        <div class="absolute inset-0 bg-gradient-to-b from-navy/75 via-navy/55 to-navy/80" />
-        <div class="absolute inset-0 bg-navy/25" />
+        {sideText ? (
+          <>
+            {/* Black scrim on the LEFT for the text, fading into the photo on the right */}
+            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent md:via-black/70" />
+            {/* Top 40% + bottom 20% black blend so the photo melts into the page edges */}
+            <div class="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.9)_0%,rgba(0,0,0,0)_40%,rgba(0,0,0,0)_80%,rgba(0,0,0,0.9)_100%)]" />
+          </>
+        ) : (
+          <>
+            {/* Transparency overlay so the centered text reads cleanly on any photo */}
+            <div class="absolute inset-0 bg-gradient-to-b from-navy/75 via-navy/55 to-navy/80" />
+            <div class="absolute inset-0 bg-navy/25" />
+          </>
+        )}
       </div>
     ) : splitBg ? (
       /* Black-left / blue-right split background (homepage hero) */

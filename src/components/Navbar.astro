@@ -14,13 +14,17 @@ const { solid = false } = Astro.props;
   class="sticky inset-x-0 top-0 z-50 bg-navy shadow-sm"
 >
   <nav class="container-max flex h-16 items-center justify-between gap-4 md:h-20" aria-label="Primary">
-    <a href="/" class="flex items-center" aria-label="Mile High AI Labs, home">
+    <a
+      href="/"
+      class="flex items-center rounded-lg bg-terracotta px-3.5 py-2 transition-colors hover:bg-terracotta-600 md:px-4 md:py-2.5"
+      aria-label="Mile High AI Labs, home"
+    >
       <img
         src="/images/logo-mhal.png"
         alt="Mile High AI Labs"
         width="560"
         height="150"
-        class="h-9 w-auto md:h-11"
+        class="logo-mhal h-9 w-auto md:h-11"
       />
     </a>
 
@@ -47,9 +51,21 @@ const { solid = false } = Astro.props;
         href={site.booking}
         target="_blank"
         rel="noopener"
-        class="rounded-lg bg-terracotta px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-terracotta-600"
+        class="group inline-flex items-center gap-2 rounded-lg border border-white/40 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-white hover:bg-white/10"
       >
         Book a Free Call
+        <svg
+          class="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
       </a>
     </div>
 
@@ -100,6 +116,16 @@ const { solid = false } = Astro.props;
     </div>
   </div>
 </header>
+
+<style>
+  /* Flat, dark violet wordmark. No glow at all — completely matte/crisp. */
+  .logo-mhal {
+    filter: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .logo-mhal { transition: none; }
+  }
+</style>
 
 <script>
   const nav = document.getElementById('site-nav');

@@ -74,18 +74,18 @@ const jsonLd = [
   jsonLd={jsonLd}
 >
   <!-- HERO -->
-  <HeroMedia images={['/images/heroes/hero-marketing.jpg']}>
-    <div class="mx-auto max-w-3xl text-center">
-      <p class="eyebrow text-lg text-terracotta-300 md:text-xl">Marketing & Growth</p>
+  <HeroMedia images={['/images/heroes/hero-marketing.jpg']} sideText>
+    <div class="max-w-xl text-left">
+      <p class="eyebrow text-xl text-terracotta-300 md:text-2xl">Marketing & Growth</p>
       <h1 class="mt-5 font-serif text-4xl font-extrabold leading-[1.1] md:text-5xl">
-        Marketing that sounds <span class="accent-em text-terracotta-300">just like you</span>
+        Marketing that sounds <span class="accent-em text-white">just like you</span>
       </h1>
-      <p class="mt-6 mx-auto max-w-xl text-lg leading-relaxed text-white">
+      <p class="mt-6 max-w-lg text-lg leading-relaxed text-white">
         Steady, on-brand marketing that builds real trust, so you can focus on running the
         business. We write it, a real person checks it, and it gets posted for you
         automatically.
       </p>
-      <div class="mt-9 flex flex-wrap justify-center gap-4">
+      <div class="mt-9 flex flex-wrap justify-start gap-4">
         <Button href={site.booking} external>Get started →</Button>
         <Button href={`mailto:${site.email}`} variant="dark">Talk to the team</Button>
       </div>
@@ -170,8 +170,10 @@ const jsonLd = [
   </section>
 
   <!-- DAY 30 OUTCOMES -->
-  <section class="bg-navy py-20 text-white lg:py-28">
-    <div class="container-max">
+  <section class="relative isolate overflow-hidden bg-navy py-20 text-white lg:py-28">
+    <div class="pointer-events-none absolute -right-28 -top-28 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgba(124,92,255,0.22),transparent)]"></div>
+    <div class="pointer-events-none absolute -bottom-28 -left-28 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgba(124,92,255,0.16),transparent)]"></div>
+    <div class="container-max relative">
       <div class="mx-auto max-w-2xl text-center">
         <h2 class="font-serif text-3xl font-bold text-terracotta-300 md:text-4xl">The outcomes we deliver</h2>
         <p class="mt-4 text-lg leading-relaxed text-white/70">
@@ -196,15 +198,15 @@ const jsonLd = [
   <!-- CLOSING TESTIMONIAL + CTA -->
   <section class="section bg-warm pt-0">
     <div class="container-max">
-      <div class="rounded-3xl bg-navy px-8 py-16 text-center text-white md:px-16 md:py-20">
-        <p class="accent-em mx-auto max-w-2xl text-3xl leading-snug text-white md:text-4xl">
+      <div class="mx-auto max-w-3xl rounded-3xl border border-navy/10 bg-white bg-[radial-gradient(ellipse_55%_55%_at_50%_50%,rgba(124,92,255,0.13),transparent_72%)] px-8 py-12 text-center text-navy shadow-lg shadow-navy/5 md:px-12 md:py-14">
+        <p class="accent-em mx-auto max-w-2xl text-3xl leading-snug text-navy md:text-4xl">
           “Mile High AI Labs didn't just save us time, they changed how people see us. It runs
           like a top marketing team for a fraction of the usual cost.”
         </p>
-        <p class="mt-5 text-sm font-medium text-white/70">Owner, multi-location services brand</p>
+        <p class="mt-5 text-sm font-medium text-navy/60">Owner, multi-location services brand</p>
         <div class="mt-10 flex flex-wrap justify-center gap-4">
-          <Button href={site.booking} external>Book a Free Call</Button>
-          <Button href={`mailto:${site.email}`} variant="dark">Talk to our team</Button>
+          <Button href={site.booking} external size="sm">Book a Free Call</Button>
+          <Button href={`mailto:${site.email}`} variant="secondary" size="sm">Talk to our team</Button>
         </div>
       </div>
     </div>

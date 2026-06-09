@@ -123,6 +123,14 @@ src/
     ComparisonTable.astro # last column (Mile High AI Labs) highlighted navy
     TestimonialCard.astro # light (warm white) or dark (navy ghost-layer) variant
     FAQ.astro             # native <details> accordion; pair with faqPage() JSON-LD
+    CountUp.astro         # stat number that animates 0→target on scroll-in; preserves
+                          #   prefix/suffix (e.g. "42%", "4.2×", "<5 min"); non-numeric
+                          #   values (e.g. "24/7") render unchanged. Inline IntersectionObserver JS.
+    ImagePlaceholder.astro# dashed placeholder marking where a real image goes (props: label,
+                          #   ratio, tone light|dark). Swap the whole tag for <img>/<picture> when ready.
+    BackLink.astro        # "← Back" link for interior pages (props: href, label, variant light|dark)
+    NewsletterPopup.astro # session-once modal mounted globally in BaseLayout (see SEO/AEO section)
+    HeroCarousel.astro    # LEGACY/unused — superseded by HeroMedia.astro; safe to delete
   pages/
     index.astro           # home
     services/lead-gen-crm.astro · marketing-growth.astro · ai-workflows.astro

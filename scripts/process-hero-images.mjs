@@ -16,7 +16,7 @@ const JOBS = [
   ['assets/mhal-5.png', 'mhal-5.jpg'],
   ['assets/leadgen.png', 'leadgen.jpg'],
   ['assets/marketing.jpg', 'marketing.jpg'],
-  ['assets/AIworkflows.png', 'ai-workflows.jpg'],
+  ['assets/AIworkflows.jpg', 'hero-aiworkflows.jpg'],
 ];
 
 const WIDTH = 2400; // plenty for a full-bleed hero; downscale only

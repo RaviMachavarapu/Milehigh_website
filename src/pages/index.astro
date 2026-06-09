@@ -145,10 +145,7 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
             {/* Left content */}
             <div class="container-max relative z-10 w-full py-16 md:py-20">
               <div class="max-w-xl">
-                <span class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
-                  <svg class="h-4 w-4 text-terracotta-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M12 2l1.9 5.1L19 9l-5.1 1.9L12 16l-1.9-5.1L5 9l5.1-1.9L12 2zM19 14l.9 2.6L22 17.5l-2.1.9L19 21l-.9-2.6L16 17.5l2.1-.9L19 14z" />
-                  </svg>
+                <span class="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
                   {s.badge}
                 </span>
                 <h2 class="mt-6 font-serif text-4xl font-extrabold leading-[1.08] tracking-tight text-white md:text-5xl">
@@ -684,17 +681,17 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
   <!-- ============ CLOSING CTA ============ -->
   <section class="section bg-warm">
     <div class="container-max">
-      <div class="rounded-3xl bg-navy px-8 py-16 text-center text-white md:px-16 md:py-20">
-        <h2 class="accent-em mx-auto max-w-2xl text-4xl text-white md:text-5xl">
+      <div class="mx-auto max-w-3xl rounded-3xl border border-navy/10 bg-white bg-[radial-gradient(ellipse_55%_55%_at_50%_50%,rgba(124,92,255,0.13),transparent_72%)] px-8 py-12 text-center text-navy shadow-lg shadow-navy/5 md:px-12 md:py-14">
+        <h2 class="accent-em mx-auto max-w-2xl text-4xl text-navy md:text-5xl">
           Ready to take the busywork off your plate?
         </h2>
-        <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-white/75">
+        <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-navy/70">
           Join the business owners who swapped daily chaos for calm, with helpful AI doing the
           work and a real person keeping watch.
         </p>
         <div class="mt-9 flex flex-wrap justify-center gap-4">
-          <Button href={site.booking} external>Book a Free Call</Button>
-          <Button href={`mailto:${site.email}`} variant="dark">Talk to our team</Button>
+          <Button href={site.booking} external size="sm">Book a Free Call</Button>
+          <Button href={`mailto:${site.email}`} variant="secondary" size="sm">Talk to our team</Button>
         </div>
       </div>
     </div>
