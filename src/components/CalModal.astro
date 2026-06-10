@@ -1,0 +1,191 @@
+---
+// In-page Cal.com booking modal.
+// Every "Book a Free Call" CTA (any <a> pointing at site.booking) opens this modal
+// instead of navigating away. We embed Cal.com in an iframe we control, so the click
+// can never leave the site — no dependency on Cal's async embed.js loading in time.
+// The CTA's href is kept as a no-JS fallback (plain cal.com link if scripts are off).
+import { site } from '../data/site';
+
+// Cal renders in embedded mode (no frame-busting/redirect) when `embed` is present.
+const calEmbedUrl = `${site.booking}?embed=mhal&theme=dark&layout=month_view`;
+---
+
+<div id="cal-overlay" class="cal-overlay" aria-hidden="true">
+  <div
+    class="cal-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Book a free call with Mile High AI Labs"
+  >
+    <button id="cal-close" type="button" class="cal-close" aria-label="Close booking window">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+        <path d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+
+    <div id="cal-loading" class="cal-loading" aria-hidden="true">
+      <span class="cal-spinner"></span>
+      <p>Loading your calendar…</p>
+    </div>
+
+    <iframe
+      id="cal-frame"
+      class="cal-frame"
+      title="Book a free 15-minute call"
+      data-src={calEmbedUrl}
+      loading="lazy"
+      allow="camera; microphone; fullscreen; clipboard-read; clipboard-write"
+    ></iframe>
+  </div>
+</div>
+
+<style>
+  .cal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    background: rgba(9, 10, 14, 0.72);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.28s ease, visibility 0.28s ease;
+  }
+  .cal-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .cal-modal {
+    position: relative;
+    width: min(1120px, 96vw);
+    height: min(760px, 92vh);
+    background: #14141a;
+    border: 1px solid rgba(124, 92, 255, 0.25);
+    border-radius: 1.1rem;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+    overflow: hidden;
+    transform: translateY(10px) scale(0.985);
+    transition: transform 0.28s ease;
+  }
+  .cal-overlay.is-open .cal-modal {
+    transform: translateY(0) scale(1);
+  }
+
+  .cal-close {
+    position: absolute;
+    top: 0.85rem;
+    right: 0.85rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 9999px;
+    color: #14141a;
+    background: #ffffff;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .cal-close:hover { transform: scale(1.06); background: #f0edff; }
+  .cal-close:focus-visible { outline: 2px solid var(--color-terracotta); outline-offset: 2px; }
+
+  .cal-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+  }
+  .cal-spinner {
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 9999px;
+    border: 3px solid rgba(124, 92, 255, 0.25);
+    border-top-color: var(--color-terracotta);
+    animation: cal-spin 0.8s linear infinite;
+  }
+  @keyframes cal-spin { to { transform: rotate(360deg); } }
+
+  .cal-frame {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .cal-frame.is-ready { opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cal-overlay, .cal-modal, .cal-frame { transition: none; }
+    .cal-spinner { animation: none; }
+  }
+</style>
+
+<script is:inline define:vars={{ bookingUrl: site.booking }}>
+  (function () {
+    const overlay = document.getElementById('cal-overlay');
+    const modal = overlay?.querySelector('.cal-modal');
+    const closeBtn = document.getElementById('cal-close');
+    const frame = document.getElementById('cal-frame');
+    const loading = document.getElementById('cal-loading');
+    if (!overlay || !frame) return;
+
+    let lastFocus = null;
+
+    const open = () => {
+      lastFocus = document.activeElement;
+      // Lazy-load the calendar on first open.
+      if (!frame.src) {
+        frame.addEventListener('load', () => {
+          frame.classList.add('is-ready');
+          if (loading) loading.style.display = 'none';
+        }, { once: true });
+        frame.src = frame.dataset.src;
+      }
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      closeBtn?.focus();
+    };
+
+    const close = () => {
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    };
+
+    closeBtn?.addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('is-open')) close();
+    });
+
+    // Intercept every booking CTA, no matter where it is on the page.
+    // Capture phase + preventDefault guarantees we never navigate to cal.com.
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest && e.target.closest('a');
+      if (!link) return;
+      const href = link.getAttribute('href') || '';
+      if (href === bookingUrl || href.startsWith(bookingUrl)) {
+        e.preventDefault();
+        open();
+      }
+    }, true);
+  })();
+</script>

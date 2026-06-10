@@ -7,6 +7,14 @@ export const site = {
   tagline: 'Helpful AI that real people build, run, and double-check, made for small and medium businesses.',
   booking: 'https://cal.com/milehighailabs/15min',
   email: 'sales@milehighlabs.ai',
+  // Internal contact page (replaces mailto: links across the site).
+  contact: '/contact',
+  // Inbox that /contact form submissions are delivered to. The form posts to
+  // FormSubmit.co (free, no backend, no API key) at this exact address, so messages
+  // land in sales@milehighlabs.ai. NOTE: FormSubmit requires a ONE-TIME activation —
+  // the first submission emails a confirmation link to this inbox; click it once and
+  // every later submission is delivered automatically.
+  contactInbox: 'sales@milehighlabs.ai',
   address: {
     street: '6909 S Holly Cir STE 350',
     city: 'Centennial',
