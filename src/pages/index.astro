@@ -34,7 +34,7 @@ const heroSlides = [
   {
     badge: 'Marketing & Growth',
     headline: 'Marketing that sounds just like you.',
-    text: 'We write, review, and publish on-brand content across the channels your customers actually use, like a full marketing team without the extra payroll.',
+    text: 'We write, review, and publish on-brand content across the channels your customers actually use.',
     primary: { label: 'Book a Free Call', href: site.booking, external: true },
     secondary: { label: 'Explore Marketing', href: '/services/marketing-growth' },
     markers: ['On-brand content', 'Posted for you', 'Human-reviewed'],
@@ -43,16 +43,16 @@ const heroSlides = [
   {
     badge: 'AI Solutions & Workflows',
     headline: 'The help that never sleeps.',
-    text: 'Custom automation takes repetitive daily work off your plate, from enquiries and follow-ups to scheduling and data entry, with a real person checking the work.',
+    text: 'Custom automation takes repetitive daily work off your plate. Whatever the challenge, we design, build, and maintain the right solution for your business.',
     primary: { label: 'Book a Free Call', href: site.booking, external: true },
     secondary: { label: 'Explore AI Workflows', href: '/services/ai-workflows' },
-    markers: ['24/7 cover', 'Instant replies', 'Human-reviewed'],
+    markers: ['Available anytime you need us', 'Instant replies', 'Human-reviewed'],
     image: '/images/content/slide-aiworkflows.jpg',
   },
   {
     badge: 'PropSpectrum · For real estate',
-    headline: 'Built for real estate teams.',
-    text: 'Our real estate suite, PropAI, PropLeads, PropOptics, and PropReach. The same hands-on, looked-after help, built for agents and teams.',
+    headline: 'Built for real estate professionals.',
+    text: 'Our real estate suite, PropAI, PropLeads, PropOptics, and PropReach. The same hands-on, checked and human-reviewed help, built for agents and teams.',
     primary: { label: 'Explore PropSpectrum', href: '/propspectrum' },
     secondary: { label: 'Book a Free Call', href: site.booking, external: true },
     markers: ['PropAI', 'PropLeads', 'PropOptics', 'PropReach'],
@@ -107,13 +107,12 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
           <div class="max-w-xl text-left">
             <p class="eyebrow text-terracotta-300">Made for growing small and medium businesses</p>
             <h1 class="mt-4 font-serif text-4xl font-extrabold leading-[1.1] tracking-tight text-white md:text-5xl">
-              We build <span class="accent-em text-white">Custom AI Solutions</span> designed
-              specifically for growing businesses.
+              <span class="accent-em text-white">Custom AI Solutions</span> designed
+              specifically for your growth.
             </h1>
             <p class="mt-6 max-w-lg text-lg leading-relaxed text-white/85">
-              We set up helpful AI for small and medium businesses, and a real person keeps an eye
-              on it the whole way through. You don't build it, set it up, or watch over it. You
-              just get the result.
+              A real person keeps an eye on it the whole way through. You don't build it, set it
+              up, or watch over it. You just get the result.
             </p>
             <div class="mt-8 flex flex-wrap gap-4">
               <Button href={site.booking} external>Book a Free Call →</Button>
@@ -333,7 +332,7 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
         <h2 class="text-3xl md:text-4xl">What we do for you</h2>
         <p class="mt-4 text-lg leading-relaxed text-ink-soft">
           We don't just hand you software and wish you luck. We set it up, run it, and look
-          after it, so the hard parts leave your plate and the results stay.
+          after it.
         </p>
       </div>
       <div class="mt-14 grid items-stretch gap-6 md:grid-cols-3">
@@ -455,32 +454,45 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
         {/* LEFT — product cards (2 x 2) */}
         <div class="grid gap-5 sm:grid-cols-2">
           {
-            propProducts.map((p) => (
-              <div class="flex h-full flex-col rounded-2xl border border-navy/10 bg-white p-6">
-                <span
+            propProducts.map((p) => {
+              const Tag = p.href ? 'a' : 'div';
+              return (
+                <Tag
+                  href={p.href}
+                  target={p.href ? '_blank' : undefined}
+                  rel={p.href ? 'noopener' : undefined}
                   class:list={[
-                    'inline-block h-1.5 w-10 rounded-full',
-                    p.color === 'forest' && 'bg-forest',
-                    p.color === 'amber' && 'bg-amber',
-                    p.color === 'terracotta' && 'bg-terracotta',
+                    'flex h-full flex-col rounded-2xl border border-navy/10 bg-white p-6',
+                    p.href && 'transition-shadow hover:shadow-lg hover:shadow-navy/5',
                   ]}
-                />
-                <h3 class="mt-5 text-xl text-navy">{p.name}</h3>
-                <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">{p.oneLine}</p>
-                <span class="mt-5 inline-flex w-fit items-center rounded-full bg-warm px-3 py-1 text-xs font-semibold uppercase tracking-wide text-navy/50">
-                  Coming soon
-                </span>
-              </div>
-            ))
+                >
+                  <span
+                    class:list={[
+                      'inline-block h-1.5 w-10 rounded-full',
+                      p.color === 'forest' && 'bg-forest',
+                      p.color === 'amber' && 'bg-amber',
+                      p.color === 'terracotta' && 'bg-terracotta',
+                    ]}
+                  />
+                  <h3 class="mt-5 text-xl text-navy">{p.name}</h3>
+                  <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">{p.oneLine}</p>
+                  {p.href && (
+                    <span class="mt-5 inline-flex w-fit items-center gap-1 text-xs font-semibold uppercase tracking-wide text-terracotta">
+                      Visit site →
+                    </span>
+                  )}
+                </Tag>
+              );
+            })
           }
         </div>
 
         {/* RIGHT — context + image + CTA */}
         <div>
-          <p class="eyebrow text-terracotta">For real estate</p>
+          <p class="eyebrow text-terracotta">For real estate professionals</p>
           <h2 class="mt-3 text-3xl md:text-4xl">The PropSpectrum Suite</h2>
           <p class="mt-4 text-lg leading-relaxed text-ink-soft">
-            Our real estate side. The same hands-on, looked-after help, built for agents and
+            The same hands-on, human-curated help, built for agents and
             teams.
           </p>
           <img
@@ -493,7 +505,7 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
             class="mt-8 aspect-[16/9] w-full rounded-2xl border border-navy/10 object-cover shadow-lg shadow-navy/5"
           />
           <div class="mt-8">
-            <Button href="/propspectrum" variant="secondary">Learn more about PropSpectrum →</Button>
+            <Button href="http://propspectrum-website.s3-website-us-east-1.amazonaws.com/" variant="secondary" external>Learn more about PropSpectrum →</Button>
           </div>
         </div>
       </div>
@@ -509,9 +521,7 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
           <h2 class="mt-3 text-3xl md:text-4xl">A team behind your AI, not a tool you rent</h2>
           <p class="mt-5 text-lg leading-relaxed text-ink-soft">
             Mile High AI Labs is a Denver team that builds, runs, and looks after AI for small
-            and medium businesses. You're not signing up for software to figure out alone, or a
-            one-time consulting deck. We set it up, keep it running, and a real person makes sure
-            the results stay good.
+            and medium businesses.
           </p>
         </div>
         <img
@@ -528,9 +538,9 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
         {
           [
             { h: 'Expert', p: 'Real know-how, not guesswork.' },
-            { h: 'Consistent', p: 'The same proven six-step process behind every project.' },
+            { h: 'Consistent', p: 'The same proven step-by-step process behind every project.' },
             { h: 'Accountable', p: 'A real person signs off before anything reaches your customers.' },
-            { h: 'Denver-built', p: 'Rooted in a real place and a real business community.' },
+            { h: 'Custom-built', p: 'Rooted in a real place and a real business community.' },
           ].map((item) => (
             <div class="card-lift h-full border-navy/10 bg-warm p-6">
               <h3 class="text-xl text-navy">{item.h}</h3>
@@ -566,11 +576,15 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
           front of your customer. We put a real person between the AI and your customer, every
           time. That's the whole point.
         </p>
+        <p class="mt-4 max-w-lg text-lg leading-relaxed text-white/75">
+          And we don't just set it up and leave. Your subscription keeps us around, so you've
+          always got someone to call.
+        </p>
       </div>
       <div class="grid gap-5 sm:grid-cols-2">
         <TestimonialCard
           variant="light"
-          quote="We'd been burned by an automation that emailed the wrong quote to a client. What sold me was that a person signs off before anything goes out. Six months in, that's still true."
+          quote="They took over the busywork I used to dread, and a real person signs off before anything reaches my customers. I finally trust what goes out."
           name="Dana Whitfield"
           role="Owner, HVAC & plumbing company"
         />
@@ -633,13 +647,13 @@ const jsonLd = [organization(), breadcrumb([{ name: 'Home', path: '/' }])];
       <div class="mx-auto mt-12 grid max-w-4xl gap-6 md:grid-cols-2">
         <TestimonialCard
           class="border-navy/10 bg-warm hover:shadow-[0_4px_20px_rgba(28,43,58,0.10)]"
-          quote="Our front desk used to lose an hour a day chasing confirmations. That's gone now, and we didn't have to rip out a single tool the staff actually likes using."
+          quote="Honestly? I was the skeptic. My girls at the front desk were drowning in confirmation calls and I figured automating it would just break something. It didn't. They're calmer, I'm calmer, and nobody had to learn a whole new system."
           name="Priya Nair"
           role="Operations lead, dental group · Denver, CO"
         />
         <TestimonialCard
           class="border-navy/10 bg-warm hover:shadow-[0_4px_20px_rgba(28,43,58,0.10)]"
-          quote="What I appreciate is the honesty. They told me one of my ideas wasn't worth automating yet. You don't hear that from agencies trying to bill you for everything."
+          quote="The thing that got me? They talked me out of one of my own ideas. Said it wasn't worth automating yet. I've never had a vendor leave money on the table like that. That's when I knew I could trust them."
           name="Tom Caldwell"
           role="Founder, B2B logistics startup"
         />

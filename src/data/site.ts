@@ -38,7 +38,7 @@ export const navLinks = [
   { label: 'Lead Gen & CRM', href: '/services/lead-gen-crm' },
   { label: 'Marketing & Growth', href: '/services/marketing-growth' },
   { label: 'AI Solutions & Workflows', href: '/services/ai-workflows' },
-  { label: 'PropSpectrum', href: '/propspectrum' },
+  { label: 'PropSpectrum', href: 'http://propspectrum-website.s3-website-us-east-1.amazonaws.com/', external: true },
 ];
 
 export const services = [
@@ -82,7 +82,7 @@ export const services = [
     blurb:
       'Custom AI workflow automation that takes repetitive daily work off your plate, from enquiries and follow-ups to scheduling and data entry, with a real person checking the work before it reaches your customers.',
     features: [
-      'Appointment scheduling & reminders',
+      'Whatever the challenge, we design, build, and maintain the right solution for your business',
       'Customer support & FAQ replies',
       'Back-office task automation',
     ],
@@ -93,10 +93,10 @@ export const services = [
 // PropSpectrum is a placeholder; the homepage renders these as a non-clickable
 // "coming soon" teaser. Restore the `href`s when re-enabling (see CLAUDE.md).
 export const propProducts = [
-  { name: 'PropAI', oneLine: 'Never drop a lead.', color: 'forest' },
-  { name: 'PropLeads', oneLine: 'Always know who to call.', color: 'amber' },
-  { name: 'PropOptics', oneLine: 'Make the listing captivating.', color: 'terracotta' },
-  { name: 'PropReach', oneLine: 'Written in your voice. Posted automatically.', color: 'amber' },
+  { name: 'PropAI', oneLine: 'Intelligent Workflow Automation', color: 'forest', href: 'http://propspectrum-website.s3-website-us-east-1.amazonaws.com/propai/' },
+  { name: 'PropLeads', oneLine: 'Smart Lead Targeting', color: 'amber', href: 'http://propspectrum-website.s3-website-us-east-1.amazonaws.com/propleads/' },
+  { name: 'PropOptics', oneLine: 'Captivating Listing Visuals', color: 'terracotta', href: 'http://propspectrum-website.s3-website-us-east-1.amazonaws.com/propoptics/' },
+  { name: 'PropReach', oneLine: 'Automated Social Outreach', color: 'amber', href: 'http://propspectrum-website.s3-website-us-east-1.amazonaws.com/propreach/' },
 ];
 
 // Six-step canonical process (client-facing: "How We Work With You")

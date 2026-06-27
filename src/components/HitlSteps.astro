@@ -1,15 +1,22 @@
 ---
 // Condensed 3-step process for pillar pages.
 // Middle step (human review) is always terracotta per brand spec.
-const steps = [
+interface Step {
+  n: string;
+  title: string;
+  desc: string;
+  hitl?: boolean;
+}
+interface Props {
+  heading?: string;
+  steps?: Step[];
+}
+const defaultSteps: Step[] = [
   { n: '01', title: 'Discovery', desc: 'We look at how you work today and find the exact thing costing you time or money.' },
   { n: '02', title: 'Human Review', desc: 'We build it, then a real person checks the work before it ever touches your business.', hitl: true },
   { n: '03', title: 'Go Live', desc: 'We launch, keep a close eye on the first 48 hours, and look after it from there.' },
 ];
-interface Props {
-  heading?: string;
-}
-const { heading = 'Why a real person checks everything' } = Astro.props;
+const { heading = 'Why a real person checks everything', steps = defaultSteps } = Astro.props;
 ---
 
 <section class="section bg-white">

@@ -99,11 +99,22 @@ HITL homepage anchor headline: *"AI isn't the final word. You are."*
   Lifecycle timeline, Voice of the Partners (2-up), Strategic Partner · Apps Consultants,
   closing CTA *"Ready to scale your intelligence?"*, footer.
 - `/services/lead-gen-crm`, `/services/marketing-growth`, `/services/ai-workflows`.
+- `/contact` — standalone Contact page (`src/pages/contact.astro`): reassurance cards,
+  topic picker, and an enquiry form. The form POSTs JSON to **FormSubmit.co** (free, no
+  backend, no API key) targeting `site.contactInbox` (sales@milehighlabs.ai). ⚠️ FormSubmit
+  needs a **one-time activation** — the first submission emails a confirmation link to that
+  inbox; click it once and later submissions are delivered automatically. `site.contact`
+  (`/contact`) replaces all `mailto:` links across the site.
 - **Contact info + consultation (Cal.com) link appear in the top nav AND footer on every page.**
+- **Booking is an in-page modal, not a redirect.** `CalModal.astro` is mounted globally in
+  `BaseLayout` and intercepts every click on an `<a href>` that matches `site.booking`
+  (capture-phase + `preventDefault`), opening a Cal.com iframe overlay instead of navigating
+  away. CTAs keep the plain `cal.com` href as a no-JS fallback. Don't wire booking buttons to
+  their own onclick handlers — just point them at `site.booking` and the modal takes over.
 - AI Workflows page: stitch screen failed to download — built to match the sibling pillar
   pattern using WP §06 Pillar 3.
-- **Out of scope (v1):** pricing, blog, case studies, separate About/Contact routes, CMS,
-  backend forms, PropSpectrum product pages.
+- **Out of scope (v1):** pricing, blog, case studies, separate About route, CMS,
+  PropSpectrum product pages. (Contact route + form now shipped — see above.)
 
 ## Project structure & key components
 
@@ -111,7 +122,7 @@ HITL homepage anchor headline: *"AI isn't the final word. You are."*
 src/
   data/site.ts            # central site data: company facts, nav, services, products, lifecycle
   lib/jsonld.ts           # JSON-LD builders (organization, faqPage, service, breadcrumb)
-  layouts/BaseLayout.astro# wraps every page: <BaseHead> + Navbar + Footer
+  layouts/BaseLayout.astro# wraps every page: <BaseHead> + Navbar + Footer + NewsletterPopup + CalModal
   components/
     BaseHead.astro        # SEO: title/desc/canonical/OG/Twitter, fonts, JSON-LD
     Navbar.astro          # sticky, transparent→navy on scroll; logo (left) + links + Book CTA + Contact
@@ -130,9 +141,12 @@ src/
                           #   ratio, tone light|dark). Swap the whole tag for <img>/<picture> when ready.
     BackLink.astro        # "← Back" link for interior pages (props: href, label, variant light|dark)
     NewsletterPopup.astro # session-once modal mounted globally in BaseLayout (see SEO/AEO section)
+    CalModal.astro        # in-page Cal.com booking iframe modal, mounted globally in BaseLayout;
+                          #   intercepts every CTA whose href == site.booking (see Site structure)
     HeroCarousel.astro    # LEGACY/unused — superseded by HeroMedia.astro; safe to delete
   pages/
     index.astro           # home
+    contact.astro         # Contact page + FormSubmit.co enquiry form (see Site structure)
     services/lead-gen-crm.astro · marketing-growth.astro · ai-workflows.astro
   styles/global.css       # Tailwind v4 @theme tokens + base/components layers
 ```
